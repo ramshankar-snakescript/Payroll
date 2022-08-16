@@ -12,7 +12,7 @@ class DesignationController extends Controller
 {
     public function index(){
 
-        $department = DB::table('departments')->all()->toArray();
+        $department = DB::table('departments')->select('*')->get()->toArray();
             $designation = DB::table("designation")
                                 ->join("departments", function($join){
                                     $join->on("departments.id", "=", "designation.dept_id");
