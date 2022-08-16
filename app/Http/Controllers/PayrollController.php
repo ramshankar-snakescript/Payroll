@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Mail;
+use App\Mail\OrderShipped;
 use App\Models\StaffSalary;
 use App\Models\Employee;
 use Brian2694\Toastr\Facades\Toastr;
@@ -244,4 +246,17 @@ class PayrollController extends Controller
          }
         return view('payroll.employeesalary', compact('users', 'userList'));
     }
+
+    public function basic_email() {
+        $order = "mail";
+        Mail::to('ramsshukla25@gmail.com', 'Tutorials Point')->send(new OrderShipped($order));
+        // $data = array('name'=>"Virat Gandhi");
+
+        // Mail::send(['text'=>'mail'], $data, function($message) {
+        //    $message->to('ramsshukla25@gmail.com', 'Tutorials Point')->subject
+        //       ('Laravel Basic Testing Mail');
+        //    $message->from('xyz@gmail.com','Virat Gandhi');
+        // });
+        echo "Basic Email Sent. Check your inbox.";
+     }
 }

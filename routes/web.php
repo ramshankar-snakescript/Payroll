@@ -22,6 +22,8 @@ use App\Http\Controllers\TrainersController;
 use App\Http\Controllers\TrainingTypeController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\DesignationController;
+use App\Mail\TestEmail;
+// use DB;
 
 
 /*
@@ -289,3 +291,18 @@ Route::post('/designation', [DesignationController::class, 'store'])->name('desi
 Route::post('/designation/update', [DesignationController::class, 'update'])->name('designation/update');
 Route::post('/designation/delete', [DesignationController::class, 'delete'])->name('designation/delete');
 
+Route::get('email/{rec_id}', function ($rec_id) {
+
+    $users = DB::table('employees')
+    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+    ->join('designation', 'employees.desg', '=', 'designation.id')
+    ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
+    ->where('staff_salaries.rec_id',$rec_id)
+    ->first();
+// return view('payroll.salaryview',compact('users'));
+
+Mail::to("hello@example.com")->send(new TestEmail($users));
+
+dd("email sent sucessfully");
+
+});

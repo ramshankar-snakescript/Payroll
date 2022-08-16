@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-            <div class="row" style="margin-left: -240px;">
+            <div class="row" style="width:100%;">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
@@ -85,8 +85,8 @@
                                                 <tr>
                                                     <td><strong>Other Allowance</strong> <span class="float-right">{{ $users->allowance }}</span></td>
                                                 </tr>
-                                                <tr>
-                                                    <td><strong>Total Earnings</strong> <span class="float-right"><strong> <?php echo $Total_Earnings ?></strong></span></td>
+                                                <tr >
+                                                    <td rowspan="2"><strong>Total Earnings</strong> <span class="float-right"><strong> <?php echo $Total_Earnings ?></strong></span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -98,21 +98,27 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                                 <?php
-                                                    $a =  (int)$users->tds;
+                                                    $daysinmoth =  Carbon\Carbon::now()->daysInMonth;
+                                                    $l = (int)$users->basic/$daysinmoth;
 
+
+                                                    $l_d = (int)$l * $users->leave;
+                                                    $a =  (int)$users->tds;
                                                     $c =  (int)$users->esi;
                                                     $e =  (int)$users->labour_welfare;
-                                                    $Total_Deductions   = $a + $c + $e;
+                                                    $Total_Deductions   = $a + $c + $e + $l_d;
                                                 ?>
                                                 <tr>
                                                     <td><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{ $users->tds }}</span></td>
                                                 </tr>
-
+                                                <tr>
+                                                    <td><strong>Leaves</strong> x {{ $users->leave }} <span class="float-right">{{ $l_d }}</span></td>
+                                                </tr>
                                                 <tr>
                                                     <td><strong>ESI</strong> <span class="float-right">{{ $users->esi }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Loan</strong> <span class="float-right">{{ $users->labour_welfare }}</span></td>
+                                                    <td><strong>Home Loan</strong> <span class="float-right">{{ $users->labour_welfare }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Total Deductions</strong> <span class="float-right"><strong><?php echo $Total_Deductions;?></strong></span></td>

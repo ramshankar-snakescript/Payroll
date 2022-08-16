@@ -28,6 +28,8 @@
                     </div>
                 </div>
             </div>
+
+
 			<!-- /Page Header -->
 
             <!-- Search Filter -->
@@ -62,8 +64,11 @@
             {{-- message --}}
             {!! Toastr::message() !!}
             <div class="row staff-grid-row">
-                @if(!empty($users))
-                @foreach ($users as $lists )
+
+
+
+
+                @foreach ($users as $lists)
                 <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                     <div class="profile-widget">
                         <div class="profile-img">
@@ -88,9 +93,7 @@
                     </div>
                 </div>
                 @endforeach
-                @else
-                {{"Record Not Found"}}
-                @endif
+
             </div>
         </div>
         <!-- /Page Content -->
