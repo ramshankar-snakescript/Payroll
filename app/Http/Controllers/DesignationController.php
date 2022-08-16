@@ -18,8 +18,8 @@ class DesignationController extends Controller
                                     $join->on("departments.id", "=", "designation.dept_id");
                                 })
                                 ->select("departments.department", "designation.*", "departments.id as dept")
-                                ->get()
-                                ->toArray();
+                                ->get();
+                                // ->toArray();
         return view('form.Designation', compact('department', 'designation'));
     }
 
