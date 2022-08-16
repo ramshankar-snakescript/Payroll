@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-            <div class="row" style="width:100%;">
+            <div class="row" style="margin-left: -240px;">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
