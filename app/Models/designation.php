@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class designation extends Model
 {
     use HasFactory;
-    protected $table="designation";
     public $keyType = ‘string’;
+    protected $table="designation";
+
 }
