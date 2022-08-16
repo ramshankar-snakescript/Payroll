@@ -12,4 +12,5 @@ class department extends Model
     protected $fillable = [
         'department',
     ];
+    public $keyType = ‘string’;
 }

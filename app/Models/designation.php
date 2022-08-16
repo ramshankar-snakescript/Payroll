@@ -9,4 +9,5 @@ class designation extends Model
 {
     use HasFactory;
     protected $table="designation";
+    public $keyType = ‘string’;
 }
