@@ -12,14 +12,14 @@ class DesignationController extends Controller
 {
     public function index(){
 
-        $department = department::all();
+        $department = department::all()->toArray();
             $designation = DB::table("designation")
                                 ->join("departments", function($join){
                                     $join->on("departments.id", "=", "designation.dept_id");
                                 })
                                 ->select("departments.department", "designation.*", "departments.id as dept")
-                                ->get();
-                                // ->toArray();
+                                ->get()
+                                ->toArray();
         return view('form.Designation', compact('department', 'designation'));
     }
 
