@@ -9,6 +9,8 @@ use App\Mail\OrderShipped;
 use App\Models\StaffSalary;
 use App\Models\Employee;
 use Brian2694\Toastr\Facades\Toastr;
+use PDF;
+use Illuminate\Support\facades\storage;
 
 class PayrollController extends Controller
 {
@@ -33,20 +35,20 @@ class PayrollController extends Controller
         // print_r($request->all());
         // exit();
         $request->validate([
-            'name'         => 'required|string|max:255',
+            'name'         => 'required',
             'salary'       => 'required|string|max:255',
-            'basic' => 'required|string|max:255',
+            // 'basic' => 'required|string|max:255',
             // 'da'    => 'required|string|max:255',
-            'hra'    => 'required|string|max:255',
+            // 'hra'    => 'required|string|max:255',
             // 'conveyance' => 'required|string|max:255',
-            'allowance'  => 'required|string|max:255',
-            'medical_allowance' => 'required|string|max:255',
-            'tds' => 'required|string|max:255',
-            'esi' => 'required|string|max:255',
-            'pf'  => 'required|string|max:255',
+            // 'allowance'  => 'required|string|max:255',
+            // 'medical_allowance' => 'required|string|max:255',
+            // 'tds' => 'required|string|max:255',
+            // 'esi' => 'required|string|max:255',
+            // 'pf'  => 'required|string|max:255',
             'leave'    => 'required|string|max:255',
             // 'prof_tax' => 'required|string|max:255',
-            'labour_welfare' => 'required|string|max:255',
+            // 'labour_welfare' => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();
@@ -56,11 +58,12 @@ class PayrollController extends Controller
             $salary->rec_id            = $request->rec_id;
             $salary->salary            = $request->salary;
             $salary->basic             = $request->basic;
-            // $salary->da                = $request->da;
+            $salary->da                = $request->da;
             $salary->hra               = $request->hra;
-            // $salary->conveyance        = $request->conveyance;
+            $salary->conveyance        = $request->conveyance;
             $salary->allowance         = $request->allowance;
             $salary->medical_allowance = $request->medical_allowance;
+            $salary->telephone_internet  = $request->tel_int;
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
@@ -68,6 +71,8 @@ class PayrollController extends Controller
             // $salary->prof_tax          = $request->prof_tax;
             $salary->labour_welfare    = $request->labour_welfare;
             $salary->save();
+
+
 
             DB::commit();
             Toastr::success('Create new Salary successfully :)','Success');
@@ -88,6 +93,11 @@ class PayrollController extends Controller
                 ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
                 ->where('staff_salaries.rec_id',$rec_id)
                 ->first();
+
+                // $pdf = PDF::loadview('payroll.salaryview', compact('users'));
+                // // $pdf->download('disney.pdf');
+
+                // Storage::put('public/'.'-'.rand().'-'.time().'.'.'pdf', $pdf->output());
         return view('payroll.salaryview',compact('users'));
     }
 
@@ -99,14 +109,15 @@ class PayrollController extends Controller
             $update = [
 
                 'id'      => $request->id,
-                'name'    => $request->name,
+                // 'name'    => $request->name,
                 'salary'  => $request->salary,
                 'basic'   => $request->basic,
-                // 'da'      => $request->da,
+                'da'      => $request->da,
                 'hra'     => $request->hra,
-                // 'conveyance' => $request->conveyance,
+                'conveyance' => $request->conveyance,
                 'allowance'  => $request->allowance,
                 'medical_allowance'  => $request->medical_allowance,
+                'telephone_internet' => $request->tel_int,
                 'tds'  => $request->tds,
                 'esi'  => $request->esi,
                 'pf'   => $request->pf,
@@ -258,5 +269,38 @@ class PayrollController extends Controller
         //    $message->from('xyz@gmail.com','Virat Gandhi');
         // });
         echo "Basic Email Sent. Check your inbox.";
+     }
+
+     public function send_pdf($id){
+        $users = DB::table('employees')
+        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+        ->join('designation', 'employees.desg', '=', 'designation.id')
+        ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
+        ->where('staff_salaries.rec_id',$id)
+        ->first();
+        $userList = DB::table('employees')->get();
+        $pdf = PDF::loadview('payroll.salaryslip', compact('users'));
+        $path = Storage::put('public/'.'-'.rand().'-'.time().'.'.'pdf', $pdf->output());
+        Storage::put($path, $pdf->output());
+        Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path){
+            $m->From("ramsshukla25@gmail.com", env('APP_NAME'));
+            $m->to('ramshankar@snakescript.com')->subject('Test Mail')
+            ->attachData($pdf->output(), $path, [
+                'mime' => 'application/pdf',
+                'as' => $users->name.'.'.'pdf'
+            ]);
+        });
+        // dd("email sent.");
+        // return view('payroll.salaryslip', compact('users'));
+        $users = DB::table('employees')
+                    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+                    ->join('designation', 'employees.desg', '=', 'designation.id')
+                    ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+                    ->get();
+        $userList = DB::table('employees')->get();
+        Toastr::success('Email Sent Successfully :)','Success');
+
+        // $permission_lists = DB::table('permission_lists')->get();
+        return view('payroll.employeesalary', compact('users', 'userList'));
      }
 }

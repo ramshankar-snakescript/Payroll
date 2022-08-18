@@ -306,3 +306,5 @@ Mail::to("hello@example.com")->send(new TestEmail($users));
 dd("email sent sucessfully");
 
 });
+
+Route::get('send_pdf/{id}', [PayrollController::class, 'send_pdf']);

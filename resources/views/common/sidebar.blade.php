@@ -20,12 +20,12 @@
 
                 <li >
                     <a href="{{ route('designation') }}">
-                        <i class="la la-user"></i> <span> Designation</span> <span class="menu-arrow"></span>
+                        <i class="la la-graduation-cap"></i> <span> Designation</span> <span class="menu-arrow"></span>
                     </a>
                 </li>
                 <li >
                     <a href="{{ route('form/departments/page') }}">
-                        <i class="la la-user"></i> <span> Department</span> <span class="menu-arrow"></span>
+                        <i class="la la-briefcase"></i> <span> Department</span> <span class="menu-arrow"></span>
                     </a>
                 </li>
                 <li >
@@ -34,13 +34,17 @@
                     </a>
                 </li>
 
-                <li class="submenu"> <a href="#"><i class="la la-money"></i>
-                    <span> Payroll </span> <span class="menu-arrow"></span></a>
+                <li class="">
+                    {{-- <a href="#"><i class="la la-money"></i> --}}
+                    {{-- <span> Payroll </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li><a href="{{ route('form/salary/page') }}"> Employee Salary </a></li>
                         <li><a href="{{ url('form/salary/view') }}"> Payslip </a></li>
                         <li><a href="{{ route('form/payroll/items') }}"> Payroll Items </a></li>
-                    </ul>
+                    </ul> --}}
+                    <a href="{{ route('form/salary/page') }}">
+                        <i class="la la-money"></i> <span> Payroll</span> <span class="menu-arrow"></span>
+                    </a>
                 </li>
 
             </ul>

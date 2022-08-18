@@ -17,11 +17,12 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <div class="btn-group btn-group-sm">
+                        {{-- <div class="btn-group btn-group-sm">
                             <button class="btn btn-white">CSV</button>
                             <button class="btn btn-white"><a href=""@click.prevent="printme" target="_blank">PDF</a></button>
                             <button class="btn btn-white"><i class="fa fa-print fa-lg"></i><a href="" @click.prevent="printme" target="_blank"> Print</a></button>
-                        </div>
+                        </div> --}}
+                        <a  href="{{url('/send_pdf/'.$users->rec_id)}}"><button class ="btn btn-white">Send PDF</button></a>
                     </div>
                 </div>
 
@@ -69,11 +70,16 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                                 <?php
+                                                    $netsalary = $users->salary;
+                                                    $daysinmoth =  (int)22;
+                                                    $perday = (int)$users->salary/$daysinmoth;
+
+
+
                                                     $a =  (int)$users->basic;
                                                     $b =  (int)$users->hra;
-
                                                     $e =  (int)$users->allowance;
-                                                    $Total_Earnings   = $a + $b  + $e;
+                                                    $Total_Earnings   = $a + $b  + $e ;
                                                 ?>
                                                 <tr>
                                                     <td><strong>Basic Salary</strong> <span class="float-right">{{ $users->basic }}</span></td>
@@ -98,18 +104,26 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                                 <?php
-                                                    $daysinmoth =  Carbon\Carbon::now()->daysInMonth;
-                                                    $l = (int)$users->basic/$daysinmoth;
 
 
-                                                    $l_d = (int)$l * $users->leave;
+                                                    if($users->leave != 0){
+                                                        $leaves = (int)$users->leave-1;
+                                                        $l_d = (int)$perday * $leaves;
+
+                                                    }else{
+                                                        $l_d = (int)0;
+                                                    }
+
+
                                                     $a =  (int)$users->tds;
                                                     $c =  (int)$users->esi;
                                                     $e =  (int)$users->labour_welfare;
-                                                    $Total_Deductions   = $a + $c + $e + $l_d;
+                                                    $pf = (int)$users->pf;
+                                                    $Total_Deductions   = $a + $c + $pf + $e + $l_d;
                                                 ?>
                                                 <tr>
-                                                    <td><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{ $users->tds }}</span></td>
+                                                    {{-- <td hidden><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{ $users->tds }}</span></td> --}}
+                                                    <td><strong>Provident Fund (P.F.)</strong> <span class="float-right">{{ $users->pf }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Leaves</strong> x {{ $users->leave }} <span class="float-right">{{ $l_d }}</span></td>
@@ -129,10 +143,18 @@
                                 </div>
                                 <div class="col-sm-12" >
                                     <p><strong>Net Salary:
+                                        @php
+                                         if($users->leave == 0){
+                                            $net_salary  =  (int)$users->salary + $perday;
+                                                    }else{
+                                                        $net_salary = $users->salary;
+                                                    }
+
+                                        @endphp
                                         {{-- ${{ $users->salary }} --}}
-                                        {{$Total_Earnings - $Total_Deductions}}
+                                        {{round($net_salary - $Total_Deductions)}}
                                     </strong> @php
-                                        $number = $Total_Earnings - $Total_Deductions;
+                                        $number = round($net_salary - $Total_Deductions);
    $no = floor($number);
    $point = round($number - $no, 2) * 100;
    $hundred = null;
@@ -169,9 +191,9 @@
   $str = array_reverse($str);
   $result = implode('', $str);
   $points = ($point) ?
-    "." . $words[$point / 10] . " " .
+    "" . $words[$point / 10] . " " .
           $words[$point = $point % 10] : '';
-//   echo "(".$result . "Rupees  " . $points . " Paise)";
+//   echo "(".$result . "Rupees  and" . $points . " Paise)";
   echo "(".$result . "Rupees )";
                                     @endphp</p>
                                 </div>
@@ -180,6 +202,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <!-- /Page Content -->
     </div>

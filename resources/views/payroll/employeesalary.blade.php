@@ -103,7 +103,12 @@
                                 <tr>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="{{ url('employee/profile/'.$items->rec_id) }}" class="avatar"><img alt="" src="{{ URL::to('storage/uploads/'. $items->image) }}"></a>
+                                            <a href="{{ url('employee/profile/'.$items->rec_id) }}" class="avatar">
+                                                @if ($items->image)
+                                                <img alt="" src="{{ URL::to('storage/uploads/'. $items->image) }}"></a>
+                                                @else
+                                                <img alt="" src="{{ URL::to('storage/user.png') }}"></a>
+                                                @endif
                                             <a href="{{ url('employee/profile/'.$items->rec_id) }}">{{ $items->emp_name }}<span>{{ $items->designation }}</span></a>
                                         </h2>
                                     </td>
@@ -111,15 +116,16 @@
                                     <td hidden class="id">{{ $items->id }}</td>
                                     <td hidden class="name">{{ $items->emp_name }}</td>
                                     <td hidden class="basic">{{ $items->basic }}</td>
-
+                                    <td hidden class="da">{{ $items->da }}</td>
                                     <td hidden class="hra">{{ $items->hra }}</td>
-
+                                    <td hidden class="conveyance">{{ $items->conveyance }}</td>
                                     <td hidden class="allowance">{{ $items->allowance }}</td>
                                     <td hidden class="medical_allowance">{{ $items->medical_allowance }}</td>
                                     <td hidden class="tds">{{ $items->tds }}</td>
                                     <td hidden class="esi">{{ $items->esi }}</td>
                                     <td hidden class="pf">{{ $items->pf }}</td>
                                     <td hidden class="leave">{{ $items->leave }}</td>
+                                    <td hidden class="tel_int">{{ $items->telephone_internet }}</td>
 
                                     <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
                                     <td>{{ $items->email }}</td>
@@ -164,9 +170,9 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Select Staff</label>
+                                        <label>Select Employee</label>
                                         <select class="select select2s-hidden-accessible @error('name') is-invalid @enderror" style="width: 100%;" tabindex="-1" aria-hidden="true" id="name" name="name">
-                                            <option value="">-- Select --</option>
+                                            <option value="">-- Choose Employee --</option>
                                             @foreach ($userList as $user )
                                                 <option value="{{ $user->name }}" data-employee_id={{ $user->id }}>{{ $user->name }}</option>
                                             @endforeach
@@ -180,7 +186,7 @@
                                 </div>
                                 <input class="form-control" type="hidden" name="rec_id" id="employee_id" readonly>
                                 <div class="col-sm-6">
-                                    <label>Net Salary</label>
+                                    <label>CTC</label>
                                     <input class="form-control @error('salary') is-invalid @enderror" type="number" name="salary" id="salary" value="{{ old('salary') }}" placeholder="Enter net salary">
                                     @error('salary')
                                         <span class="invalid-feedback" role="alert">
@@ -193,7 +199,7 @@
                                 <div class="col-sm-6">
                                     <h4 class="text-primary">Earnings</h4>
                                     <div class="form-group">
-                                        <label>Basic</label>
+                                        <label>Basic (40% of CTC)</label>
                                         <input class="form-control @error('basic') is-invalid @enderror" type="number" name="basic" id="basic" value="{{ old('basic') }}" placeholder="Enter basic">
                                         @error('basic')
                                             <span class="invalid-feedback" role="alert">
@@ -201,17 +207,17 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label>DA(40%)</label>
+                                    <div class="form-group">
+                                        <label>DA(20% of Basic Salary)</label>
                                         <input class="form-control @error('da') is-invalid @enderror" type="number"  name="da" id="da" value="{{ old('da') }}" placeholder="Enter DA(40%)">
                                         @error('da')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group">
-                                        <label>HRA(15%)</label>
+                                        <label>HRA(40% of Basic Salary)</label>
                                         <input class="form-control @error('hra') is-invalid @enderror" type="number"  name="hra" id="hra" value="{{ old('hra') }}" placeholder="Enter HRA(15%)">
                                         @error('hra')
                                             <span class="invalid-feedback" role="alert">
@@ -219,17 +225,17 @@
                                             </span>
                                         @enderror
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label>Conveyance</label>
+                                    <div class="form-group">
+                                        <label>Conveyance (5% of Basic Salary)</label>
                                         <input class="form-control @error('conveyance') is-invalid @enderror" type="number"  name="conveyance" id="conveyance" value="{{ old('conveyance') }}" placeholder="Enter conveyance">
                                         @error('conveyance')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group">
-                                        <label>Allowance</label>
+                                        <label>Allowance(15% Of Basic Salary)</label>
                                         <input class="form-control @error('allowance') is-invalid @enderror" type="number"  name="allowance" id="allowance" value="{{ old('allowance') }}" placeholder="Enter allowance">
                                         @error('allowance')
                                             <span class="invalid-feedback" role="alert">
@@ -238,8 +244,17 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Medical  Allowance</label>
+                                        <label>Medical  Allowance (5% of Basic Salary)</label>
                                         <input class="form-control @error('medical_allowance') is-invalid @enderror" type="number" name="medical_allowance" id="medical_allowance" value="{{ old('medical_allowance') }}" placeholder="Enter medical  allowance">
+                                        @error('medical_allowance')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Telephone And Internet Reimbursement</label>
+                                        <input class="form-control @error('medical_allowance') is-invalid @enderror" type="number" name="tel_int" id="tel_int" value="{{ old('medical_allowance') }}" placeholder="Enter medical  allowance">
                                         @error('medical_allowance')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -259,7 +274,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>ESI</label>
+                                        <label>ESI - 3.25% employer, 0.75% employee (below 21000 gross salary)</label>
                                         <input class="form-control @error('esi') is-invalid @enderror" type="number" name="esi" id="esi" value="{{ old('esi') }}" placeholder="Enter ESI">
                                         @error('esi')
                                             <span class="invalid-feedback" role="alert">
@@ -268,7 +283,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>PF</label>
+                                        <label>PF (12% employee and employer each with high cap of 1800 each)</label>
                                         <input class="form-control @error('pf') is-invalid @enderror" type="number" name="pf" id="pf" value="{{ old('pf') }}" placeholder="Enter PF">
                                         @error('pf')
                                             <span class="invalid-feedback" role="alert">
@@ -276,9 +291,10 @@
                                             </span>
                                         @enderror
                                     </div>
+
                                     <div class="form-group">
-                                        <label>Leave</label>
-                                        <input class="form-control @error('leave') is-invalid @enderror" type="text" name="leave" id="leave" value="{{ old('leave') }}" placeholder="Enter leave">
+                                        <label>Leaves</label>
+                                        <input class="form-control @error('leave') is-invalid @enderror" type="number" name="leave" id="leave" value="{{ old('leave') }}" placeholder="Enter leave">
                                         @error('leave')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -342,7 +358,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>Net Salary</label>
+                                    <label>CTC</label>
                                     <input class="form-control" type="text" name="salary" id="e_salary" value="">
                                 </div>
                             </div>
@@ -353,18 +369,18 @@
                                         <label>Basic</label>
                                         <input class="form-control" type="text" name="basic" id="e_basic" value="">
                                     </div>
-                                    {{-- <div class="form-group">
+                                    <div class="form-group">
                                         <label>DA(40%)</label>
                                         <input class="form-control" type="text"  name="da" id="e_da" value="">
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group">
                                         <label>HRA(15%)</label>
                                         <input class="form-control" type="text"  name="hra" id="e_hra" value="">
                                     </div>
-                                    {{-- <div class="form-group">
+                                    <div class="form-group">
                                         <label>Conveyance</label>
                                         <input class="form-control" type="text"  name="conveyance" id="e_conveyance" value="">
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group">
                                         <label>Allowance</label>
                                         <input class="form-control" type="text"  name="allowance" id="e_allowance" value="">
@@ -372,6 +388,10 @@
                                     <div class="form-group">
                                         <label>Medical  Allowance</label>
                                         <input class="form-control" type="text" name="medical_allowance" id="e_medical_allowance" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Telephone And Internet Reimbursement</label>
+                                        <input class="form-control" type="text" name="tel_int" id="e_tel_int" value="">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -381,7 +401,7 @@
                                         <input class="form-control" type="text" name="tds" id="e_tds" value="">
                                     </div>
                                     <div class="form-group">
-                                        <label>ESI</label>
+                                        <label>ESI - 3.25% employer, 0.75% employee (below 21000 gross salary)</label>
                                         <input class="form-control" type="text" name="esi" id="e_esi" value="">
                                     </div>
                                     <div class="form-group">
@@ -449,6 +469,7 @@
                 $('.select2s-hidden-accessible').select2({
                     closeOnSelect: false
                 });
+                $("#tel_int").val('1000');
             });
         </script>
         <script>
@@ -477,8 +498,59 @@
                 $('#e_pf').val(_this.find('.pf').text());
                 $('#e_leave').val(_this.find('.leave').text());
                 $('#e_prof_tax').val(_this.find('.prof_tax').text());
+                $('#e_tel_int').val(_this.find('.tel_int').text());
                 $('#e_labour_welfare').val(_this.find('.labour_welfare').text());
             });
+        </script>
+
+        <script>
+            $(document).on('change','#salary',function(){
+            var ctc = parseInt($(this).val());
+
+            var base_salary = parseInt(40);
+            var basic_sal = ( ctc * base_salary / 100 );
+
+            var hra = parseInt(40);
+            var hra = ( basic_sal * hra / 100 );
+
+            var da_per = parseInt(20);
+            var da = ( basic_sal * da_per / 100 );
+
+            var lta_per = parseInt(15);
+            var lta = ( basic_sal * lta_per / 100 );
+
+            var conveyance_per = parseInt(5);
+            var conveyance = ( basic_sal * conveyance_per / 100 );
+
+            var med_conveyance_per = parseInt(5);
+            var med_conveyance = ( basic_sal * med_conveyance_per / 100 );
+
+
+
+                if(ctc >= parseInt(15000)){
+                    $("#pf").val('3600');
+                }else{
+                    $("#pf").val(( ctc * parseInt(24) / 100 ));
+                }
+
+                if(ctc > parseInt(21000)){
+                    $("#esi").val(0);
+                }else{
+                    $("#esi").val(( ctc * parseInt(4) / 100 ));
+                }
+
+
+
+            $('#basic').val(basic_sal);
+            $('#hra').val(hra);
+            $('#conveyance').val(conveyance);
+            $('#medical_allowance').val(med_conveyance);
+            $('#da').val(da);
+            $('#allowance').val(lta);
+
+            });
+
+
         </script>
          {{-- delete js --}}
     <script>
@@ -488,5 +560,20 @@
             $('.e_id').val(_this.find('.id').text());
         });
     </script>
+
+    <script>
+        $(document).ready(function(){
+            $("input[type=number]").prop('disabled', true);
+
+        });
+
+        $("#name").on('change', function(){
+           if($(this).val() != ''){
+            $("input[type=number]").prop('disabled', false);
+           }else{
+            $("input[type=number]").prop('disabled', true);
+           }
+        })
+        </script>
     @endsection
 @endsection

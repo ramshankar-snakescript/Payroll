@@ -76,7 +76,7 @@ class LoginController extends Controller
         // ];
         if (Auth::attempt(['email'=>$email,'password'=>$password])) {
 
-            Toastr::success('Login successfully :)','Success');
+            Toastr::success('Logged in Successfully :)','Success');
             return redirect()->intended('home');
         }
         else{

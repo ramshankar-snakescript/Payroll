@@ -71,7 +71,7 @@ class EmployeeController extends Controller
              $employees = Employee::where('email', '=',$request->email)->first();
              if ($employees === null)
              {
-                if($request->image){
+                if($request->employee_pic){
                 $name = $request->file('employee_pic')->store('public/uploads');
                 $o_name = str_replace('public/uploads/', '', $name);
                 }else{
