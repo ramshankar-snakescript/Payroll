@@ -132,7 +132,7 @@ class EmployeeController extends Controller
         // print_r($request->all());
         // exit();
         // DB::beginTransaction();
-        // try{
+        try{
             // update table Employee
             if($request->employee_pic){
             $name = $request->file('employee_pic')->store('public/uploads');
@@ -161,16 +161,19 @@ class EmployeeController extends Controller
              'ifsc' => $request->ifsc
             ];
 
-            Employee::where('id',$request->id)->update($updateEmployee);
+            $affecte_row = Employee::where('id',$request->id)->update($updateEmployee);
+echo $affecte_row;
+            if($affecte_row != 0){
 
             DB::commit();
             Toastr::success('updated record successfully :)','Success');
+            }
             return redirect()->route('all/employee/card');
-        // }catch(\Exception $e){
-        //     DB::rollback();
-        //     Toastr::error('updated record fail :)','Error');
-        //     return redirect()->back();
-        // }
+        }catch(\Exception $e){
+            DB::rollback();
+            Toastr::error('updated record fail :)','Error');
+            return redirect()->back();
+        }
     }
     // delete record
     public function deleteRecord($employee_id)
@@ -439,7 +442,8 @@ class EmployeeController extends Controller
     public function del_img($id){
         Employee::where('id', $id)
     //   ->where('destination', 'San Diego')
-      ->update(['image' => '']);
+      ->set(['image' => ''])
+      ->update();
       return true;
     }
 

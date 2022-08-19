@@ -2,7 +2,7 @@
 @section('content')
     <div class="main-wrapper">
         <div class="account-content">
-            <a href="{{ route('form/job/list') }}" class="btn btn-primary apply-btn">Apply Job</a>
+
             <div class="container">
                 <!-- Account Logo -->
 
@@ -29,7 +29,7 @@
                                 <button class="btn btn-primary account-btn" type="submit">SEND</button>
                             </div>
                             <div class="account-footer">
-                                <p>Don't have an account yet? <a href="{{ route('login') }}">Login</a></p>
+                                <p>Remember Password?<a href="{{ route('login') }}"> Login</a></p>
                             </div>
                         </form>
                         <!-- /Account Form -->

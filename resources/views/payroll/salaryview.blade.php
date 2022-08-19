@@ -113,7 +113,7 @@
                                                         $l_d = (int)$perday * $leaves;
 
                                                     }else{
-                                                        $leaves = (int)$users->leave-1;
+                                                        $leaves = (int)0;
                                                         $l_d = (int)0;
                                                     }
 
