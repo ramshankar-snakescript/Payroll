@@ -46,7 +46,7 @@ class PayrollController extends Controller
             // 'tds' => 'required|string|max:255',
             // 'esi' => 'required|string|max:255',
             // 'pf'  => 'required|string|max:255',
-            'leave'    => 'required|string|max:255',
+            // 'leave'    => 'required|string|max:255',
             // 'prof_tax' => 'required|string|max:255',
             // 'labour_welfare' => 'required|string|max:255',
         ]);
@@ -104,6 +104,7 @@ class PayrollController extends Controller
     // update record
     public function updateRecord(Request $request)
     {
+
         DB::beginTransaction();
         try{
             $update = [
@@ -158,11 +159,6 @@ class PayrollController extends Controller
         }
     }
 
-    // payroll Items
-    public function payrollItems()
-    {
-        return view('payroll.payrollitems');
-    }
 
     public function search(Request $request){
 
@@ -174,17 +170,6 @@ class PayrollController extends Controller
                     ->get();
         $userList = DB::table('employees')->get();
 
-        // search by id
-        // if($request->employee_id)
-        // {
-        //     $users = DB::table('employees')
-        //                 ->join('departments', 'employees.dept', '=', 'departments.id')
-        //                 ->join('designation', 'employees.desg', '=', 'designation.id')
-        //                 ->select('employees.*', 'departments.department as department', 'designation.designation as designation')
-        //                 ->where('employees.employee_id','LIKE','%'.$request->employee_id.'%')
-        //                 ->get();
-        //                 $departments = department::all();
-        // }
         // search by name
         if($request->name)
         {
@@ -258,49 +243,37 @@ class PayrollController extends Controller
         return view('payroll.employeesalary', compact('users', 'userList'));
     }
 
-    public function basic_email() {
-        $order = "mail";
-        Mail::to('ramsshukla25@gmail.com', 'Tutorials Point')->send(new OrderShipped($order));
-        // $data = array('name'=>"Virat Gandhi");
 
-        // Mail::send(['text'=>'mail'], $data, function($message) {
-        //    $message->to('ramsshukla25@gmail.com', 'Tutorials Point')->subject
-        //       ('Laravel Basic Testing Mail');
-        //    $message->from('xyz@gmail.com','Virat Gandhi');
-        // });
-        echo "Basic Email Sent. Check your inbox.";
-     }
 
      public function send_pdf($id){
         $users = DB::table('employees')
-        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-        ->join('designation', 'employees.desg', '=', 'designation.id')
-        ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
-        ->where('staff_salaries.rec_id',$id)
-        ->first();
+                        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+                        ->join('designation', 'employees.desg', '=', 'designation.id')
+                        ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
+                        ->where('staff_salaries.rec_id',$id)
+                        ->first();
         $userList = DB::table('employees')->get();
         $pdf = PDF::loadview('payroll.salaryslip', compact('users'));
         $path = Storage::put('public/'.'-'.rand().'-'.time().'.'.'pdf', $pdf->output());
         Storage::put($path, $pdf->output());
         Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path){
-            $m->From("ramsshukla25@gmail.com", env('APP_NAME'));
-            $m->to('ramshankar@snakescript.com')->subject('Test Mail')
+            $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
+            $m->to($users->email)->subject('Test Mail')
             ->attachData($pdf->output(), $path, [
                 'mime' => 'application/pdf',
                 'as' => $users->name.'.'.'pdf'
             ]);
+
+
         });
-        // dd("email sent.");
-        // return view('payroll.salaryslip', compact('users'));
+        Toastr::success('Email Sent Successfully :)','Success');
+
         $users = DB::table('employees')
                     ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                     ->join('designation', 'employees.desg', '=', 'designation.id')
                     ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
                     ->get();
         $userList = DB::table('employees')->get();
-        Toastr::success('Email Sent Successfully :)','Success');
-
-        // $permission_lists = DB::table('permission_lists')->get();
         return view('payroll.employeesalary', compact('users', 'userList'));
      }
 }

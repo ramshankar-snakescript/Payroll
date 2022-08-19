@@ -87,7 +87,9 @@
                                                 <tr>
                                                     <td><strong>House Rent Allowance (H.R.A.)</strong> <span class="float-right">{{ $users->hra }}</span></td>
                                                 </tr>
-
+                                                <tr>
+                                                    <td><strong>Telephone And Internet Reimbursement</strong> <span class="float-right">{{ $users->telephone_internet }}</span></td>
+                                                </tr>
                                                 <tr>
                                                     <td><strong>Other Allowance</strong> <span class="float-right">{{ $users->allowance }}</span></td>
                                                 </tr>
@@ -111,6 +113,7 @@
                                                         $l_d = (int)$perday * $leaves;
 
                                                     }else{
+                                                        $leaves = (int)$users->leave-1;
                                                         $l_d = (int)0;
                                                     }
 
@@ -123,10 +126,10 @@
                                                 ?>
                                                 <tr>
                                                     {{-- <td hidden><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{ $users->tds }}</span></td> --}}
-                                                    <td><strong>Provident Fund (P.F.)</strong> <span class="float-right">{{ $users->pf }}</span></td>
+                                                    <td><strong>Provident Fund </strong>(12% employee and employer with high cap of 1800 each) <span class="float-right">{{ $users->pf }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Leaves</strong> x {{ $users->leave }} <span class="float-right">{{ $l_d }}</span></td>
+                                                    <td><strong>Unpaid Leaves</strong> x {{ $leaves }}  <span class="float-right">{{ $l_d }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>ESI</strong> <span class="float-right">{{ $users->esi }}</span></td>

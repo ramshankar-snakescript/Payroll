@@ -31,7 +31,7 @@ table td th {
             <td colspan="2">
         <table style="border:none;width:100%;">
             <tr>
-                <td>
+                <td align="left">
                     {{-- @if(!empty($users->image))
                     <img src="{{ URL::to('/storage/uploads/'. $users->image) }}" style="width:15%;" class="inv-logo" alt="{{ $users->name }}">
                     @endif --}}
@@ -89,8 +89,8 @@ table td th {
                             <td> <span style="float:right">{{ $users->hra }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td style="">Telephone & Internet Allowance</td>
-                            <td> <span style="float:right">{{ $users->hra }}</span></td>
+                            <td style="">Telephone & Internet Reimbursement</td>
+                            <td> <span style="float:right">{{ $users->telephone_internet }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
                             <td>Other Allowance</td>
@@ -112,6 +112,7 @@ table td th {
                                                         $l_d = (int)$perday * $leaves;
 
                                                     }else{
+                                                        $leaves = (int)0;
                                                         $l_d = (int)0;
                                                     }
 
@@ -125,11 +126,11 @@ table td th {
                             <td>Tax Deducted at Source (T.D.S.)</td>
                             <td> <span class="float-right">{{ $users->tds }}</span></td>
                         </tr>
+
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td>Leaves x {{ $users->leave }}</td>
+                            <td><strong>Unpaid Leaves</strong> x {{ $leaves }}</td>
                             <td> <span class="float-right">{{ $l_d }}</span></td>
                         </tr>
-
                         <tr style="border-bottom:1px solid #dee2e6;">
                             <td>ESI</td>
                             <td> <span class="float-right">{{ $users->esi }}</span></td>

@@ -131,7 +131,7 @@
                                     <td>{{ $items->email }}</td>
                                     <td>{{ $items->doj }}</td>
                                     <td>{{ $items->designation }}</td>
-                                    <td>${{ $items->salary }}</td>
+                                    <td>{{ $items->salary }}</td>
                                      <td hidden class="salary">{{ $items->salary }}</td>
                                     <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$items->rec_id) }}">Generate Slip</a></td>
                                     <td class="text-right">
@@ -348,7 +348,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Name Staff</label>
+                                        <label>Name of Employee</label>
                                         <input class="form-control " type="text" name="name" id="e_name" value="" readonly>
                                     </div>
                                     @error('name')
@@ -359,7 +359,8 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <label>CTC</label>
-                                    <input class="form-control" type="text" name="salary" id="e_salary" value="">
+                                    <input class="form-control @error('salary') is-invalid @enderror" type="text" name="salary" id="e_salary" value="{{ old('salary') }}" placeholder="Enter net salary">
+                                    {{-- <input class="form-control" type="text" name="salary" id="e_salary" value=""> --}}
                                 </div>
                             </div>
                             <div class="row">
