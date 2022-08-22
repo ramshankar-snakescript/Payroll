@@ -10,7 +10,7 @@ use App\Models\StaffSalary;
 use App\Models\Employee;
 use Brian2694\Toastr\Facades\Toastr;
 use PDF;
-use Illuminate\Support\facades\storage;
+use Illuminate\Support\facades\Storage;
 use Carbon\Carbon;
 
 
