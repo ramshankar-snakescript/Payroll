@@ -11,6 +11,8 @@ use App\Models\Employee;
 use Brian2694\Toastr\Facades\Toastr;
 use PDF;
 use Illuminate\Support\facades\storage;
+use Carbon\Carbon;
+
 
 class PayrollController extends Controller
 {
@@ -24,36 +26,30 @@ class PayrollController extends Controller
                     ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
                     ->get();
         $userList = DB::table('employees')->get();
-        // $permission_lists = DB::table('permission_lists')->get();
         return view('payroll.employeesalary', compact('users', 'userList'));
     }
 
     // save record
      public function saveRecord(Request $request)
      {
-        // echo '<pre>';
-        // print_r($request->all());
-        // exit();
         $request->validate([
-            'name'         => 'required',
-            'salary'       => 'required|string|max:255',
-            // 'basic' => 'required|string|max:255',
-            // 'da'    => 'required|string|max:255',
-            // 'hra'    => 'required|string|max:255',
-            // 'conveyance' => 'required|string|max:255',
-            // 'allowance'  => 'required|string|max:255',
-            // 'medical_allowance' => 'required|string|max:255',
-            // 'tds' => 'required|string|max:255',
-            // 'esi' => 'required|string|max:255',
-            // 'pf'  => 'required|string|max:255',
-            // 'leave'    => 'required|string|max:255',
-            // 'prof_tax' => 'required|string|max:255',
-            // 'labour_welfare' => 'required|string|max:255',
+            'name'   => 'required',
+            'salary' => 'required|string|max:255',
         ]);
 
         DB::beginTransaction();
         try {
-            $salary = StaffSalary::updateOrCreate(['rec_id' => $request->rec_id]);
+            // $salary = StaffSalary::updateOrCreate(['rec_id' => $request->rec_id]);
+          $emp =   DB::table('staff_salaries')
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->where('name', '=' , $request->name)
+            ->count();
+
+            if($emp > 0){
+                Toastr::error('Salary slip for '.Carbon::now()->format('F').' of '.$request->name.' has already been Created. :)','Error');
+            }else{
+
+            $salary = new StaffSalary;
             $salary->name              = $request->name;
             $salary->rec_id            = $request->rec_id;
             $salary->salary            = $request->salary;
@@ -71,16 +67,14 @@ class PayrollController extends Controller
             // $salary->prof_tax          = $request->prof_tax;
             $salary->labour_welfare    = $request->labour_welfare;
             $salary->save();
-
-
-
             DB::commit();
             Toastr::success('Create new Salary successfully :)','Success');
-            return redirect()->back();
+            }
+            return redirect()->route('form/salary/page');
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Add Salary fail :)','Error');
-            return redirect()->back();
+            return redirect()->route('form/salary/page');
         }
      }
 
@@ -93,11 +87,6 @@ class PayrollController extends Controller
                 ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
                 ->where('staff_salaries.rec_id',$rec_id)
                 ->first();
-
-                // $pdf = PDF::loadview('payroll.salaryview', compact('users'));
-                // // $pdf->download('disney.pdf');
-
-                // Storage::put('public/'.'-'.rand().'-'.time().'.'.'pdf', $pdf->output());
         return view('payroll.salaryview',compact('users'));
     }
 
@@ -109,19 +98,18 @@ class PayrollController extends Controller
         try{
             $update = [
 
-                'id'      => $request->id,
-                // 'name'    => $request->name,
-                'salary'  => $request->salary,
-                'basic'   => $request->basic,
-                'da'      => $request->da,
-                'hra'     => $request->hra,
-                'conveyance' => $request->conveyance,
-                'allowance'  => $request->allowance,
+                'id'                 => $request->id,
+                'salary'             => $request->salary,
+                'basic'              => $request->basic,
+                'da'                 => $request->da,
+                'hra'                => $request->hra,
+                'conveyance'         => $request->conveyance,
+                'allowance'          => $request->allowance,
                 'medical_allowance'  => $request->medical_allowance,
                 'telephone_internet' => $request->tel_int,
-                'tds'  => $request->tds,
-                'esi'  => $request->esi,
-                'pf'   => $request->pf,
+                'tds'                => $request->tds,
+                'esi'                => $request->esi,
+                'pf'                 => $request->pf,
                 'leave'     => $request->leave,
                 // 'prof_tax'  => $request->prof_tax,
                 'labour_welfare'  => $request->labour_welfare,
@@ -254,17 +242,13 @@ class PayrollController extends Controller
                         ->first();
         $userList = DB::table('employees')->get();
         $pdf = PDF::loadview('payroll.salaryslip', compact('users'));
-        $path = Storage::put('public/'.'-'.rand().'-'.time().'.'.'pdf', $pdf->output());
+        $path = Storage::put('public/'.$users->naam.'-'.Carbon::now()->format('F').'Salary Slip'.'.'.'pdf', $pdf->output());
+        $name = $users->naam.'_'.Carbon::now()->format('F').'_Salary Slip'.'.'.'pdf';
         Storage::put($path, $pdf->output());
-        Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path){
+        Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path, $name){
             $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
             $m->to($users->email)->subject('Test Mail')
-            ->attachData($pdf->output(), $path, [
-                'mime' => 'application/pdf',
-                'as' => $users->name.'.'.'pdf'
-            ]);
-
-
+            ->attachData($pdf->output(),  $name);
         });
         Toastr::success('Email Sent Successfully :)','Success');
 
@@ -274,6 +258,7 @@ class PayrollController extends Controller
                     ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
                     ->get();
         $userList = DB::table('employees')->get();
-        return view('payroll.employeesalary', compact('users', 'userList'));
+
+        return redirect()->route('form/salary/page');
      }
 }

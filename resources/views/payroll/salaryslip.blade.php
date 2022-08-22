@@ -85,11 +85,11 @@ table td th {
                             <td> <span style="float:right">{{ $users->basic }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td>H.R.A.</td>
+                            <td>House Rent Allowance(H.R.A).</td>
                             <td> <span style="float:right">{{ $users->hra }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td style="">Telephone & Internet Reimbursement</td>
+                            <td style="">Telephone And Internet Reimbursement</td>
                             <td> <span style="float:right">{{ $users->telephone_internet }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
@@ -120,15 +120,16 @@ table td th {
                                                     $a =  (int)$users->tds;
                                                     $c =  (int)$users->esi;
                                                     $e =  (int)$users->labour_welfare;
-                                                    $Total_Deductions   = $a + $c + $e + $l_d;
+                                                    $pf = (int)$users->pf;
+                                                    $Total_Deductions   = $a + $c + $pf + $e + $l_d;
                                                 ?>
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td>Tax Deducted at Source (T.D.S.)</td>
-                            <td> <span class="float-right">{{ $users->tds }}</span></td>
+                            <td>Provident Fund (12% employee and employer with high cap of 1800 each)</td>
+                            <td> <span class="float-right">{{ $users->pf }}</span></td>
                         </tr>
 
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td><strong>Unpaid Leaves</strong> x {{ $leaves }}</td>
+                            <td><strong>Unpaid Leave (</strong>{{$leaves}})</td>
                             <td> <span class="float-right">{{ $l_d }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
@@ -148,11 +149,19 @@ table td th {
             </tr>
             <tr>
                 <td colspan="2" style="padding-top:20px;">
-                    <p>Net Salary: {{-- ${{ $users->salary }} --}}{{$Total_Earnings - $Total_Deductions}}
+                    <p><strong>Net Salary:
+                        @php
+                         if($users->leave == 0){
+                            $net_salary  =  (int)$users->salary + $perday;
+                                    }else{
+                                        $net_salary = $users->salary;
+                                    }
 
-                     @php
-
-                        $number = $Total_Earnings - $Total_Deductions;
+                        @endphp
+                        {{-- ${{ $users->salary }} --}}
+                        {{round($net_salary - $Total_Deductions)}}
+                    </strong> @php
+                        $number = round($net_salary - $Total_Deductions);
 $no = floor($number);
 $point = round($number - $no, 2) * 100;
 $hundred = null;

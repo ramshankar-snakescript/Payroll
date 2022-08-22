@@ -130,8 +130,8 @@
                                     <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
                                     <td>{{ $items->email }}</td>
                                     <td>{{ $items->doj }}</td>
-                                    <td><a class="btn btn-sm btn-primary" href="{{ url('employee/profile/'.$items->rec_id) }}">View Details</a></td>
-                                    <td><a class="btn btn-sm btn-primary" href="{{url('/send_pdf/'.$items->rec_id)}}">Send</a></td>
+                                    <td><a class="btn btn-sm btn-info" href="{{ url('employee/profile/'.$items->rec_id) }}">View Details</a></td>
+                                    <td><a class="btn btn-sm btn-warning" href="{{url('/send_pdf/'.$items->rec_id)}}">Send</a></td>
                                      <td hidden class="salary">{{ $items->salary }}</td>
 
                                     <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$items->rec_id) }}">View</a></td>
@@ -471,7 +471,7 @@
                 $('.select2s-hidden-accessible').select2({
                     closeOnSelect: false
                 });
-                $("#tel_int").val('1000');
+                $("#tel_int").val('0');
             });
         </script>
         <script>
