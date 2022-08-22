@@ -31,7 +31,7 @@ table td th {
             <td colspan="2">
         <table style="border:none;width:100%;">
             <tr>
-                <td align="left">
+                <td align="left" style="text-align=left">
                     {{-- @if(!empty($users->image))
                     <img src="{{ URL::to('/storage/uploads/'. $users->image) }}" style="width:15%;" class="inv-logo" alt="{{ $users->name }}">
                     @endif --}}

@@ -92,9 +92,9 @@
                                     <th>Employee ID</th>
                                     <th>Email</th>
                                     <th>Join Date</th>
-                                    <th>Role</th>
-                                    <th>Salary</th>
-                                    <th>Payslip</th>
+                                    <th>Employee</th>
+                                    {{-- <th>Salary</th> --}}
+                                    <th style="text-align:center" colspan="2">Payslip</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -130,10 +130,11 @@
                                     <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
                                     <td>{{ $items->email }}</td>
                                     <td>{{ $items->doj }}</td>
-                                    <td>{{ $items->designation }}</td>
-                                    <td>{{ $items->salary }}</td>
+                                    <td><a class="btn btn-sm btn-primary" href="{{ url('employee/profile/'.$items->rec_id) }}">View Details</a></td>
+                                    <td><a class="btn btn-sm btn-primary" href="{{url('/send_pdf/'.$items->rec_id)}}">Send</a></td>
                                      <td hidden class="salary">{{ $items->salary }}</td>
-                                    <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$items->rec_id) }}">Generate Slip</a></td>
+
+                                    <td><a class="btn btn-sm btn-primary" href="{{ url('form/salary/view/'.$items->rec_id) }}">View</a></td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

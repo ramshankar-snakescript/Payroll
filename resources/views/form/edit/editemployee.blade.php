@@ -69,6 +69,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Contact</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="company" name="contact" value="{{ $employees[0]->contact }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Email</label>
+                                    <div class="col-md-10">
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ $employees[0]->email }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-form-label col-md-2">Date Of Joining</label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control datetimepicker" id="email" name="doj" value="{{ $employees[0]->doj }}">
@@ -93,12 +105,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Email</label>
-                                    <div class="col-md-10">
-                                        <input type="email" class="form-control" id="email" name="email" value="{{ $employees[0]->email }}">
-                                    </div>
-                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Birth Date</label>
                                     <div class="col-md-10">
@@ -133,12 +140,7 @@
                                     </span>
                                 </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-md-2">Contact</label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" id="company" name="contact" value="{{ $employees[0]->contact }}">
-                                    </div>
-                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Account No.</label>
                                     <div class="col-md-10">

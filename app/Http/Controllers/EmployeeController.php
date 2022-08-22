@@ -24,17 +24,10 @@ class EmployeeController extends Controller
     // all employee list
     public function listAllEmployee()
     {
-        // $users = DB::table('users')
-        //             ->join('employees', 'users.rec_id', '=', 'employees.employee_id')
-        //             ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-        //             ->get();
-        // $userList = DB::table('users')->get();
-        // $permission_lists = DB::table('permission_lists')->get();
         $users = DB::table('employees')
             ->join('departments', 'employees.dept', '=', 'departments.id')
             ->join('designation', 'employees.desg', '=', 'designation.id')
             ->select('employees.*',  'designation.designation as designation','departments.department as department')
-            // ->where('employees.id','=',$employee_id)
             ->get();
         $departments = department::all();
         return view('form.employeelist',compact('users','departments'));
@@ -44,29 +37,18 @@ class EmployeeController extends Controller
     public function saveRecord(Request $request)
     {
 
-        //  echo '<pre>';
-        // print_r($request->all());
-        // exit();
          $request->validate([
              'name'        => 'required|string|max:255',
              'empid'      => 'required',
              'desg'        => 'required',
              'dept'        => 'required',
-            //  'doj'         => 'required',
-             'pan'         => 'required',
-            //  'uan'         => 'required',
-            //  'esi'         => 'required',
-            //  'pran'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
-            //  'birthDate'   => 'required|string',
-            //  'gender'      => 'required',
-            //  'employee_pic'=> 'required',
-            //  'contact'     => 'required|regex:/[0-9]{10}/',
+             'contact'     => 'required|regex:/[0-9]{10}/',
 
          ]);
 
-        //  DB::beginTransaction();
-        //  try{
+         DB::beginTransaction();
+         try{
 
              $employees = Employee::where('email', '=',$request->email)->first();
              if ($employees === null)
@@ -106,11 +88,11 @@ class EmployeeController extends Controller
                  Toastr::error('Add new employee exits :)','Error');
                  return redirect()->back();
              }
-        //  }catch(\Exception $e){
-        //      DB::rollback();
-        //      Toastr::error('Add new employee fail :)','Error');
-        //      return redirect()->back();
-        //  }
+         }catch(\Exception $e){
+             DB::rollback();
+             Toastr::error('Add new employee fail :)','Error');
+             return redirect()->back();
+         }
     }
     // view edit record
     public function viewRecord($employee_id)
@@ -128,10 +110,8 @@ class EmployeeController extends Controller
     public function updateRecord( Request $request)
     {
 
-        // echo'<pre>';
-        // print_r($request->all());
-        // exit();
-        // DB::beginTransaction();
+
+        DB::beginTransaction();
         try{
             // update table Employee
             if($request->employee_pic){
@@ -201,11 +181,10 @@ echo $affecte_row;
         ->join('departments', 'employees.dept', '=', 'departments.id')
         ->join('designation', 'employees.desg', '=', 'designation.id')
         ->select('employees.*', 'departments.department as department', 'designation.designation as designation')
-        // ->where('employees.employee_id','LIKE','%'.$request->employee_id.'%')
+
         ->get();
         $departments = department::all();
-        // $permission_lists = DB::table('permission_lists')->get();
-        // $userList = DB::table('users')->get();
+
 
         // search by id
         if($request->employee_id)
@@ -251,11 +230,9 @@ echo $affecte_row;
         ->join('departments', 'employees.dept', '=', 'departments.id')
         ->join('designation', 'employees.desg', '=', 'designation.id')
         ->select('employees.*', 'departments.department as department', 'designation.designation as designation')
-        // ->where('employees.employee_id','LIKE','%'.$request->employee_id.'%')
-        ->get();
+       ->get();
         $departments = department::all();
-        // $permission_lists = DB::table('permission_lists')->get();
-        // $userList = DB::table('users')->get();
+
 
         // search by id
         if($request->employee_id)
@@ -293,37 +270,7 @@ echo $affecte_row;
                         ->get();
                         $departments = department::all();
         }
-        // // search by position and id
-        // if($request->employee_id && $request->position)
-        // {
-        //     $users = DB::table('users')
-        //                 ->join('employees', 'users.rec_id', '=', 'employees.employee_id')
-        //                 ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-        //                 ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-        //                 ->where('users.position','LIKE','%'.$request->position.'%')
-        //                 ->get();
-        // }
-        // // search by name and position
-        // if($request->name && $request->position)
-        // {
-        //     $users = DB::table('users')
-        //                 ->join('employees', 'users.rec_id', '=', 'employees.employee_id')
-        //                 ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-        //                 ->where('users.name','LIKE','%'.$request->name.'%')
-        //                 ->where('users.position','LIKE','%'.$request->position.'%')
-        //                 ->get();
-        // }
-        // // search by name and position and id
-        // if($request->employee_id && $request->name && $request->position)
-        // {
-        //     $users = DB::table('users')
-        //                 ->join('employees', 'users.rec_id', '=', 'employees.employee_id')
-        //                 ->select('users.*', 'employees.birth_date', 'employees.gender', 'employees.company')
-        //                 ->where('employee_id','LIKE','%'.$request->employee_id.'%')
-        //                 ->where('users.name','LIKE','%'.$request->name.'%')
-        //                 ->where('users.position','LIKE','%'.$request->position.'%')
-        //                 ->get();
-        // }
+
         return view('form.employeelist',compact('users', 'departments'));
     }
 
@@ -336,10 +283,7 @@ echo $affecte_row;
                 ->select('employees.*', 'departments.department as dept', 'designation.designation as desg')
                 ->where('employees.id','=', $id)
                 ->first();
-        // $user = DB::table('employees')->where('id',$id)->get();
-        // echo'<pre>';
-        // var_dump($users);
-        // exit();
+
         return view('form.employeeprofile',compact('users'));
     }
     /** page departments */

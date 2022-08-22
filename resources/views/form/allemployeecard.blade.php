@@ -119,7 +119,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Employee Name</label>
+                                        <label class="col-form-label">Employee Name <span class="text-danger">*</span></label>
                                        <input class="form-control" type="text" name="name" placeholder="Employee's Name">
                                     </div>
                                     <span class="text-danger">
@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Employee id</label>
+                                        <label class="col-form-label">Employee id <span class="text-danger">*</span></label>
                                        <input class="form-control" type="text" name="empid" placeholder="Employee's id">
                                     </div>
                                     <span class="text-danger">
@@ -143,7 +143,7 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Department</label>
+                                            <label>Department <span class="text-danger">*</span></label>
                                             <select class="select form-control" id="dept" style="width: 100%;" tabindex="-1" aria-hidden="true" id="gender" name="dept">
                                                 <option SELECTED DISABLED>Select Department</option>
                                                 @foreach ($departments as $dept)
@@ -160,7 +160,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Designation</label>
+                                            <label>Designation <span class="text-danger">*</span></label>
                                             <select class="select form-control" style="width: 100%;" tabindex="-1" aria-hidden="true" id="designation" name="desg">
                                                 <option>Select Designations</option>
                                             </select>
@@ -172,86 +172,69 @@
                                          </span>
                                     </div>
 
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Contact No.<span class="text-danger">*</span></label>
+                                            <input class="form-control" type="tel" pattern="[0-9]{10}" name="contact" placeholder="Employee Contact No.">
+                                            <span class="text-danger">
+                                                @error('contact')
+                                                {{$message}}
+                                            @enderror
+                                            </span>
+                                        </div>
 
+                                    </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">Date Of Joining <span class="text-danger">*</span></label>
+                                            <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="email" id="email" name="email" placeholder="Email" >
+                                            <span class="text-danger">
+                                                @error('email')
+                                            {{$message}}
+                                        @enderror
+                                        </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="col-form-label">Date Of Joining </label>
                                             <input class="form-control" type="date"  name="doj" placeholder="Email" >
-                                            <span class="text-danger">
-                                                @error('doj')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">PAN No. <span class="text-danger">*</span></label>
+                                            <label class="col-form-label">PAN No. </label>
                                             <input class="form-control" type="text" id="" name="pan" placeholder="PAN No." >
-                                            <span class="text-danger">
-                                                @error('pan')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">UAN <span class="text-danger">*</span></label>
+                                            <label class="col-form-label">UAN </label>
                                             <input class="form-control" type="text" id="" name="uan" placeholder="UAN" >
-                                            <span class="text-danger">
-                                                @error('uan')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">ESI Number <span class="text-danger">*</span></label>
+                                            <label class="col-form-label">ESI Number </label>
                                             <input class="form-control" type="text" id="" name="esi" placeholder="ESI No." >
-                                            <span class="text-danger">
-                                                @error('esi')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label class="col-form-label">PRAN <span class="text-danger">*</span></label>
+                                            <label class="col-form-label">PRAN </label>
                                             <input class="form-control" type="text" id="" name="pran" placeholder="PRAN" >
-                                            <span class="text-danger">
-                                                @error('pran')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
                                         </div>
                                     </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email" id="email" name="email" placeholder="Email" >
-                                        <span class="text-danger">
-                                            @error('email')
-                                        {{$message}}
-                                    @enderror
-                                    </span>
-                                    </div>
-                                </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Birth Date</label>
                                         <div class="cal-icon">
                                             <input class="form-control datetimepicker" type="text" id="birthDate" name="birthDate" placeholder="dd-mm-yyyy">
                                         </div>
-                                        <span class="text-danger">
-                                            @error('birthDate')
-                                        {{$message}}
-                                    @enderror
-                                    </span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -262,55 +245,25 @@
                                             <option value="female">Female</option>
                                         </select>
                                     </div>
-                                    <span class="text-danger">
-                                        @error('gender')
-                                            {{$message}}
-                                        @enderror
-                                     </span>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Employee Profile Picture <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Employee Profile Picture </label>
                                         <input type="file" class="form-control" name="employee_pic" placeholder="Profile Picture" >
-                                        <span class="text-danger">
-                                            @error('employee_pic')
-                                        {{$message}}
-                                    @enderror
                                     </span>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Contact No.</label>
-                                        <input class="form-control" type="tel" pattern="[0-9]{10}" name="contact" placeholder="Employee Contact No.">
-                                        <span class="text-danger">
-                                            @error('contact')
-                                            {{$message}}
-                                        @enderror
-                                        </span>
-                                    </div>
 
-                                </div>
-                                <div class="col-sm-6">
+                              <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">Bank Account No. <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Bank Account No. </label>
                                         <input class="form-control" type="text" id="" name="acc_no" placeholder="Account No." >
-                                        <span class="text-danger">
-                                            @error('pran')
-                                        {{$message}}
-                                    @enderror
-                                    </span>
                                     </div>
                                 </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="col-form-label">IFSC Code<span class="text-danger">*</span></label>
+                                    <label class="col-form-label">IFSC Code</label>
                                     <input class="form-control" type="text" id="" name="ifsc" placeholder="IFSC Code" >
-                                    <span class="text-danger">
-                                        @error('email')
-                                    {{$message}}
-                                @enderror
-                                </span>
                                 </div>
                             </div>
                             </div>
