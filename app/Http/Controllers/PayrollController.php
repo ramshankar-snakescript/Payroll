@@ -59,22 +59,23 @@ class PayrollController extends Controller
             $salary->conveyance        = $request->conveyance;
             $salary->allowance         = $request->allowance;
             $salary->medical_allowance = $request->medical_allowance;
-            $salary->telephone_internet  = $request->tel_int;
+            $salary->telephone_internet= $request->tel_int;
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
             $salary->leave             = $request->leave;
-            // $salary->prof_tax          = $request->prof_tax;
             $salary->labour_welfare    = $request->labour_welfare;
             $salary->save();
-            DB::commit();
+           DB::commit();
             Toastr::success('Create new Salary successfully :)','Success');
-            }
-            return redirect()->route('form/salary/page');
+           }
+
+            return redirect(url('form/salary/view/'.$request->rec_id));
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Add Salary fail :)','Error');
-            return redirect()->route('form/salary/page');
+            // return redirect()->route('form/salary/page');
+            return redirect()->url('form/salary/view/'.$request->rec_id);
         }
      }
 
@@ -110,7 +111,7 @@ class PayrollController extends Controller
                 'tds'                => $request->tds,
                 'esi'                => $request->esi,
                 'pf'                 => $request->pf,
-                'leave'     => $request->leave,
+                'leave'              => $request->leave,
                 // 'prof_tax'  => $request->prof_tax,
                 'labour_welfare'  => $request->labour_welfare,
             ];

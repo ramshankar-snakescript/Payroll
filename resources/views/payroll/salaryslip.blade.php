@@ -65,20 +65,32 @@ table td th {
                 <td>
                     <table style="width:100%;border:1px solid #dee2e6;">
                         <?php
+                         $start = Carbon\Carbon::now()->startOfMonth();
+                         $end = Carbon\Carbon::now()->endOfMonth();
+                        // echo Carbon\Carbon::parse($month)->startOfMonth();
+                            $dates = [];
+                            while ($start->lte($end)) {
+                                $carbon = Carbon\Carbon::parse($start);
+                                if ($carbon->isWeekend() !=true) {
+                                    $dates[] = $start->copy()->format('Y-m-d');
+                                }
+                                $start->addDay();
+                            }
+                        $d = count($dates);
                         $netsalary = $users->salary;
                         $daysinmoth =  (int)22;
-                        $perday = (int)$users->salary/$daysinmoth;
+                        $perday = (int)$users->salary/$d;
 
-                        if($users->leave == 0){
-                            $l =  (int)$users->basic + $perday;
-                        }else{
-                            $l = (int)0;
-                        }
+
 
                         $a =  (int)$users->basic;
                         $b =  (int)$users->hra;
-                        $e =  (int)$users->allowance;
-                        $Total_Earnings   = round($a + $b  + $e +$l);
+                        $e =  (int)$users->allowance  + (int)$users->conveyance + (int)$users->medical_allowance + (int)$users->da;
+
+                        $Earnings   = $a + $b  + $e + (int)$users->telephone_internet;
+                        $other = (int)$users->salary - (int)$Earnings;
+
+                        $Total_Earnings = (int)$Earnings + (int)$other ;
                     ?>
                         <tr style="border-bottom:1px solid #dee2e6;">
                             <td>Basic Salary</td>
@@ -107,9 +119,9 @@ table td th {
                         <?php
 
 
-                                                    if($users->leave != 0){
-                                                        $leaves = (int)$users->leave-1;
-                                                        $l_d = (int)$perday * $leaves;
+                                                    if($users->leave > 1.5){
+                                                        $leaves = (float)$users->leave - (float)1.5;
+                                                        $l_d = round((int)$perday * $leaves);
 
                                                     }else{
                                                         $leaves = (int)0;
@@ -129,7 +141,7 @@ table td th {
                         </tr>
 
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td><strong>Unpaid Leave (</strong>{{$leaves}})</td>
+                            <td><strong>Unpaid Leave </strong>{{'('.$leaves.')'}})</td>
                             <td> <span class="float-right">{{ $l_d }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
@@ -149,7 +161,7 @@ table td th {
             </tr>
             <tr>
                 <td colspan="2" style="padding-top:20px;">
-                    <p><strong>Net Salary:
+                    <p><strong>Pay Salary:
                         @php
                          if($users->leave == 0){
                             $net_salary  =  (int)$users->salary + $perday;

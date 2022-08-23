@@ -1,6 +1,7 @@
 
 @extends('layouts.exportmaster')
 @section('content')
+{!! Toastr::message() !!}
     <!-- Page Wrapper -->
     <div class="">
     <div class="page-wrapper">
@@ -70,16 +71,37 @@
                                         <table class="table table-bordered">
                                             <tbody>
                                                 <?php
+
+    $start = Carbon\Carbon::now()->startOfMonth();
+    $end = Carbon\Carbon::now()->endOfMonth();
+// echo Carbon\Carbon::parse($month)->startOfMonth();
+    $dates = [];
+    while ($start->lte($end)) {
+        $carbon = Carbon\Carbon::parse($start);
+        if ($carbon->isWeekend() !=true) {
+            $dates[] = $start->copy()->format('Y-m-d');
+        }
+        $start->addDay();
+    }
+   $d = count($dates);
+// echo $d;
+
                                                     $netsalary = $users->salary;
                                                     $daysinmoth =  (int)22;
-                                                    $perday = (int)$users->salary/$daysinmoth;
+                                                    $perday = (int)$users->salary/$d;
 
 
 
                                                     $a =  (int)$users->basic;
                                                     $b =  (int)$users->hra;
-                                                    $e =  (int)$users->allowance;
-                                                    $Total_Earnings   = $a + $b  + $e ;
+                                                    $e =  (int)$users->allowance  + (int)$users->conveyance + (int)$users->medical_allowance + (int)$users->da;
+
+                                                    $Earnings   = $a + $b  + $e + (int)$users->telephone_internet;
+                                                    $other = (int)$users->salary - (int)$Earnings;
+
+                                                    $Total_Earnings = (int)$Earnings + (int)$other ;
+
+
                                                 ?>
                                                 <tr>
                                                     <td><strong>Basic Salary</strong> <span class="float-right">{{ $users->basic }}</span></td>
@@ -91,7 +113,7 @@
                                                     <td><strong>Telephone And Internet Reimbursement</strong> <span class="float-right">{{ $users->telephone_internet }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Other Allowance</strong> <span class="float-right">{{ $users->allowance }}</span></td>
+                                                    <td><strong>Other Allowance</strong> <span class="float-right">{{ (int)$users->allowance + (int)$users->conveyance + (int)$users->medical_allowance + (int)$users->da + (int)$other}}</span></td>
                                                 </tr>
                                                 <tr >
                                                     <td rowspan="2"><strong>Total Earnings</strong> <span class="float-right"><strong> <?php echo $Total_Earnings ?></strong></span></td>
@@ -108,9 +130,9 @@
                                                 <?php
 
 
-                                                    if($users->leave != 0){
-                                                        $leaves = (int)$users->leave-1;
-                                                        $l_d = (int)$perday * $leaves;
+                                                    if($users->leave > 1.5){
+                                                        $leaves = (float)$users->leave - (float)1.5;
+                                                        $l_d = round((int)$perday * $leaves);
 
                                                     }else{
                                                         $leaves = (int)0;
@@ -129,7 +151,7 @@
                                                     <td><strong>Provident Fund </strong>(12% employee and employer with high cap of 1800 each) <span class="float-right">{{ $users->pf }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Unpaid Leaves</strong> x {{ $leaves }}  <span class="float-right">{{ $l_d }}</span></td>
+                                                    <td><strong>Unpaid Leaves</strong> {{ '('.$leaves.')' }}  <span class="float-right">{{ $l_d }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>ESI</strong> <span class="float-right">{{ $users->esi }}</span></td>
@@ -145,12 +167,12 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-12" >
-                                    <p><strong>Net Salary:
+                                    <p><strong>Pay Salary:
                                         @php
-                                         if($users->leave == 0){
-                                            $net_salary  =  (int)$users->salary + $perday;
+                                         if($users->leave < 1){
+                                            $net_salary  =  $Total_Earnings + $perday;
                                                     }else{
-                                                        $net_salary = $users->salary;
+                                                        $net_salary = $Total_Earnings;
                                                     }
 
                                         @endphp

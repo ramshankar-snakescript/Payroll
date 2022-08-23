@@ -294,8 +294,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Leaves</label>
-                                        <input class="form-control @error('leave') is-invalid @enderror" type="number" name="leave" id="leave" value="{{ old('leave') }}" placeholder="Enter leave">
+                                        <label>Leaves(1 Short Leave = 0.25, 1 Half Day = 0.5) </label>
+                                        <input class="form-control @error('leave') is-invalid @enderror" type="text" name="leave" id="leave" value="{{ old('leave') }}" placeholder="Enter leave">
                                         @error('leave')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -506,7 +506,8 @@
         </script>
 
         <script>
-            $(document).on('change','#salary',function(){
+            $(document).on('change','#salary, #e_salary',function(){
+
             var ctc = parseInt($(this).val());
 
             var base_salary = parseInt(40);
@@ -530,25 +531,25 @@
 
 
                 if(ctc >= parseInt(15000)){
-                    $("#pf").val('3600');
+                    $("#pf, #e_pf").val('3600');
                 }else{
-                    $("#pf").val(( ctc * parseInt(24) / 100 ));
+                    $("#pf, #e_pf").val(( ctc * parseInt(24) / 100 ));
                 }
 
                 if(ctc > parseInt(21000)){
-                    $("#esi").val(0);
+                    $("#esi, #e_esi").val(0);
                 }else{
-                    $("#esi").val(( ctc * parseInt(4) / 100 ));
+                    $("#esi, #e_esi").val(( ctc * parseInt(4) / 100 ));
                 }
 
 
 
-            $('#basic').val(basic_sal);
-            $('#hra').val(hra);
-            $('#conveyance').val(conveyance);
-            $('#medical_allowance').val(med_conveyance);
-            $('#da').val(da);
-            $('#allowance').val(lta);
+            $('#basic, #e_basic').val(basic_sal);
+            $('#hra, #e_hra').val(hra);
+            $('#conveyance, #e_conveyance').val(conveyance);
+            $('#medical_allowance, #e_medical_allowance').val(med_conveyance);
+            $('#da, #e_da').val(da);
+            $('#allowance, #e_allowance').val(lta);
 
             });
 
@@ -565,15 +566,15 @@
 
     <script>
         $(document).ready(function(){
-            $("input[type=number]").prop('disabled', true);
+            $("input[type=number], #leave").prop('disabled', true);
 
         });
 
         $("#name").on('change', function(){
            if($(this).val() != ''){
-            $("input[type=number]").prop('disabled', false);
+            $("input[type=number], #leave").prop('disabled', false);
            }else{
-            $("input[type=number]").prop('disabled', true);
+            $("input[type=number], #leave").prop('disabled', true);
            }
         })
         </script>

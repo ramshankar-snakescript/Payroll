@@ -87,11 +87,6 @@ Route::controller(ForgotPasswordController::class)->group(function () {
     Route::post('forget-password', 'postEmail')->name('forget-password');
 });
 
-// ----------------------------- job ------------------------------//
-Route::controller(JobController::class)->group(function () {
-    Route::get('form/job/list','jobList')->name('form/job/list');
-    Route::get('form/job/view', 'jobView')->name('form/job/view');
-});
 
 Route::controller(ResetPasswordController::class)->group(function () {
     Route::get('reset-password/{token}', 'getPassword');
