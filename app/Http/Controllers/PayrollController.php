@@ -241,16 +241,25 @@ class PayrollController extends Controller
                         ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
                         ->where('staff_salaries.rec_id',$id)
                         ->first();
+
         $userList = DB::table('employees')->get();
+
         $pdf = PDF::loadview('payroll.salaryslip', compact('users'));
         $path = Storage::put('public/'.$users->naam.'-'.Carbon::now()->format('F').'Salary Slip'.'.'.'pdf', $pdf->output());
         $name = $users->naam.'_'.Carbon::now()->format('F').'_Salary Slip'.'.'.'pdf';
         Storage::put($path, $pdf->output());
-        Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path, $name){
+        // Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path, $name){
+        //     $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
+        //     $m->to($users->email)->subject('Test Mail')
+        //     ->attachData($pdf->output(),  $name);
+        // });
+         Mail::send('text.mail', compact('users'), function ($m) use($users, $pdf, $path, $name){
             $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
             $m->to($users->email)->subject('Test Mail')
             ->attachData($pdf->output(),  $name);
         });
+
+
         Toastr::success('Email Sent Successfully :)','Success');
 
         $users = DB::table('employees')

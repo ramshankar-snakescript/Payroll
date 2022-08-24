@@ -102,21 +102,26 @@
                                                     $Total_Earnings = (int)$Earnings + (int)$other ;
 
 
+
+
+
+
+
                                                 ?>
                                                 <tr>
-                                                    <td><strong>Basic Salary</strong> <span class="float-right">{{ $users->basic }}</span></td>
+                                                    <td>Basic Salary <span class="float-right">{{ number_format($users->basic) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>House Rent Allowance (H.R.A.)</strong> <span class="float-right">{{ $users->hra }}</span></td>
+                                                    <td>House Rent Allowance (H.R.A.) <span class="float-right">{{ number_format($users->hra) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Telephone And Internet Reimbursement</strong> <span class="float-right">{{ $users->telephone_internet }}</span></td>
+                                                    <td>Telephone And Internet <br>Reimbursement <span class="float-right">{{ number_format($users->telephone_internet) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Other Allowance</strong> <span class="float-right">{{ (int)$users->allowance + (int)$users->conveyance + (int)$users->medical_allowance + (int)$users->da + (int)$other}}</span></td>
+                                                    <td>Other Allowance <span class="float-right">{{ number_format((int)$users->allowance + (int)$users->conveyance + (int)$users->medical_allowance + (int)$users->da + (int)$other) }}</span></td>
                                                 </tr>
                                                 <tr >
-                                                    <td rowspan="2"><strong>Total Earnings</strong> <span class="float-right"><strong> <?php echo $Total_Earnings ?></strong></span></td>
+                                                    <td rowspan="2"><strong>Total Earnings</strong> <span class="float-right"><strong> <?php echo number_format($Total_Earnings) ?></strong></span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -148,19 +153,20 @@
                                                 ?>
                                                 <tr>
                                                     {{-- <td hidden><strong>Tax Deducted at Source (T.D.S.)</strong> <span class="float-right">{{ $users->tds }}</span></td> --}}
-                                                    <td><strong>Provident Fund </strong>(12% employee and employer with high cap of 1800 each) <span class="float-right">{{ $users->pf }}</span></td>
+                                                    <td>Provident Fund (Employee Contribution (12%) : 1800<br>
+                                                        Employer Contribution (12%) : 1800) <span class="float-right">{{ number_format($users->pf)}}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Unpaid Leaves</strong> {{ '('.$leaves.')' }}  <span class="float-right">{{ $l_d }}</span></td>
+                                                    <td>Unpaid Leaves {{ '('.$leaves.')' }}  <span class="float-right">{{ number_format($l_d) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>ESI</strong> <span class="float-right">{{ $users->esi }}</span></td>
+                                                    <td>ESI <span class="float-right">{{ number_format($users->esi) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Home Loan</strong> <span class="float-right">{{ $users->labour_welfare }}</span></td>
+                                                    <td>Home Loan <span class="float-right">{{ number_format($users->labour_welfare) }}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Total Deductions</strong> <span class="float-right"><strong><?php echo $Total_Deductions;?></strong></span></td>
+                                                    <td><strong>Total Deductions</strong> <span class="float-right"><strong><?php echo number_format($Total_Deductions);?></strong></span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -177,7 +183,7 @@
 
                                         @endphp
                                         {{-- ${{ $users->salary }} --}}
-                                        {{round($net_salary - $Total_Deductions)}}
+                                        {{number_format($net_salary - $Total_Deductions)}}
                                     </strong> @php
                                         $number = round($net_salary - $Total_Deductions);
    $no = floor($number);

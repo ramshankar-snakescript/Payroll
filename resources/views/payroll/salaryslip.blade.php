@@ -141,7 +141,7 @@ table td th {
                         </tr>
 
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td><strong>Unpaid Leave </strong>{{'('.$leaves.')'}})</td>
+                            <td>Unpaid Leave {{'('.$leaves.')'}})</td>
                             <td> <span class="float-right">{{ $l_d }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
