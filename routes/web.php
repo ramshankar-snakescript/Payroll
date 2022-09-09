@@ -93,6 +93,8 @@ Route::controller(ResetPasswordController::class)->group(function () {
     Route::post('reset-password', 'updatePassword');
 });
 
+
+
 // ----------------------------- user profile ------------------------------//
 // Route::controller(UserManagementController::class)->group(function () {
 //     Route::get('profile_user', 'profile')->middleware('auth')->name('profile_user');
@@ -171,6 +173,7 @@ Route::controller(PayrollController::class)->group(function () {
     Route::post('salary/search', 'search')->middleware('auth')->name('salary/search');
     Route::get('form/salary/view/{rec_id}', 'salaryView')->middleware('auth');
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
+    Route::get('get_salary/{id}', 'get_salary')->middleware('auth')->name('get_salary');
 });
 
 

@@ -23,6 +23,9 @@ class CreateStaffSalariesTable extends Migration
             $table->string('hra')->nullable();
             $table->string('conveyance')->nullable();
             $table->string('telephone_internet')->nullable();
+            $table->string('wfh')->nullable();
+            $table->string('work_in_holidays_days')->nullable();
+            $table->string('work_in_holidays_hours')->nullable();
 
             $table->string('allowance')->nullable();
             $table->string('medical_allowance')->nullable();

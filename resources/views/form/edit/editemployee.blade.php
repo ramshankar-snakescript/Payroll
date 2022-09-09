@@ -47,6 +47,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-form-label col-md-2">CTC</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" id="name" readonly name="empid" value="{{ $employees[0]->ctc }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-form-label col-md-2">Department</label>
                                     <div class="col-md-10">
                                         <select class="select form-control" id="dept" name="dept">
@@ -241,16 +247,16 @@
                 dataType: "json",
 
                 success: function(response) {
-alert('deleted');
-                    // $('#designation').find('option').remove();
-                    // $.each(response, function (key, value) {
-                    //     $("#designation").append(new Option(value.designation, value.id));
-                    // });
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-        });
+                        alert('deleted');
+                        // $('#designation').find('option').remove();
+                        // $.each(response, function (key, value) {
+                        //     $("#designation").append(new Option(value.designation, value.id));
+                        // });
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+            });
     }
                     })
 

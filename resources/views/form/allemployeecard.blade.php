@@ -140,6 +140,17 @@
                                 </span>
                                 </div>
 
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">CTC <span class="text-danger">*</span></label>
+                                       <input class="form-control" type="text" name="ctc" placeholder="Employee's CTC">
+                                    </div>
+                                    <span class="text-danger">
+                                        @error('ctc')
+                                    {{$message}}
+                                @enderror
+                                </span>
+                                </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">

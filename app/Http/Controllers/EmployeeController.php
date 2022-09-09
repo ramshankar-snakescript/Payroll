@@ -40,6 +40,7 @@ class EmployeeController extends Controller
          $request->validate([
              'name'        => 'required|string|max:255',
              'empid'      => 'required',
+             'ctc'      => 'required',
              'desg'        => 'required',
              'dept'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
@@ -59,9 +60,10 @@ class EmployeeController extends Controller
                 }else{
                     $o_name = '';
                 }
-                 $employee = new employee;
-                 $employee->name         = $request->name;
-                 $employee->employee_id      = $request->empid;
+                $employee = new employee;
+                $employee->name         = $request->name;
+                $employee->employee_id      = $request->empid;
+                $employee->ctc      = $request->ctc;
                 $employee->desg        = $request->desg;
                 $employee->dept       = $request->dept;
                 $employee->doj       = $request->doj;
@@ -69,14 +71,14 @@ class EmployeeController extends Controller
                 $employee->uan      = $request->uan;
                 $employee->esi     = $request->esi;
                 $employee->pran     = $request->pran;
-                 $employee->email        = $request->email;
-                 $employee->birth_date   = $request->birthDate;
-                 $employee->gender       = $request->gender;
-                 $employee->image        =$o_name;
-                 $employee->contact        = $request->contact;
-                 $employee->account_no = $request->acc_no;
-                 $employee->ifsc = $request->ifsc;
-                 $employee->save();
+                $employee->email        = $request->email;
+                $employee->birth_date   = $request->birthDate;
+                $employee->gender       = $request->gender;
+                $employee->image        =$o_name;
+                $employee->contact        = $request->contact;
+                $employee->account_no = $request->acc_no;
+                $employee->ifsc = $request->ifsc;
+                $employee->save();
 
 
 

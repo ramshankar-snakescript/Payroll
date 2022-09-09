@@ -47,6 +47,7 @@ class PayrollController extends Controller
 
             if($emp > 0){
                 Toastr::error('Salary slip for '.Carbon::now()->format('F').' of '.$request->name.' has already been Created. :)','Error');
+                return redirect(url('form/salary/page'));
             }else{
 
             $salary = new StaffSalary;
@@ -60,6 +61,9 @@ class PayrollController extends Controller
             $salary->allowance         = $request->allowance;
             $salary->medical_allowance = $request->medical_allowance;
             $salary->telephone_internet= $request->tel_int;
+            $salary->wfh               = $request->wfh;
+            $salary->work_in_holidays_days  = $request->work_in_holidays_days;
+            $salary->work_in_holidays_hours  = $request->work_in_holidays_hours;
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
@@ -85,7 +89,8 @@ class PayrollController extends Controller
         $users = DB::table('employees')
                 ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                 ->join('designation', 'employees.desg', '=', 'designation.id')
-                ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
+                ->join('departments', 'employees.dept', '=', 'departments.id')
+                ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation','departments.department as department')
                 ->where('staff_salaries.rec_id',$rec_id)
                 ->first();
         return view('payroll.salaryview',compact('users'));
@@ -108,6 +113,9 @@ class PayrollController extends Controller
                 'allowance'          => $request->allowance,
                 'medical_allowance'  => $request->medical_allowance,
                 'telephone_internet' => $request->tel_int,
+                'wfh' => $request->wfh,
+                'work_in_holidays_days' => $request->work_in_holidays_days,
+                'work_in_holidays_hours' => $request->work_in_holidays_hours,
                 'tds'                => $request->tds,
                 'esi'                => $request->esi,
                 'pf'                 => $request->pf,
@@ -238,13 +246,13 @@ class PayrollController extends Controller
         $users = DB::table('employees')
                         ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                         ->join('designation', 'employees.desg', '=', 'designation.id')
-                        ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation')
+                        ->join('departments', 'employees.dept', '=', 'departments.id')
+                        ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation','departments.department as department')
                         ->where('staff_salaries.rec_id',$id)
                         ->first();
-
         $userList = DB::table('employees')->get();
 
-        $pdf = PDF::loadview('payroll.salaryslip', compact('users'));
+        $pdf = PDF::loadview('payroll.salarypdf', compact('users'));
         $path = Storage::put('public/'.$users->naam.'-'.Carbon::now()->format('F').'Salary Slip'.'.'.'pdf', $pdf->output());
         $name = $users->naam.'_'.Carbon::now()->format('F').'_Salary Slip'.'.'.'pdf';
         Storage::put($path, $pdf->output());
@@ -262,13 +270,22 @@ class PayrollController extends Controller
 
         Toastr::success('Email Sent Successfully :)','Success');
 
-        $users = DB::table('employees')
-                    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-                    ->join('designation', 'employees.desg', '=', 'designation.id')
-                    ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                    ->get();
-        $userList = DB::table('employees')->get();
+        // $users = DB::table('employees')
+        //             ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+        //             ->join('designation', 'employees.desg', '=', 'designation.id')
+        //             ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+        //             ->get();
+        // $userList = DB::table('employees')->get();
 
         return redirect()->route('form/salary/page');
+     }
+
+     public function get_salary($id){
+        $data = DB::table("employees")
+        ->where('id','=',$id)
+        ->select('ctc')
+        ->get();
+
+       return $data;
      }
 }

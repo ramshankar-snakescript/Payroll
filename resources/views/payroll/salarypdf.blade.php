@@ -12,13 +12,13 @@
   		text-align: center;
   	}
   	.logo_header h2{
-  		font-size: 36px;
+  		font-size: 36px
   		font-weight: 600;
     	margin: 0px;
-    	padding-top: 10px;
+    	padding-top: 5px;
   	}
   	.cmpny-address {
-    	padding-top: 20px;
+    	padding-top: 10px;
 	}
 	.cmpny-address p {
    		margin: 5px;
@@ -71,12 +71,8 @@
 	}
 }
   </style>
-  <link rel="stylesheet" href="{{ URL::to('assets/css/toastr.min.css') }}">
-  <script src="{{ URL::to('assets/js/toastr_jquery.min.js') }}"></script>
-  <script src="{{ URL::to('assets/js/toastr.min.js') }}"></script>
 </head>
 <body>
-    {!! Toastr::message() !!}
     <?php
          $start = Carbon\Carbon::now()->startOfMonth();
                          $end = Carbon\Carbon::now()->endOfMonth();
@@ -94,9 +90,6 @@
 
                         $perday = round((int)$users->salary/$d);
     ?>
-<div class="row">
-   <a href="{{ route('form/salary/page') }}"> <BUTTON style="padding:5px;font-weight:600;font-size:16px;background:blue;color:#fff;border-radius:4px;">Go Back</BUTTON></a>
-</div>
 	<div class="logo_header">
 		{{-- <img src="image/full-logo.jpg"> --}}
 		<h2>Snakescript Solutions LLP</h2>
@@ -109,7 +102,7 @@
 		</div>
 	</div>
 	<div class="employee_detail">
-		<p >Name of Employee <span style="font-weight: 600;"> {{" : ". $users->naam }}</span></p>
+        <p >Name of Employee <span style="font-weight: 600;"> {{" : ". $users->naam }}</span></p>
 		<p>Payslip for <span style="font-weight: 600;"> {{" : ". \Carbon\Carbon::now()->format( ' F, Y') }}</span></p>
 <div class="main_table">
 <table cellpadding="0" cellspacing="0">
@@ -147,12 +140,12 @@
     <td style="text-align: right;">{{number_format($users->da)}}</td>
   </tr>
 
-  <tr>
+  {{-- <tr>
     <td  style="text-align:right;">Allowance</td>
     <td style="text-align: right;">{{number_format($users->allowance)}}</td>
     <td  style="text-align:right;">Medical Allowance</td>
     <td style="text-align: right;">{{number_format($users->medical_allowance)}}</td>
-  </tr>
+  </tr> --}}
 
   <tr>
     <td  style="text-align:right;">Conveyance</td>
@@ -161,30 +154,28 @@
     <td style="text-align: right;">{{number_format($users->telephone_internet)}}</td>
 
   </tr>
-  <tr>
-    <td  style="text-align:right;">Work From Home :
-        @if ($users->wfh)
-        {{$users->wfh." days"}}
-        @endif
-       </td>
-    <td style="text-align: right;">{{$wfh}}</td>
-    <td  style="text-align:right;">Working Holidays :
-        @if ($users->work_in_holidays_days)
-        {{$users->work_in_holidays_days." days"}}
-        @endif
-    @if ($users->work_in_holidays_hours && $users->work_in_holidays_days)
-        {{" and ".$users->work_in_holidays_hours." hours."}}
-        @elseif ($users->work_in_holidays_hours)
-        {{$users->work_in_holidays_hours." hours."}}
-        @else
-        {{''}}
+  <td  style="text-align:right;">Work From Home :
+    @if ($users->wfh)
+    {{$users->wfh." days"}}
     @endif
+   </td>
+<td style="text-align: right;">{{$wfh}}</td>
+<td  style="text-align:right;">Working Holidays :
+    @if ($users->work_in_holidays_days)
+    {{$users->work_in_holidays_days." days"}}
+    @endif
+@if ($users->work_in_holidays_hours && $users->work_in_holidays_days)
+    {{" and ".$users->work_in_holidays_hours." hours."}}
+    @elseif ($users->work_in_holidays_hours)
+    {{$users->work_in_holidays_hours." hours."}}
+    @else
+    {{''}}
+@endif
 
 
-    </td>
-    <td style="text-align: right;">{{number_format($work_in_holidays)}}</td>
-  </tr>
-
+</td>
+<td style="text-align: right;">{{number_format($work_in_holidays)}}</td>
+</tr>
   <tr>
     <td colspan="4" style="background: #dee4fe;font-weight: 600;font-size:17px;">Computation of Gross Salary to be Paid for This Month:</td>
   </tr>
@@ -204,7 +195,7 @@
     <td></td>
     <td></td>
     <td>Total of Gross Salary</td>
-    <td style="text-align: right;">{{ number_format($gross_sal ) }}</td>
+    <td style="text-align: right;">{{ number_format($gross_sal) }}</td>
   </tr>
   <!---top--->
   <?php
@@ -230,20 +221,23 @@
     <td colspan="4" style="background: #dee4fe;font-weight: 600;font-size:17px;">Break Up of Deductions for the Month</td>
   </tr>
   <tr>
-    <td><span style="text-align:left;float:left">Contribution for Provident Fund:</span><span style="float:right;text-align:right;"> Employer contribution(12%) : {{number_format($users->pf/2)}}  <br> Employee contribution(12%) :  {{number_format($users->pf/2)}}</span></td>
+    <td style="text-align:left;">Contribution for Provident Fund:<br> Employer contribution(12%) : {{number_format($users->pf/2)}}  <br> Employee contribution(12%) :  {{number_format($users->pf/2)}}</td>
     <td style="text-align: right;">{{number_format($users->pf)}}</td>
 
-    <td> <span style="text-align:left;float:left">Contribution for E.S.I:</span> <span style="float:right;text-align:right">Employer Contribution(3.75%)<br>  Employee Contribution(0.25%) </span></td>
+    <td style="text-align:left;">Contribution for E.S.I:<br>Employer Contribution(3.75%)<br>  Employee Contribution(0.25%)</td>
     <td style="text-align: right;">{{number_format($users->esi)}}</td>
+
   </tr>
   <tr>
     <td style="text-align:right;">Home Loan</td>
     <td style="text-align: right;">{{number_format($users->labour_welfare)}}</td>
 
+
     <td style="text-align:right;">Unpaid leave</td>
     <td style="text-align: right;">{{$leaves}}</td>
+
+
   </tr>
-  <tr>
     <td colspan="3" style="text-align:right;">Total Deductions</td>
     <td style="text-align: right;">{{number_format($Total_Deductions)}}</td>
   </tr>
