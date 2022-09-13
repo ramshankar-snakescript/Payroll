@@ -46,7 +46,11 @@ class PayrollController extends Controller
             ->count();
 
             if($emp > 0){
-                Toastr::error('Salary slip for '.Carbon::now()->format('F').' of '.$request->name.' has already been Created. :)','Error');
+                $name = DB::table('employees')
+                    ->select('name')
+                    ->where('id', '=' , $request->name)
+                    ->get();
+                Toastr::error('Salary slip for '.Carbon::now()->format('F').' of '.$name[0]->name.' has already been Created. :)','Error');
                 return redirect(url('form/salary/page'));
             }else{
 

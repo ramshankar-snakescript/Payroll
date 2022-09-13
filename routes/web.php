@@ -194,3 +194,4 @@ Route::post('/designation/delete', [DesignationController::class, 'delete'])->na
 
 
 Route::get('send_pdf/{id}', [PayrollController::class, 'send_pdf']);
+Route::get('check_email/{email}', [EmployeeController::class, 'check_email']);

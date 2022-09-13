@@ -393,4 +393,23 @@ echo $affecte_row;
       return true;
     }
 
+    public function check_email($email){
+
+        $check =  DB::table('Employees')
+        ->where('email','=',$email)
+        ->count();
+
+        if($check != 0){
+          return  response()->json([
+                'success' => true,
+                'data'    => 'This Email already exists. Please Choose another one.',
+              ]);
+        }else{
+            return  response()->json([
+                'success' => true,
+                'data'    => '',
+              ]);
+        }
+    }
+
 }

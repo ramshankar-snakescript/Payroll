@@ -16,18 +16,18 @@
                     </ul> --}}
                 </li>
 
-
+                <li >
+                    <a href="{{ route('form/departments/page') }}">
+                        <i class="la la-briefcase"></i> <span> Department</span>
+                    </a>
+                </li>
 
                 <li >
                     <a href="{{ route('designation') }}">
                         <i class="la la-graduation-cap"></i> <span> Designation</span>
                     </a>
                 </li>
-                <li >
-                    <a href="{{ route('form/departments/page') }}">
-                        <i class="la la-briefcase"></i> <span> Department</span>
-                    </a>
-                </li>
+
                 <li >
                     <a href="{{ route('all/employee/card') }}">
                         <i class="la la-user"></i> <span> Employees</span>
