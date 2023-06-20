@@ -40,14 +40,13 @@ class EmployeeController extends Controller
          $request->validate([
              'name'        => 'required|string|max:255',
              'empid'      => 'required',
-             'ctc'      => 'required',
+             'ctc'      => 'required|numeric',
              'desg'        => 'required',
              'dept'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
              'contact'     => 'required|regex:/[0-9]{10}/',
 
-         ]);
-
+         ]);         
          DB::beginTransaction();
          try{
 
@@ -158,13 +157,32 @@ echo $affecte_row;
         }
     }
     // delete record
-    public function deleteRecord($employee_id)
+    // public function deleteRecord($employee_id)
+    // {
+    //     DB::beginTransaction();
+    //     try{
+
+    //         Employee::where('id',$employee_id)->delete();
+
+
+    //         DB::commit();
+    //         Toastr::success('Delete record successfully :)','Success');
+    //         return redirect()->route('all/employee/card');
+
+    //     }catch(\Exception $e){
+    //         DB::rollback();
+    //         Toastr::error('Delete record fail :)','Error');
+    //         return redirect()->back();
+    //     }
+    // }
+
+    public function deleteRecord(Request $request)
     {
         DB::beginTransaction();
-        try{
+        try {
+            Employee::where('id',$request->id)->delete();
 
-            Employee::where('id',$employee_id)->delete();
-
+          //  Employee::destroy($request->id);
 
             DB::commit();
             Toastr::success('Delete record successfully :)','Success');
@@ -176,6 +194,7 @@ echo $affecte_row;
             return redirect()->back();
         }
     }
+
     // employee search
     public function employeeSearch(Request $request)
     {

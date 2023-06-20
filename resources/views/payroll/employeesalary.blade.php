@@ -110,7 +110,7 @@
                                                             src="{{ URL::to('storage/uploads/' . $items->image) }}">
                                                 </a>
                                             @else
-                                                <img alt="" src="{{ URL::to('storage/user.png') }}"></a>
+                                                <img alt="" src="{{ URL::to('storage/user.jpeg') }}"></a>
                                 @endif
                                 <a
                                     href="{{ url('employee/profile/' . $items->rec_id) }}">{{ $items->emp_name }}<span>{{ $items->designation }}</span></a>
@@ -135,7 +135,7 @@
                                 <td hidden class="work_in_holidays_days">{{ $items->work_in_holidays_days }}</td>
 
                                 <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
-                                <td>{{ $items->email }}</td>
+                                <td><a href="mailto:{{ $items->email }}">{{ $items->email }}</a></td>
                                 <td>{{ $items->doj }}</td>
                                 <td><a class="btn btn-sm btn-info"
                                         href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td>

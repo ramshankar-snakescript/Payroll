@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         {{-- <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" name="position">
+                            <input type="text" class="form-control floating" name="position" >
                             <label class="focus-label">Position</label>
                         </div> --}}
                     </div>
@@ -72,12 +72,13 @@
                 @foreach ($users as $lists)
                     <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                         <div class="profile-widget">
+                          
                             <div class="profile-img">
                                 <a href="{{ url('employee/profile/' . $lists->id) }}" class="avatar">
                                     @if ($lists->image)
                                         <img src="{{ URL('storage/uploads/' . $lists->image) }}">
                                     @else
-                                        <img src="{{ URL('storage/user.png') }}">
+                                        <img src="{{ URL('storage/user.jpeg') }}">
                                     @endif
                                 </a>
                             </div>
@@ -87,13 +88,15 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="{{ url('all/employee/view/edit/' . $lists->id) }}"><i
                                             class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item"
+                                    <!-- <a class="dropdown-item"
                                         href="{{ url('all/employee/delete/' . $lists->id) }}"onclick="return confirm('Are you sure to want to delete it?')"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-
+                                            class="fa fa-trash-o m-r-5"></i> Delete</a> -->
+                                            <a class="dropdown-item employeeDelete" href="#" data-id="{{ $lists->id }}" data-toggle="modal"
+                                                data-target="#delete_employee" ><i class="fa fa-trash-o m-r-5"></i>
+                                                Delete</a>
                                 </div>
                             </div>
-                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{ $lists->name }}</a>
+                            <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="{{ url('employee/profile/' . $lists->id) }}">{{ $lists->name }}</a>
                             </h4>
                             {{-- <div class="small text-muted">{{ $lists->position }}</div> --}}
                         </div>
@@ -105,7 +108,6 @@
         <!-- /Page Content -->
 
         <!-- Add Employee Modal -->
-
 
 
         <div id="add_employee" class="modal custom-modal fade" role="dialog">
@@ -129,7 +131,7 @@
                                         <label class="col-form-label">Employee Name <span
                                                 class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="name"
-                                            placeholder="Employee's Name">
+                                            placeholder="Employee's Name"  value="{{ old('name') }}">
                                     </div>
                                     <span class="text-danger">
                                         @error('name')
@@ -141,7 +143,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Employee id <span class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="empid"
-                                            placeholder="Employee's id">
+                                            placeholder="Employee's id" value="{{ old('empid') }}">
                                     </div>
                                     <span class="text-danger">
                                         @error('name')
@@ -154,7 +156,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">CTC <span class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="ctc"
-                                            placeholder="Employee's CTC">
+                                            placeholder="Employee's CTC" value="{{ old('ctc') }}">
                                     </div>
                                     <span class="text-danger">
                                         @error('ctc')
@@ -167,7 +169,7 @@
                                     <div class="form-group">
                                         <label>Department <span class="text-danger">*</span></label>
                                         <select class="select form-control" id="dept" style="width: 100%;"
-                                            tabindex="-1" aria-hidden="true" id="gender" name="dept">
+                                            tabindex="-1" aria-hidden="true" id="gender" name="dept" >
                                             <option SELECTED DISABLED>Select Department</option>
                                             @foreach ($departments as $dept)
                                                 <option value="{{ $dept->id }}">{{ $dept->department }}</option>
@@ -185,7 +187,7 @@
                                     <div class="form-group">
                                         <label>Designation <span class="text-danger">*</span></label>
                                         <select class="select form-control" style="width: 100%;" tabindex="-1"
-                                            aria-hidden="true" id="designation" name="desg">
+                                            aria-hidden="true" id="designation" name="desg"value="{{ old('desg') }}">
                                             <option>Select Designations</option>
                                         </select>
                                     </div>
@@ -201,7 +203,7 @@
                                         <label class="col-form-label">Contact No.<span
                                                 class="text-danger">*</span></label>
                                         <input class="form-control" type="tel" pattern="[0-9]{10}" name="contact"
-                                            placeholder="Employee Contact No.">
+                                            placeholder="Employee Contact No." value="{{ old('contact') }}">
                                         <span class="text-danger">
                                             @error('contact')
                                                 {{ $message }}
@@ -215,7 +217,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
                                         <input class="form-control" type="email" id="email" name="email"
-                                            placeholder="Email">
+                                            placeholder="Email" value="{{ old('email') }}">
                                             <span class="text-danger" id="flash-message"></span>
                                         <span class="text-danger">
                                             @error('email')
@@ -228,7 +230,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Date Of Joining </label>
-                                        <input class="form-control" type="date" name="doj" placeholder="Email">
+                                        <input class="form-control" type="date" name="doj" placeholder="Email" value="{{ old('doj') }}">
                                     </div>
                                 </div>
 
@@ -236,28 +238,28 @@
                                     <div class="form-group">
                                         <label class="col-form-label">PAN No. </label>
                                         <input class="form-control" type="text" id="" name="pan"
-                                            placeholder="PAN No.">
+                                            placeholder="PAN No." value="{{ old('pan') }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">UAN </label>
                                         <input class="form-control" type="text" id="" name="uan"
-                                            placeholder="UAN">
+                                            placeholder="UAN" value="{{ old('uan') }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">ESI Number </label>
                                         <input class="form-control" type="text" id="" name="esi"
-                                            placeholder="ESI No.">
+                                            placeholder="ESI No." value="{{ old('esi') }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">PRAN </label>
                                         <input class="form-control" type="text" id="" name="pran"
-                                            placeholder="PRAN">
+                                            placeholder="PRAN" value="{{ old('pran') }}">
                                     </div>
                                 </div>
 
@@ -266,7 +268,7 @@
                                         <label>Birth Date</label>
                                         <div class="cal-icon">
                                             <input class="form-control datetimepicker" type="text" id="birthDate"
-                                                name="birthDate" placeholder="dd-mm-yyyy">
+                                                name="birthDate" placeholder="dd-mm-yyyy" value="{{ old('birthDate') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +276,7 @@
                                     <div class="form-group">
                                         <label>Gender</label>
                                         <select class="select form-control" style="width: 100%;" tabindex="-1"
-                                            aria-hidden="true" id="gender" name="gender">
+                                            aria-hidden="true" id="gender" name="gender" value="{{ old('gender') }}">
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
@@ -293,17 +295,18 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Bank Account No. </label>
                                         <input class="form-control" type="text" id="" name="acc_no"
-                                            placeholder="Account No.">
+                                            placeholder="Account No." value="{{ old('acc_no') }}">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">IFSC Code</label>
                                         <input class="form-control" type="text" id="" name="ifsc"
-                                            placeholder="IFSC Code">
+                                            placeholder="IFSC Code" value="{{ old('ifsc') }}">
                                     </div>
                                 </div>
                             </div>
+
 
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn">Submit</button>
@@ -313,9 +316,59 @@
                 </div>
             </div>
         </div>
-        <!-- /Add Employee Modal -->
+            <!-- /Add Employee Modal -->
+                        </div>
+         <!-- Delete Salary Modal -->
+     <div class="modal custom-modal fade" id="delete_employee" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form-header">
+                            <h3>Delete Salary</h3>
+                            <p>Are you sure want to delete?</p>
+                        </div>
+                        <div class="modal-btn delete-action">
+                       
+                            <form action="{{ route('all/employee/delete') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="hidden" name="id" class="emp_id" value="">
+                                        <button type="submit"
+                                            class="btn btn-primary continue-btn submit-btn">Delete</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal"
+                                            class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Delete Salary Modal -->
 
     </div>
+    @if (count($errors) > 0)
+      <!-- {{isset($errors)}} -->
+    <script>
+        $( document ).ready(function() {
+            $('#add_employee').modal('show');
+        });
+    </script>
+@endif
+
+{{-- delete js --}}
+    <script>
+        $(document).on('click', '.employeeDelete', function() {
+            // var _this = $(this).parents('input');
+            $('.emp_id').val($(this).data('id'));
+        });
+    </script>
+
+  
     <!-- /Page Wrapper -->
 @section('script')
     <script>

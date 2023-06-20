@@ -132,7 +132,8 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::post('all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');
     Route::get('all/employee/view/edit/{employee_id}', 'viewRecord')->middleware('auth');
     Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
-    Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
+   // Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
+    Route::post('all/employee/delete', 'deleteRecord')->middleware('auth')->name('all/employee/delete');
     Route::post('all/employee/search', 'employeeSearch')->name('all/employee/search');
     Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
 

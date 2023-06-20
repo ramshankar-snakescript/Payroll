@@ -23,18 +23,22 @@
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                            <div class="dash-widget-info">
+                        <a href="{{ route('all/employee/card') }}" style="color:black;"> 
+                        <div class="dash-widget-info">
                                 <h3>{{$emp}}</h3> <span>Employees</span>
                             </div>
+                        </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
-                            <div class="dash-widget-info">
+                        <a href="{{ route('form/departments/page') }}" style="color:black;">
+                        <div class="dash-widget-info">
                                 <h3>{{$dept}}</h3> <span>Departments</span>
                             </div>
+                        </a>
                         </div>
                     </div>
                 </div>
@@ -48,6 +52,7 @@
                     </div>
                 </div> --}}
                 {{-- <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+                   
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                             <div class="dash-widget-info">
@@ -55,6 +60,7 @@
                             </div>
                         </div>
                     </div>
+                
                 </div> --}}
             </div>
             {{-- <div class="row">

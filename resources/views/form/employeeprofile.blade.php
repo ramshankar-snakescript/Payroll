@@ -38,14 +38,14 @@
                                             @if(!empty($users->image))
                                 <img src="{{URL('storage/uploads/'.$users->image) }}" alt="{{ $users->name }}">
                                 @else
-                                <img src="{{URL('storage/user.png') }}" >
+                                <img src="{{URL('storage/user.jpeg') }}" >
                                 @endif
                                         </a>
                                     </div>
                                 </div>
                                 <div class="profile-basic">
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="profile-info-left">
                                                 <h3 class="user-name m-t-0 mb-0">{{ $users->name }}</h3>
                                                 @if(!empty($users->dept))
@@ -61,7 +61,7 @@
                                                 {{-- <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> --}}
                                             </div>
                                         </div>
-                                        <div class="col-md-7">
+                                        <div class="col-md-4">
                                             <ul class="personal-info">
                                                 <li>
                                                     <div class="title">Phone:</div>
@@ -95,6 +95,10 @@
                                                     <div class="text">{{ $users->gender }}</div>
                                                     @endif
                                                 </li>
+                                                </ul>
+                                                </div>
+                                                <div class="col-md-4">
+                                            <ul class="personal-info">
                                                 <li>
                                                     <div class="title">Account No.</div>
                                                     @if(!empty($users->account_no))
