@@ -61,7 +61,7 @@
                                                 {{-- <div class="staff-msg"><a class="btn btn-custom" href="chat.html">Send Message</a></div> --}}
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4" style="display:block;">
                                             <ul class="personal-info">
                                                 <li>
                                                     <div class="title">Phone:</div>
@@ -74,47 +74,42 @@
                                                 <li>
                                                     <div class="title">Birthday:</div>
                                                     @if(!empty($users->birth_date))
-                                                    <div class="text">
-                                                        @php
-                                                             $orgDate = $users->birth_date;
-                                                            $newDate = date("d-m", strtotime($orgDate));
-                                                            // echo "New date format is: ".$newDate. " (MM-DD-YYYY)";
-                                                        @endphp
-                                                        {{ $newDate }}</div>
-                                                    @endif
-                                                </li>
-                                                {{-- <li>
-                                                    <div class="title">Address:</div>
-                                                    @if(!empty($users))
-                                                    <div class="text">{{ $users->address }}</div>
-                                                    @endif
-                                                </li> --}}
-                                                <li>
-                                                    <div class="title">Gender:</div>
-                                                    @if(!empty($users->gender))
-                                                    <div class="text">{{ $users->gender }}</div>
+                                                    <div class="text">{{ $users->birth_date }}</div>
                                                     @endif
                                                 </li>
                                                 </ul>
                                                 </div>
                                                 <div class="col-md-4">
                                             <ul class="personal-info">
+                                                 <li>
+                                                    <div class="title">Joining:</div>
+                                                    @if(!empty($users))
+                                                    <div class="text">{{ $users->doj }}</div>
+                                                    @endif
+                                                </li> 
                                                 <li>
-                                                    <div class="title">Account No.</div>
-                                                    @if(!empty($users->account_no))
-                                                    <div class="text">{{ $users->account_no }}</div>
-
-
+                                                <div class="title" >Gender:</div>
+                                                    @if(!empty($users->gender))
+                                                    <div class="text">{{ $users->gender }}</div>
                                                     @endif
                                                 </li>
-                                                <li>
+                                              
+                                                 <li>
+                                                    <div class="title">Account No:</div>
+                                                    @if(!empty($users->account_no))
+                                                    <div class="text">{{ $users->account_no }}</div>
+                                                    @endif
+                                                </li> 
+                                                <!-- <li>
                                                     <div class="title">IFSC</div>
                                                     @if(!empty($users->ifsc))
 
                                                     <div class="text">{{$users->ifsc }}</div>
 
                                                     @endif
-                                                </li>
+                                                </li>  -->
+                                                </ul>
+                                                </div>
                                                 {{-- <li>
                                                     <div class="title">Reports to:</div>
                                                     <div class="text">
@@ -129,6 +124,7 @@
                                                     </div>
                                                 </li> --}}
                                             </ul>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>

@@ -22,6 +22,7 @@ class CreateStaffSalariesTable extends Migration
             $table->string('da')->nullable();
             $table->string('hra')->nullable();
             $table->string('conveyance')->nullable();
+            $table->string('working_day')->nullable();
             $table->string('telephone_internet')->nullable();
             $table->string('wfh')->nullable();
             $table->string('work_in_holidays_days')->nullable();
@@ -32,9 +33,11 @@ class CreateStaffSalariesTable extends Migration
             $table->string('tds')->nullable();
             $table->string('esi')->nullable();
             $table->string('pf')->nullable();
-            $table->string('leave')->nullable();
+            $table->integer('short_leave')->nullable();
+            $table->integer('leave')->nullable();
 
             $table->string('labour_welfare')->nullable();
+            $table->string('gsalary')->nullable();
             $table->timestamps();
         });
     }

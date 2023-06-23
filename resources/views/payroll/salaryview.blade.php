@@ -108,11 +108,11 @@
     $perday = number_format((float) $users->salary / $d, 2, '.', '');
     $paid_leave_sal = $perday * 1;
 
-    $days_worked = (int) $d - (float) $users->leave;
-
+    $days_worked = $users->working_day - (float) $users->leave;
     $other_allowance = $users->telephone_internet;
-    $work_in_holidays = $perday * $users->work_in_holidays_days + ($perday / 8) * $users->work_in_holidays_hours;
-    $wfh = ($perday / 2) * $users->wfh;
+    $work_in_holidays = $users->work_in_holidays_days;
+    $wfh =  $users->wfh;
+    
     if ($users->wfh) {
         $work_from_office = $days_worked - $users->wfh;
     } else {
@@ -122,7 +122,7 @@
     if ($users->leave > 1) {
                     $leaves = (float) $users->leave - 1;
                     $l_d = $perday * $leaves;
-                    // $work_from_office = $work_from_office - $leaves;
+                     $work_from_office = $work_from_office - $leaves;
                 } else {
                     $leaves = (int) 0;
                     $l_d = (int) 0;
@@ -136,8 +136,14 @@
                 $deductions = $a + $c + $pf + $e;
 // echo $work_from_office;
 
-    $gross_sal = $work_from_office * $perday + $paid_leave_sal + $other_allowance + $work_in_holidays + $wfh;
+    $gross_sal = $users->gsalary;
+
+    //leave
+    $shortleave =$users->short_leave /2;
+    $totalshortleave =($users->short_leave -2)/2;
+     
     ?>
+    
     <div class="row">
         <a href="{{ route('form/salary/page') }}"> <BUTTON
                 style="padding:5px;font-weight:600;font-size:16px;background:blue;color:#fff;border-radius:4px;">Go
@@ -170,13 +176,13 @@
                 </tr>
                 <tr>
                     <td>Standard Working Days in a Month</td>
-                    <td style="text-align: center;"> {{ $d }} </td>
+                    <td style="text-align: center;"> {{ number_format($users->working_day) }} </td>
                     <td>Basic Pay for Month</td>
                     <td style="text-align: right;">{{ number_format($users->basic) }}</td>
                 </tr>
                 <tr>
                     <td>Work From Office</td>
-                    <td style="text-align: center;"> {{ (int) $d - (float) $users->leave - (int) $users->wfh }} </td>
+                    <td style="text-align: center;">{{ number_format($users->working_day) - (float) $users->leave - (int) $users->wfh}}   </td>
                     <td>Work From Home</td>
                     <td style="text-align: right;">{{ $users->wfh }}</td>
 
@@ -190,11 +196,13 @@
                 <tr>
                     <td style="text-align:right;">H.R.A(House Rent Allowance)</td>
                     <td style="text-align: right;">{{ number_format($users->hra) }}</td>
-                    <td style="text-align:right;">D.A</td>
-                    <td style="text-align: right;">{{ number_format($users->da) }}</td>
-                </tr>
-
-                <tr>
+                    <td style="text-align:right;">Conveyance</td>
+                    <td style="text-align: right;">{{ number_format($users->conveyance) }}</td>
+                    
+                    <!-- <td style="text-align:right;">D.A</td> -->
+                    <!-- <td style="text-align: right;">{{ number_format($users->da) }}</td> -->
+  
+                <!-- <tr>
                     <td style="text-align:right;">Allowance</td>
                     <td style="text-align: right;">{{ number_format($users->allowance) }}</td>
                     <td style="text-align:right;">Medical Allowance</td>
@@ -207,7 +215,7 @@
                     <td style="text-align:right;">Other Allowance</td>
                     <td style="text-align: right;">{{ number_format($users->telephone_internet) }}</td>
 
-                </tr>
+                </tr> -->
                 <tr>
                     <td style="text-align:right;">Work From Home :
                         @if ($users->wfh)
@@ -230,6 +238,8 @@
 
                     </td>
                     <td style="text-align: right;">{{ number_format($work_in_holidays) }}</td>
+                    
+                </tr>
                 </tr>
 
                 <tr>
@@ -247,6 +257,14 @@
                     <td style="text-align: center;"> 1 </td>
                     <td>Salary for all paid leaves</td>
                     <td style="text-align: right;"><?php echo $paid_leave_sal; ?></td>
+                </tr>
+                <tr>
+                
+                    <td> Short leaves</td>
+                    <td style="text-align: center;"><?php echo $shortleave;?></td>
+
+                    <td> Total Short leaves  </td>
+                    <td style="text-align: right;"> <?php echo $totalshortleave; ?> </td>
                 </tr>
                 <tr>
                     <td></td>
@@ -279,8 +297,8 @@
                     <td style="text-align:right;">Home Loan</td>
                     <td style="text-align: right;">{{ number_format($users->labour_welfare) }}</td>
 
-                    <td style="text-align:right;">Unpaid leave</td>
-                    <td style="text-align: right;">{{ $leaves }}</td>
+                    <td style="text-align:right;">Unpaid leave + Short_leave</td>
+                    <td style="text-align: right;">{{ $leaves}} + {{$totalshortleave}}</td>
                 </tr>
                 <tr>
                     <td colspan="3" style="text-align:right;">Total Deductions</td>

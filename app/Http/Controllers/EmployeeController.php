@@ -40,12 +40,14 @@ class EmployeeController extends Controller
          $request->validate([
              'name'        => 'required|string|max:255',
              'empid'      => 'required',
-             'ctc'      => 'required|numeric',
+             'ctc'        => 'required|numeric',
              'desg'        => 'required',
              'dept'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
              'contact'     => 'required|regex:/[0-9]{10}/',
-
+             'doj'         => 'required',
+             'birthDate'   => 'required',
+             'gender'      => 'required',
          ]);         
          DB::beginTransaction();
          try{

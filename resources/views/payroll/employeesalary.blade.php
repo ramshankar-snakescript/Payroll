@@ -120,11 +120,11 @@
                                 <td hidden class="id">{{ $items->id }}</td>
                                 <td hidden class="name">{{ $items->emp_name }}</td>
                                 <td hidden class="basic">{{ $items->basic }}</td>
-                                <td hidden class="da">{{ $items->da }}</td>
-                                <td hidden class="hra">{{ $items->hra }}</td>
+                                <!-- <td hidden class="da">{{ $items->da }}</td>
+                                <td hidden class="hra">{{ $items->hra }}</td> -->
                                 <td hidden class="conveyance">{{ $items->conveyance }}</td>
-                                <td hidden class="allowance">{{ $items->allowance }}</td>
-                                <td hidden class="medical_allowance">{{ $items->medical_allowance }}</td>
+                                <!-- <td hidden class="allowance">{{ $items->allowance }}</td>
+                                <td hidden class="medical_allowance">{{ $items->medical_allowance }}</td> -->
                                 <td hidden class="tds">{{ $items->tds }}</td>
                                 <td hidden class="esi">{{ $items->esi }}</td>
                                 <td hidden class="pf">{{ $items->pf }}</td>
@@ -192,7 +192,7 @@
                                             name="name">
                                             <option value="">-- Choose Employee --</option>
                                             @foreach ($userList as $user)
-                                                <option value="{{ $user->id }}" data-employee_id={{ $user->id }}>
+                                                <option value="{{ $user->id }}" data-employee_id="{{ $user->id }}">
                                                     {{ $user->name }}</option>
                                             @endforeach
                                         </select>
@@ -205,7 +205,7 @@
                                 </div>
                                 <input class="form-control" type="hidden" name="rec_id" id="employee_id" readonly>
                                 <div class="col-sm-6">
-                                    <label>CTC</label>
+                                    <label>Monthly Salary</label>
                                     <input class="form-control @error('salary') is-invalid @enderror" readonly
                                         type="number" name="salary" id="salary" value="{{ old('salary') }}"
                                         placeholder="Enter net salary">
@@ -220,7 +220,7 @@
                                 <div class="col-sm-6">
                                     <h4 class="text-primary">Earnings</h4>
                                     <div class="form-group">
-                                        <label>Basic (40% of CTC)</label>
+                                        <label>Basic (72% of Monthly Salary)</label>
                                         <input class="form-control @error('basic') is-invalid @enderror" type="number"
                                             readonly name="basic" id="basic" value="{{ old('basic') }}"
                                             placeholder="Enter basic">
@@ -230,22 +230,12 @@
                                             </span>
                                         @enderror
                                     </div>
+                                    
                                     <div class="form-group">
-                                        <label>DA(20% of Basic Salary)</label>
-                                        <input class="form-control @error('da') is-invalid @enderror" type="number"
-                                            readonly name="da" id="da" value="{{ old('da') }}"
-                                            placeholder="Enter DA(40%)">
-                                        @error('da')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
-                                        <label>HRA(40% of Basic Salary)</label>
+                                        <label>HRA(20% of Monthly Salary)</label>
                                         <input class="form-control @error('hra') is-invalid @enderror" type="number"
                                             readonly name="hra" id="hra" value="{{ old('hra') }}"
-                                            placeholder="Enter HRA(15%)">
+                                            placeholder="Enter HRA(20%)">
                                         @error('hra')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -253,7 +243,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Conveyance (5% of Basic Salary)</label>
+                                        <label>Conveyance (8% of Monthly Salary)</label>
                                         <input class="form-control @error('conveyance') is-invalid @enderror"
                                             type="number" readonly name="conveyance" id="conveyance"
                                             value="{{ old('conveyance') }}" placeholder="Enter conveyance">
@@ -264,6 +254,11 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label>Total Working Day</label>
+                                        <input class="form-control" type="text" name="working_day" id="working_day"
+                                            value="{{ old('working_day') }}">
+                                    </div>
+                                    <!-- <div class="form-group">
                                         <label>Allowance(15% Of Basic Salary)</label>
                                         <input class="form-control @error('allowance') is-invalid @enderror"
                                             type="number" readonly name="allowance" id="allowance"
@@ -285,7 +280,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-                                    </div>
+                                    </div> -->
                                     <div class="form-group">
                                         <label>Telephone And Internet Reimbursement</label>
                                         <input class="form-control @error('medical_allowance') is-invalid @enderror"
@@ -371,7 +366,19 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Leaves(1 Short Leave = 0.25, 1 Half Day = 0.5) </label>
+                                        <label>Short Leaves(1 Short Leave = 2 hours, 1 Half Day = 4 hours) </label>
+                                        <input class="form-control @error('short_leave') is-invalid @enderror" type="text"
+                                            name="short_leave" id="short_leave" value="{{ old('short_leave') }}"
+                                            placeholder="Enter leave">
+                                        @error('short_leave')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Leaves </label>
                                         <input class="form-control @error('leave') is-invalid @enderror" type="text"
                                             name="leave" id="leave" value="{{ old('leave') }}"
                                             placeholder="Enter leave">
@@ -392,6 +399,7 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+                                        <input class="form-control" type="hidden" name="gsalary" id="gsalary"  value="">
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +442,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-sm-6">
-                                    <label>CTC</label>
+                                    <label>Monthly Salary</label>
                                     <input class="form-control @error('salary') is-invalid @enderror" readonly
                                         type="text" name="salary" id="e_salary" value="{{ old('salary') }}"
                                         placeholder="Enter net salary">
@@ -449,13 +457,9 @@
                                         <input class="form-control" type="text" name="basic" id="e_basic"
                                             value="">
                                     </div>
+                                 
                                     <div class="form-group">
-                                        <label>DA(40%)</label>
-                                        <input class="form-control" type="text" name="da" id="e_da"
-                                            value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>HRA(15%)</label>
+                                        <label>HRA(20%)</label>
                                         <input class="form-control" type="text" name="hra" id="e_hra"
                                             value="">
                                     </div>
@@ -465,14 +469,9 @@
                                             value="">
                                     </div>
                                     <div class="form-group">
-                                        <label>Allowance</label>
-                                        <input class="form-control" type="text" name="allowance" id="e_allowance"
+                                        <label>Total Working Day</label>
+                                        <input class="form-control" type="text" name="working_day" id="working_day"
                                             value="">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Medical Allowance</label>
-                                        <input class="form-control" type="text" name="medical_allowance"
-                                            id="e_medical_allowance" value="">
                                     </div>
                                     <div class="form-group">
                                         <label>Telephone And Internet Reimbursement</label>
@@ -515,7 +514,7 @@
                                     <div class="form-group">
                                         <label>Leave</label>
                                         <input class="form-control" type="text" name="leave" id="e_leave"
-                                            value="">
+                                            value="" readonly>
                                     </div>
                                     {{-- <div class="form-group">
                                         <label>Prof. Tax</label>
@@ -525,6 +524,7 @@
                                         <label>Home Loan</label>
                                         <input class="form-control" type="text" name="labour_welfare"
                                             id="e_labour_welfare" value="">
+                                            <input class="form-control" type="hidden" name="gsalary" id="gsalary"  value="">
                                     </div>
                                 </div>
                             </div>
@@ -578,6 +578,10 @@
                 closeOnSelect: false
             });
             $("#tel_int").val('0');
+            $("#short_leave").val('2');
+            $("#work_in_holidays_days").val('0');
+            $("#work_in_holidays_hours").val('0');
+            $("#wfh").val('0');
         });
     </script>
     <script>
@@ -598,7 +602,7 @@
             $('#e_hra').val(_this.find('.hra').text());
             $('#e_conveyance').val(_this.find('.conveyance').text());
             $('#e_allowance').val(_this.find('.allowance').text());
-            $('#e_medical_allowance').val(_this.find('.medical_allowance').text());
+            // $('#e_working_day').val(_this.find('.working_day').text());
             $('#e_tds').val(_this.find('.tds').text());
             $('#e_esi').val(_this.find('.esi').text());
             $('#e_pf').val(_this.find('.pf').text());
@@ -617,23 +621,23 @@
 
             var ctc = parseInt($(this).val());
 
-            var base_salary = parseInt(40);
+            var base_salary = parseInt(72);
             var basic_sal = (ctc * base_salary / 100);
 
-            var hra = parseInt(40);
+            var hra = parseInt(20);
             var hra = (basic_sal * hra / 100);
 
-            var da_per = parseInt(20);
-            var da = (basic_sal * da_per / 100);
+            // var da_per = parseInt(20);
+            // var da = (basic_sal * da_per / 100);
 
-            var lta_per = parseInt(15);
-            var lta = (basic_sal * lta_per / 100);
+            // var lta_per = parseInt(15);
+            // var lta = (basic_sal * lta_per / 100);
 
-            var conveyance_per = parseInt(5);
+            var conveyance_per = parseInt(8);
             var conveyance = (basic_sal * conveyance_per / 100);
 
-            var med_conveyance_per = parseInt(5);
-            var med_conveyance = (basic_sal * med_conveyance_per / 100);
+            // var med_conveyance_per = parseInt(5);
+            // var med_conveyance = (basic_sal * med_conveyance_per / 100);
 
 
 
@@ -674,7 +678,7 @@
 
         });
 
-        $("#name").on('change', function() {
+        $("#working_day",).on('change', function() {
             if ($(this).val() != '') {
                 $("input[type=number], #leave").prop('disabled', false);
             } else {
@@ -696,23 +700,23 @@
                     $("#salary").val(response[0].ctc);
                     var ctc = parseInt(response[0].ctc);
 
-                    var base_salary = parseInt(40);
+                    var base_salary = parseInt(72);
                     var basic_sal = (ctc * base_salary / 100);
 
-                    var hra = parseInt(40);
-                    var hra = (basic_sal * hra / 100);
+                    var hra = parseInt(20);
+                    var hra = (ctc * hra / 100);
 
-                    var da_per = parseInt(20);
-                    var da = (basic_sal * da_per / 100);
+                    // var da_per = parseInt(20);
+                    // var da = (basic_sal * da_per / 100);
 
-                    var lta_per = parseInt(15);
-                    var lta = (basic_sal * lta_per / 100);
+                    // var lta_per = parseInt(15);
+                    // var lta = (basic_sal * lta_per / 100);
 
-                    var conveyance_per = parseInt(5);
-                    var conveyance = (basic_sal * conveyance_per / 100);
+                    var conveyance_per = parseInt(8);
+                    var conveyance = (ctc * conveyance_per / 100);
 
-                    var med_conveyance_per = parseInt(5);
-                    var med_conveyance = (basic_sal * med_conveyance_per / 100);
+                    // var med_conveyance_per = parseInt(5);
+                    // var med_conveyance = (basic_sal * med_conveyance_per / 100);
 
 
 
@@ -740,5 +744,81 @@
             });
         });
     </script>
+<!-- epf acording to days of working -->
+
+<script>
+        $('#leave').on('change', function() {
+            var work_in_holidays_days = $("#work_in_holidays_days").val();
+            var work_in_holidays_hours = $("#work_in_holidays_hours").val();
+            var short_leave = $("#short_leave").val();
+            var wfh = $("#wfh").val();
+            var gsalary = $("#gsalary").val();
+            var leave= $("#leave").val();
+            var salary = $("#salary").val();
+            var day =  $("#working_day").val();
+            var per_day_salary=(salary / day);
+           // var day_home=(day-wfh);
+            console.log(day);
+            var work_in_holidays_days = (work_in_holidays_days * per_day_salary);
+            var work_in_holidays_hours = ((work_in_holidays_hours/8) * per_day_salary);
+            var wfhs = ((wfh * per_day_salary ) / 2);
+            
+           if(short_leave >= 2){
+                var short_leave = short_leave - 2;
+                var short_salary = ((short_leave/8) * per_day_salary);
+                console.log(short_salary);
+           }
+          
+
+
+
+
+            //console.log(wfh);
+            if (leave >= 1) {
+                
+                var leave = leave - 1;
+            var days = (day - leave);
+            console.log(days);
+            }
+            else {
+                var day = parseInt(days);
+                
+                var days = days + 1;
+                  console.log(days);
+                 
+            }
+            var day=(days-wfh);
+            console.log( day);
+            var tsalary = ((per_day_salary * day) + work_in_holidays_days + work_in_holidays_hours + wfhs ).toFixed(2);
+            console.log(tsalary);
+           
+            var gsalary = (tsalary - short_salary).toFixed(2);
+            console.log(gsalary);
+            document.getElementById("gsalary").value = gsalary;
+            if (gsalary >= parseInt(15000)) {
+                console.log(gsalary);
+                        $("#pf, #e_pf").val('3600');
+
+                    } else {
+                        $("#pf, #e_pf").val((gsalary * parseInt(24) / 100).toFixed(2));
+                    }
+                   
+                    if (gsalary >parseInt(21000)) {
+                        $("#esi, #e_esi").val(0);
+                        console.log(gsalary);
+                    } else {
+                        console.log(gsalary);
+                        $("#esi, #e_esi").val((gsalary * parseInt(4) / 100).toFixed(2));
+                    }
+
+
+//console.log(salary);
+            
+
+
+            
+        });
+    </script>
+
 @endsection
 @endsection

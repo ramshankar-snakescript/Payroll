@@ -95,11 +95,11 @@ Route::controller(ResetPasswordController::class)->group(function () {
 
 
 
-// ----------------------------- user profile ------------------------------//
-// Route::controller(UserManagementController::class)->group(function () {
-//     Route::get('profile_user', 'profile')->middleware('auth')->name('profile_user');
-//     Route::post('profile/information/save', 'profileInformation')->name('profile/information/save');
-// });
+//----------------------------- user profile ------------------------------//
+Route::controller(UserManagementController::class)->group(function () {
+    Route::get('profile_user', 'profile')->middleware('auth')->name('profile_user');
+    Route::post('profile/information/save', 'profileInformation')->name('profile/information/save');
+});
 
 // ----------------------------- user userManagement -----------------------//
 // Route::controller(UserManagementController::class)->group(function () {

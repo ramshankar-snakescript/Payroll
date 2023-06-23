@@ -62,7 +62,7 @@ class PayrollController extends Controller
             $salary->da                = $request->da;
             $salary->hra               = $request->hra;
             $salary->conveyance        = $request->conveyance;
-            $salary->allowance         = $request->allowance;
+            $salary->working_day         = $request->working_day;
             $salary->medical_allowance = $request->medical_allowance;
             $salary->telephone_internet= $request->tel_int;
             $salary->wfh               = $request->wfh;
@@ -71,8 +71,10 @@ class PayrollController extends Controller
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
+            $salary->short_leave       = $request->short_leave  ;
             $salary->leave             = $request->leave;
             $salary->labour_welfare    = $request->labour_welfare;
+             $salary->gsalary               = $request->gsalary;
             $salary->save();
            DB::commit();
             Toastr::success('Create new Salary successfully :)','Success');
@@ -126,6 +128,7 @@ class PayrollController extends Controller
                 'leave'              => $request->leave,
                 // 'prof_tax'  => $request->prof_tax,
                 'labour_welfare'  => $request->labour_welfare,
+                'gsalary'   => $request->gsalary,
             ];
 
 

@@ -230,7 +230,15 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Date Of Joining </label>
+                                        <span class="text-danger">*</span>
                                         <input class="form-control" type="date" name="doj" placeholder="Email" value="{{ old('doj') }}">
+                                        <span class="text-danger" id="flash-message"></span>
+                                        <span class="text-danger">
+                                            @error('doj')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                   
                                     </div>
                                 </div>
 
@@ -266,20 +274,34 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Birth Date</label>
+                                        <span class="text-danger">*</span>
                                         <div class="cal-icon">
                                             <input class="form-control datetimepicker" type="text" id="birthDate"
                                                 name="birthDate" placeholder="dd-mm-yyyy" value="{{ old('birthDate') }}">
                                         </div>
+                                        <span class="text-danger" id="flash-message"></span>
+                                        <span class="text-danger">
+                                            @error('birthDate')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Gender</label>
+                                        <span class="text-danger">*</span>
                                         <select class="select form-control" style="width: 100%;" tabindex="-1"
                                             aria-hidden="true" id="gender" name="gender" value="{{ old('gender') }}">
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                         </select>
+                                        <span class="text-danger" id="flash-message"></span>
+                                        <span class="text-danger">
+                                            @error('gender')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
