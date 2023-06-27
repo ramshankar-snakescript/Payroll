@@ -57,6 +57,7 @@ class PayrollController extends Controller
             $salary = new StaffSalary;
             $salary->name              = $request->name;
             $salary->rec_id            = $request->rec_id;
+            $salary->dos            = $request->dos;
             $salary->salary            = $request->salary;
             $salary->basic             = $request->basic;
             $salary->da                = $request->da;
@@ -65,13 +66,16 @@ class PayrollController extends Controller
             $salary->working_day         = $request->working_day;
             $salary->medical_allowance = $request->medical_allowance;
             $salary->telephone_internet= $request->tel_int;
+            $salary->bonus             = $request->bonus;
             $salary->wfh               = $request->wfh;
+           
             $salary->work_in_holidays_days  = $request->work_in_holidays_days;
             $salary->work_in_holidays_hours  = $request->work_in_holidays_hours;
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
-            $salary->short_leave       = $request->short_leave  ;
+            $salary->short_leave       = $request->short_leave;
+            $salary->half_day       = $request->half_day;
             $salary->leave             = $request->leave;
             $salary->labour_welfare    = $request->labour_welfare;
              $salary->gsalary               = $request->gsalary;
@@ -112,19 +116,24 @@ class PayrollController extends Controller
 
                 'id'                 => $request->id,
                 'salary'             => $request->salary,
+                'dos'             => $request->dos,
                 'basic'              => $request->basic,
                 'da'                 => $request->da,
                 'hra'                => $request->hra,
                 'conveyance'         => $request->conveyance,
                 'allowance'          => $request->allowance,
+                'working_day'        => $request->working_day,
                 'medical_allowance'  => $request->medical_allowance,
                 'telephone_internet' => $request->tel_int,
-                'wfh' => $request->wfh,
+                'bonus'                => $request->bonus,
+                'wfh'                => $request->wfh,
                 'work_in_holidays_days' => $request->work_in_holidays_days,
                 'work_in_holidays_hours' => $request->work_in_holidays_hours,
                 'tds'                => $request->tds,
                 'esi'                => $request->esi,
                 'pf'                 => $request->pf,
+                'short_leave'        => $request->short_leave,
+                'half_day'        => $request->half_day,
                 'leave'              => $request->leave,
                 // 'prof_tax'  => $request->prof_tax,
                 'labour_welfare'  => $request->labour_welfare,

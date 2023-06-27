@@ -76,10 +76,12 @@ table td th {
                                 }
                                 $start->addDay();
                             }
-                        $d = count($dates);
+                      //  $d = count($dates);
+                      $totalday=$users->working_day;
+                     
                         $netsalary = $users->salary;
                         $daysinmoth =  (int)22;
-                        $perday = (int)$users->salary/$d;
+                        $perday = (int)$users->salary/$totalday;
 
 
 
@@ -141,7 +143,7 @@ table td th {
                         </tr>
 
                         <tr style="border-bottom:1px solid #dee2e6;">
-                            <td>Unpaid Leave {{'('.$leaves.')'}})</td>
+                            <td>Unpaid Leave {{'('.$leaves.')'}}</td>
                             <td> <span class="float-right">{{ $l_d }}</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dee2e6;">
