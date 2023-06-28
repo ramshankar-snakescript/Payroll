@@ -165,9 +165,9 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">CTC <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Monthly Salary <span class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="ctc"
-                                            placeholder="Employee's CTC" value="{{ old('ctc') }}">
+                                            placeholder="Employee's Monthly Salary" value="{{ old('ctc') }}">
                                     </div>
                                     <span class="text-danger">
                                         @error('ctc')
@@ -241,7 +241,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Date Of Joining </label>
-                                        <input class="form-control" type="date" name="doj" placeholder="Email" value="{{ old('doj') }}">
+                                        <input class="form-control" type="date" name="doj" placeholder="Date of Joining" value="{{ old('doj') }}"  max="<?=date('Y-m-d')?>">
                                     </div>
                                 </div>
 
@@ -266,21 +266,18 @@
                                             placeholder="ESI No." value="{{ old('esi') }}">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <!-- <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">PRAN </label>
                                         <input class="form-control" type="text" id="" name="pran"
                                             placeholder="PRAN" value="{{ old('pran') }}">
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Birth Date</label>
-                                        <div class="cal-icon">
-                                            <input class="form-control datetimepicker" type="text" id="birthDate"
-                                                name="birthDate" placeholder="dd-mm-yyyy" value="{{ old('birthDate') }}">
-                                        </div>
+                                        <input class="form-control" type="date"  name="birthDate"  id="birthDate" placeholder="Birth Date" value="{{ old('birthDate') }}" max="<?=date('Y-m-d')?>">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

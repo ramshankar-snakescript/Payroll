@@ -74,7 +74,7 @@
                                                 <li>
                                                     <div class="title">Birthday:</div>
                                                     @if(!empty($users->birth_date))
-                                                    <div class="text">{{ $users->birth_date }}</div>
+                                                    <div class="text">{{$users->birth_date}}</div>
                                                     @endif
                                                 </li>
                                                 </ul>

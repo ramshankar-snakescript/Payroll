@@ -95,7 +95,7 @@
                                     <th>Email</th>
                                     <th>Date Of Salary</th>
                             
-                                     <th>Salary</th> 
+                                     <!-- <th>Salary</th>  -->
                                     <th >Payslip Send</th>
                                     <th>Payslip</th>
                                     <th class="text-right">Action</th>
@@ -170,8 +170,8 @@
                                 <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
                                 <td><a href="mailto:{{ $items->email }}">{{ $items->email }}</a></td>
                                 <td>{{ $items->dos}}</td>
-                                <td><a class="btn btn-sm btn-info"
-                                        href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td>
+                                <!-- <td><a class="btn btn-sm btn-info"
+                                        href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td> -->
                                 <td><a class="btn btn-sm btn-warning"
                                         href="{{ url('/send_pdf/' . $items->rec_id) }}">Send</a></td>
                                 <td hidden class="salary">{{ $items->salary }}</td>
@@ -253,7 +253,7 @@
                             <div class="col-sm-6">
                             <div class="form-group">
                                         <label class="col-form-label">Date Of Salary Slip </label>
-                                        <input class="form-control" type="date" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}">
+                                        <input class="form-control" type="date" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}" >
                                     </div>
                                 </div>
                     </div>
@@ -295,8 +295,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Total Working Day</label>
-                                        <input class="form-control" type="text" name="working_day" id="working_day"
+                                        <label>Total Working Day <span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="" name="working_day" id="working_day"
                                             value="{{ old('working_day') }}">
                                     </div>
                                     <!-- <div class="form-group">
@@ -397,7 +398,7 @@
                                     <div class="form-group">
                                         <label>ESI - (Employee Contribution (3.25% ) +
                                             Employer Contribution (0.75%) below 21000 gross salary)</label>
-                                        <input class="form-control @error('esi') is-invalid @enderror" readonly
+                                        <input class="form-control @error('esi') is-invalid @enderror" 
                                             type="number" name="esi" id="esi" value="{{ old('esi') }}"
                                             placeholder="Enter ESI">
                                         @error('esi')
@@ -420,10 +421,11 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Short Leaves(1 Short Leave = 2 hours) </label>
+                                        <label>Short Leaves(1 Short Leave = 2 hours)  <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control @error('short_leave') is-invalid @enderror" type="text"
                                             name="short_leave" id="short_leave" value="{{ old('short_leave') }}"
-                                            placeholder="Enter leave">
+                                            placeholder="Enter short-leave in hours">
                                         @error('short_leave')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -431,10 +433,11 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
-                                        <label>Half Day(1 Half Day = 4 hours) </label>
+                                        <label>Half Day(1 Half Day = 4 hours) <span
+                                                class="text-danger">*</span> </label>
                                         <input class="form-control @error('short_leave') is-invalid @enderror" type="text"
                                             name="half_day" id="half_day" value="{{ old('half_leave') }}"
-                                            placeholder="Enter leave">
+                                            placeholder="Enter half-day in hours">
                                         @error('Half_leave')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -446,7 +449,7 @@
                                         <label>Leaves </label>
                                         <input class="form-control @error('leave') is-invalid @enderror" type="text"
                                             name="leave" id="leave" value="{{ old('leave') }}"
-                                            placeholder="Enter leave">
+                                            placeholder="Enter leave in days">
                                         @error('leave')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -542,7 +545,8 @@
                                             value="">
                                     </div>
                                     <div class="form-group">
-                                        <label>Total Working Day</label>
+                                        <label>Total Working Day <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="working_day" id="e_working_day"
                                             value="">
                                     </div>
@@ -601,7 +605,8 @@
                                             value="">
                                     </div>
                                     <div class="form-group">
-                                        <label>Leave</label>
+                                        <label>Leave <span
+                                                class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="leave" id="e_leave"
                                             value="">
                                     </div>
@@ -661,6 +666,17 @@
     </div>
     <!-- /Page Wrapper -->
 @section('script')
+@if (count($errors) > 0)
+      <!-- {{isset($errors)}} -->
+    <script>
+        $( document ).ready(function() {
+            $('#add_salary').modal('show');
+        });
+    </script>
+@endif
+
+
+
     <script>
         $(document).ready(function() {
             $('.select2s-hidden-accessible').select2({

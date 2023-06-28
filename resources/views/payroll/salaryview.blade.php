@@ -106,6 +106,7 @@
     $netsalary = $users->salary;
 
     $perday = number_format((float) $users->salary / $d, 2, '.', '');
+    $perhours= $perday/8;
     $paid_leave_sal = $perday * 1;
 
     $days_worked = $users->working_day - (float) $users->leave;
@@ -114,6 +115,7 @@
     
     $wfh =  $users->wfh;
     $wfh_salary = ($wfh* $perday)/ 2;
+    
     $halfday=$users->half_day;
     if ($users->wfh) {
         $work_from_office = $days_worked - $users->wfh;
@@ -125,6 +127,7 @@
                     $leaves = (float) $users->leave - 1;
                     $l_d = $perday * $leaves;
                      $work_from_office = $work_from_office - $leaves;
+                    
                 } else {
                     $leaves = (int) 0;
                     $l_d = (int) 0;
@@ -136,9 +139,14 @@
                 $pf = (int) $users->pf;
                 $Total_Deductions = $a + $c + $pf + $e + $l_d;
                 $deductions = $a + $c + $pf + $e;
+//overtimeSalary
+$overtime= $work_in_holidays * $perday;
+$overtime_hours=$users->work_in_holidays_hours*$perhours;
+    $overtime_salary=$users->bonus+$overtime+$overtime_hours+$users->telephone_internet;
+
 // echo $work_from_office;
 
-    $gross_sal = $users->gsalary + $users->bonus;
+    $gross_sal = $users->gsalary + $users->bonus + $users->telephone_internet;
 
     //leave
     $shortleave =($users->short_leave)/2;
@@ -239,6 +247,12 @@
                     
                 </tr>
                 <tr>
+                <td style="text-align:right;"> Monthly Salary  </td>
+                <td style="text-align: right;"> {{ $users->salary }}</td>
+                <td style="text-align:right;"> UAN </td>
+                <td style="text-align: right;"> {{ $users->uan }}</td>
+            </tr>
+                <tr>
                 <td style="text-align:right;"> Account No </td>
                 <td style="text-align: right;"> {{ $users->account_no }}</td>
                 <td style="text-align:right;"> IFSC </td>
@@ -275,7 +289,7 @@
                         <td style="text-align: right;">Overtime</td>
                     
                 
-                    <td colspan="1"style="text-align: right;"><?php echo $paid_leave_sal; ?></td>
+                    <td colspan="1"style="text-align: right;">{{ $overtime_salary }}</td>
 
                     <!-- <td>Total paid leaves</td>
                     <td style="text-align: center;"> 1 </td>
@@ -290,7 +304,7 @@
 
 
                    <td style="text-align:right;">Unpaid leave </td>
-                    <td style="text-align: right;">{{ $leaves}} </td>
+                    <td style="text-align: right;">{{$l_d}} </td>
                     <!-- <td> Short leaves</td>
                     <td style="text-align: center;">1</td>
 

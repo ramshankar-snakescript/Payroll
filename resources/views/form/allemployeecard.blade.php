@@ -154,9 +154,9 @@
 
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label class="col-form-label">CTC <span class="text-danger">*</span></label>
+                                        <label class="col-form-label">Monthly Salary <span class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="ctc"
-                                            placeholder="Employee's CTC" value="{{ old('ctc') }}">
+                                            placeholder="Employee's Monthly Salary" value="{{ old('ctc') }}">
                                     </div>
                                     <span class="text-danger">
                                         @error('ctc')
@@ -231,7 +231,7 @@
                                     <div class="form-group">
                                         <label class="col-form-label">Date Of Joining </label>
                                         <span class="text-danger">*</span>
-                                        <input class="form-control" type="date" name="doj" placeholder="Email" value="{{ old('doj') }}">
+                                        <input class="form-control" type="date" name="doj" placeholder="Date Of Joining" value="{{ old('doj') }}" max="<?=date('Y-m-d')?>">
                                         <span class="text-danger" id="flash-message"></span>
                                         <span class="text-danger">
                                             @error('doj')
@@ -263,22 +263,22 @@
                                             placeholder="ESI No." value="{{ old('esi') }}">
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <!-- <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">PRAN </label>
                                         <input class="form-control" type="text" id="" name="pran"
                                             placeholder="PRAN" value="{{ old('pran') }}">
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Birth Date</label>
                                         <span class="text-danger">*</span>
-                                        <div class="cal-icon">
-                                            <input class="form-control datetimepicker" type="text" id="birthDate"
-                                                name="birthDate" placeholder="dd-mm-yyyy" value="{{ old('birthDate') }}">
-                                        </div>
+                                            <!-- <input class="form-control" type="date" id="birthDate"
+                                                name="birthDate" placeholder="dd-mm-yyyy" value="{{ old('birthDate') }}" max="<?=date('d-m-y')?>"> -->
+                                            <input class="form-control" type="date"  name="birthDate"  id="birth_date" placeholder="Birth Date" value="{{ old('birthDate') }}" max="<?=date('dm-y')?>">
+                                      
                                         <span class="text-danger" id="flash-message"></span>
                                         <span class="text-danger">
                                             @error('birthDate')
@@ -373,6 +373,7 @@
         <!-- /Delete Salary Modal -->
 
     </div>
+    
     @if (count($errors) > 0)
       <!-- {{isset($errors)}} -->
     <script>
@@ -444,10 +445,15 @@
                 '</option>'
             $(_option).appendTo("#e_department");
 
+            
+
+
             var statuss = (_this.find(".statuss").text());
             var _option = '<option selected value="' + statuss + '">' + _this.find('.statuss').text() + '</option>'
             $(_option).appendTo("#e_status");
 
+
+           
         });
     </script>
     <script>

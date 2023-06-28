@@ -35,6 +35,8 @@ class PayrollController extends Controller
         $request->validate([
             'name'   => 'required',
             'salary' => 'required|string|max:255',
+            'working_day'=> 'required',
+            'leave'=> 'required',
         ]);
 
         DB::beginTransaction();

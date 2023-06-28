@@ -47,9 +47,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-form-label col-md-2">CTC</label>
+                                    <label class="col-form-label col-md-2">Monthly Salary</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="name" readonly name="empid" value="{{ $employees[0]->ctc }}">
+                                        <input type="text" class="form-control" id="name" readonly name="ctc" value="{{ $employees[0]->ctc }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -66,10 +66,10 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Designation</label>
                                     <div class="col-md-10">
-                                        <select class="select form-control" id="designation" name="desg">
+                                        <select class="select form-control" id="designation" name="designation">
                                             {{-- <option value="{{ $employees[0]->gender }}" {{ ( $employees[0]->gender == $employees[0]->gender) ? 'selected' : '' }}>{{ $employees[0]->gender }} </option> --}}
 
-                                            <option value="{{$employees[0]->desg}}">{{$employees[0]->designation}}</option>
+                                            <option value="{{$employees[0]->designation}}">{{$employees[0]->designation}}</option>
 
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Date Of Joining</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control datetimepicker" id="email" name="doj" value="{{ $employees[0]->doj }}">
+                                        <input type="text" class="form-control" id="doj" name="doj" value="{{ $employees[0]->doj }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -104,18 +104,18 @@
                                         <input type="text" class="form-control" id="name" name="uan" value="{{ $employees[0]->uan }}">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <!-- <div class="form-group row">
                                     <label class="col-form-label col-md-2">PRAN</label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" id="name" name="pran" value="{{ $employees[0]->pran }}">
                                     </div>
-                                </div>
+                                </div> -->
 
 
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Birth Date</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control datetimepicker" id="birth_date" name="birth_date" value="{{ $employees[0]->birth_date }}">
+                                        <input type="text" class="form-control " id="name" name="birth_date" value="{{ $employees[0]->birth_date }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -150,13 +150,13 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Account No.</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control " id="" name="birth_date" value="{{ $employees[0]->account_no }}">
+                                        <input type="text" class="form-control " id="account_no" name="account_no" value="{{ $employees[0]->account_no }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">IFSC Code</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control " id="" name="birth_date" value="{{ $employees[0]->ifsc }}">
+                                        <input type="text" class="form-control " id="ifsc" name="ifsc" value="{{ $employees[0]->ifsc }}">
                                     </div>
                                 </div>
 
