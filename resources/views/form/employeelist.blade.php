@@ -1,7 +1,8 @@
 @extends('layouts.master')
 @section('content')
-    <!-- Sidebar -->
 
+    <!-- Sidebar -->
+    
 
     <!-- Page Wrapper -->
     <div class="page-wrapper">
@@ -58,16 +59,16 @@
             <!-- Search Filter -->
             {{-- message --}}
             {!! Toastr::message() !!}
-
+            
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
                         <table class="table table-striped custom-table datatable">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                <th>Employee ID</th>
                                     <td hidden >Name</td>
-                                    <th>Employee ID</th>
+                                    <th>Name</th>
                                     <th>Email</th>
                                     <th>Mobile</th>
                                     <th class="text-nowrap">Join Date</th>
@@ -77,26 +78,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            
                                 @foreach ($users as $items )
+                               
                                 <tr>
+                                
+
                                     <td>
+                                
                                         <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$items->id) }}" class="avatar">
                                                 @if(!empty($items->image))
                                                 <img alt="" src="{{ URL('storage/uploads/'. $items->image) }}">
                                                 @else
-                                                <img src="{{URL('storage/user.jpeg') }}" >
+                                                <img src="{{URL('storage/user.jpeg')  }}" ></a>
                                                 @endif
-                                            </a>
-                                            <a href="{{ url('employee/profile/'.$items->id) }}">{{ $items->name }}<span>{{ $items->designation }}</span></a>
-                                        </h2>
+                                             {{ $items->employee_id }}
+                                            </h2>
                                     </td>
                                     <td hidden class="id">{{ $items->id }}</td>
-                                    <td>{{ $items->employee_id }}</td>
+                                    <td>{{ $items->name }}</td>
                                     <td><a href="mailto:{{ $items->email }}">{{ $items->email }}</a></td>
                                     <td>{{ $items->contact }}</td>
                                     <td>{{ $items->doj }}</td>
-                                    <td>{{ $items->department }}</td>
+                                    
+                                    <td>{{$items->department}}</td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -182,7 +188,7 @@
                                         <select class="select form-control" id="dept" style="width: 100%;"
                                             tabindex="-1" aria-hidden="true" id="gender" name="dept" >
                                             <option SELECTED DISABLED>Select Department</option>
-                                            @foreach ($departments as $dept)
+                                            @foreach ($users as $dept)
                                                 <option value="{{ $dept->id }}">{{ $dept->department }}</option>
                                             @endforeach
 

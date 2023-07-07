@@ -20,11 +20,16 @@ table td th {
         </style>
         </head>
   <body style="background: #f7f7f7;">
+<?php   
+$date = $users->dos; 
+$newDate = date('F', strtotime($date));
 
+
+?>
     <table align="center" style="width:90%;border :1px solid #ededed;margin-top:20px;background:#fff;">
         <tr>
             <td colspan="2" align="center" style="text-decoration:underline;padding-top:20px;">
-                <h4 class="payslip-title">Payslip for the month of {{ \Carbon\Carbon::now()->format('M') }}   {{ \Carbon\Carbon::now()->year }}  </h4>
+                <h4 class="payslip-title">Payslip for the month of {{ $newDate }}    </h4>
             </td>
         </tr>
         <tr>
@@ -46,7 +51,7 @@ table td th {
                 <td style="text-align:right;">
                     <h3 class="text-uppercase">Payslip #{{$users->id}}</h3>
                     <ul class="list-unstyled" style="list-style:none;">
-                        <li>Salary Month: <span>{{ \Carbon\Carbon::now()->format('M') }}, {{ \Carbon\Carbon::now()->year }}  </span></li>
+                        <li>Salary Month: <span>{{ $newDate }},  </span></li>
                     </ul>
                 </td>
             </tr>

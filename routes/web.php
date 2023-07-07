@@ -132,7 +132,7 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::post('all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');
     Route::get('all/employee/view/edit/{employee_id}', 'viewRecord')->middleware('auth');
     Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
-   // Route::get('all/employee/delete/{employee_id}', 'deleteRecord')->middleware('auth');
+
     Route::post('all/employee/delete', 'deleteRecord')->middleware('auth')->name('all/employee/delete');
     Route::post('all/employee/search', 'employeeSearch')->name('all/employee/search');
     Route::post('all/employee/list/search', 'employeeListSearch')->name('all/employee/list/search');
@@ -161,6 +161,8 @@ Route::controller(EmployeeController::class)->group(function () {
 // ----------------------------- profile employee ------------------------------//
 Route::controller(EmployeeController::class)->group(function () {
     Route::get('employee/profile/{rec_id}', 'profileEmployee')->middleware('auth');
+    // Route::get('employee/profile/{rec_id}', 'profileSalary')->middleware('auth');
+    Route::post('form.employeeprofile ', 'deleteSalary')->middleware('auth');
 });
 
 
@@ -172,7 +174,7 @@ Route::controller(PayrollController::class)->group(function () {
     Route::post('form/salary/update', 'updateRecord')->middleware('auth')->name('form/salary/update');
     Route::post('form/salary/delete', 'deleteRecord')->middleware('auth')->name('form/salary/delete');
     Route::post('salary/search', 'search')->middleware('auth')->name('salary/search');
-    Route::get('form/salary/view/{rec_id}', 'salaryView')->middleware('auth');
+    Route::get('form/salary/view/{id}', 'salaryView')->middleware('auth');
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
     Route::get('get_salary/{id}', 'get_salary')->middleware('auth')->name('get_salary');
 });

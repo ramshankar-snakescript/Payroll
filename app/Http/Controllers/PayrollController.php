@@ -35,6 +35,7 @@ class PayrollController extends Controller
         $request->validate([
             'name'   => 'required',
             'salary' => 'required|string|max:255',
+            'dos'   => 'required',
             'working_day'=> 'required',
             'leave'=> 'required',
         ]);
@@ -57,6 +58,7 @@ class PayrollController extends Controller
             }else{
 
             $salary = new StaffSalary;
+            
             $salary->name              = $request->name;
             $salary->rec_id            = $request->rec_id;
             $salary->dos            = $request->dos;
@@ -73,6 +75,7 @@ class PayrollController extends Controller
            
             $salary->work_in_holidays_days  = $request->work_in_holidays_days;
             $salary->work_in_holidays_hours  = $request->work_in_holidays_hours;
+            $salary->extra_hours  = $request->extra_hours;
             $salary->tds               = $request->tds;
             $salary->esi               = $request->esi;
             $salary->pf                = $request->pf;
@@ -86,7 +89,7 @@ class PayrollController extends Controller
             Toastr::success('Create new Salary successfully :)','Success');
            }
 
-            return redirect(url('form/salary/view/'.$request->rec_id));
+            return redirect(url('form/salary/view/'.$salary->id));
         } catch(\Exception $e) {
             DB::rollback();
             Toastr::error('Add Salary fail :)','Error');
@@ -96,14 +99,14 @@ class PayrollController extends Controller
      }
 
     // salary view detail
-    public function salaryView($rec_id)
+    public function salaryView($id)
     {
         $users = DB::table('employees')
                 ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                 ->join('designation', 'employees.desg', '=', 'designation.id')
                 ->join('departments', 'employees.dept', '=', 'departments.id')
                 ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation','departments.department as department')
-                ->where('staff_salaries.rec_id',$rec_id)
+                ->where('staff_salaries.id',$id)
                 ->first();
         return view('payroll.salaryview',compact('users'));
     }
@@ -111,7 +114,6 @@ class PayrollController extends Controller
     // update record
     public function updateRecord(Request $request)
     {
-
         DB::beginTransaction();
         try{
             $update = [
@@ -176,61 +178,24 @@ class PayrollController extends Controller
 
 
     public function search(Request $request){
-
-
-        $users = DB::table('employees')
-                    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-                    ->join('designation', 'employees.desg', '=', 'designation.id')
-                    ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                    ->get();
-        $userList = DB::table('employees')->get();
-
-        // search by name
-        if($request->name)
+    // search by name and to and from date
+        if($request->name && $request->f_date && $request->t_date)
         {
-
-            $users = DB::table('employees')
-                    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-                    ->join('designation', 'employees.desg', '=', 'designation.id')
-                    ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                    ->where('employees.name','LIKE','%'.$request->name.'%')
-                    ->get();
-        $userList = DB::table('employees')->get();
-
-        }
-
-       // search by From date
-        if($request->f_date)
-        {
-            $newDate = date("Y/m/d", strtotime($request->f_date));
+            $fromDate = date("Y-m-d", strtotime($request->f_date));
+            $toDate = date("Y-m-d", strtotime($request->t_date));
             $users = DB::table('employees')
                         ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                         ->join('designation', 'employees.desg', '=', 'designation.id')
                         ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                        ->where('staff_salaries.created_at','>',$newDate)
+                        ->where('employees.id','=',$request->name)
+                        ->whereBetween('staff_salaries.created_at', [$fromDate, $toDate])
                         ->get();
             $userList = DB::table('employees')->get();
-        }
-
-        // search by To_date
-        if($request->t_date)
+        }elseif($request->t_date && $request->f_date)
         {
-            $toDate = date("Y/m/d", strtotime($request->t_date));
-            $users = DB::table('employees')
-                        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-                        ->join('designation', 'employees.desg', '=', 'designation.id')
-                        ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                        ->where('staff_salaries.created_at','<=',$toDate)
-                        ->get();
-            $userList = DB::table('employees')->get();
-        }
-
-
-        // search by From_date & To_date
-        if($request->t_date && $request->f_date)
-        {
-            $fromDate = date("Y/m/d", strtotime($request->f_date));
-            $toDate = date("Y/m/d", strtotime($request->t_date));
+           
+            $fromDate = date("Y-m-d", strtotime($request->f_date));
+            $toDate = date("Y-m-d", strtotime($request->t_date));
             $users = DB::table('employees')
                         ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                         ->join('designation', 'employees.desg', '=', 'designation.id')
@@ -240,23 +205,50 @@ class PayrollController extends Controller
                         ->get();
             $userList = DB::table('employees')->get();
         }
-
-         // search by Name & From_date & To_date
-         if($request->name && $request->t_date && $request->f_date)
+        elseif($request->f_date)
          {
-             $fromDate = date("Y/m/d", strtotime($request->f_date));
-             $toDate = date("Y/m/d", strtotime($request->t_date));
-             $users = DB::table('employees')
-                         ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
-                         ->join('designation', 'employees.desg', '=', 'designation.id')
-                         ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
-                         ->where('employees.name','LIKE','%'.$request->name.'%')
-                         ->whereBetween('staff_salaries.created_at', [$fromDate, $toDate])
-                         ->get();
-             $userList = DB::table('employees')->get();
+         
+            $newDate = date("Y-m-d", strtotime($request->f_date));
+            $users = DB::table('employees')
+                        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+                        ->join('designation', 'employees.desg', '=', 'designation.id')
+                        ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+                        ->where('staff_salaries.created_at','>',$newDate)
+                        ->get();
+            $userList = DB::table('employees')->get();
+        }elseif($request->t_date)
+        {
+          
+            $toDate = date("Y-m-d", strtotime($request->t_date));
+            $users = DB::table('employees')
+                        ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+                        ->join('designation', 'employees.desg', '=', 'designation.id')
+                        ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+                        ->where('staff_salaries.created_at','<=',$toDate)
+                        ->get();
+            $userList = DB::table('employees')->get();
+        }elseif($request->name){
+            
+            $users = DB::table('employees')
+                    ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+                    ->join('designation', 'employees.desg', '=', 'designation.id')
+                    ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+                    ->where('employees.id','=',$request->name)
+                    ->get();
+        $userList = DB::table('employees')->get();
+         }else{
+            $users = DB::table('employees')
+            ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+            ->join('designation', 'employees.desg', '=', 'designation.id')
+            ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
+            ->get();
+$userList = DB::table('employees')->get();
          }
+      
+        
         return view('payroll.employeesalary', compact('users', 'userList'));
     }
+
 
 
 
@@ -266,13 +258,18 @@ class PayrollController extends Controller
                         ->join('designation', 'employees.desg', '=', 'designation.id')
                         ->join('departments', 'employees.dept', '=', 'departments.id')
                         ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation','departments.department as department')
-                        ->where('staff_salaries.rec_id',$id)
+                        ->where('staff_salaries.id',$id)
                         ->first();
+                        if ($users) {
+                            // Update the is_send value to 1
+                            DB::table('staff_salaries')->where('id', $id)->update(['is_send' => 1]);
+                        }
         $userList = DB::table('employees')->get();
 
         $pdf = PDF::loadview('payroll.salarypdf', compact('users'));
-        $path = Storage::put('public/'.$users->naam.'-'.Carbon::now()->format('F').'Salary Slip'.'.'.'pdf', $pdf->output());
-        $name = $users->naam.'_'.Carbon::now()->format('F').'_Salary Slip'.'.'.'pdf';
+        $date = $users->dos; $newDate = date('F', strtotime($date));
+        $path = Storage::put('public/'.$users->naam.'-'.$newDate.'Salary Slip'.'.'.'pdf', $pdf->output());
+        $name = $users->naam.'_'.$newDate.'_Salary Slip'.'.'.'pdf';
         Storage::put($path, $pdf->output());
         // Mail::send('payroll.salaryslip', compact('users'), function ($m) use($users, $pdf, $path, $name){
         //     $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
@@ -280,8 +277,8 @@ class PayrollController extends Controller
         //     ->attachData($pdf->output(),  $name);
         // });
          Mail::send('text.mail', compact('users'), function ($m) use($users, $pdf, $path, $name){
-            $m->From("ramshankar@snakescript.com", env('Snakescript Solutions LLP'));
-            $m->to($users->email)->subject('Test Mail')
+            $m->From("jasmeen@snakescript.com", env('Snakescript Solutions LLP'));
+            $m->to($users->email)->subject('SalarySlip')
             ->attachData($pdf->output(),  $name);
         });
 

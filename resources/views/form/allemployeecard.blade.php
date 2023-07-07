@@ -69,6 +69,7 @@
                 @error('email')
                {!!  Toastr::success($message,'Success')!!}
                @enderror
+              
                 @foreach ($users as $lists)
                     <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
                         <div class="profile-widget">
@@ -340,13 +341,13 @@
         </div>
             <!-- /Add Employee Modal -->
                         </div>
-         <!-- Delete Salary Modal -->
+         <!-- Delete employee Modal -->
      <div class="modal custom-modal fade" id="delete_employee" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="form-header">
-                            <h3>Delete Salary</h3>
+                            <h3>Delete Employee</h3>
                             <p>Are you sure want to delete?</p>
                         </div>
                         <div class="modal-btn delete-action">

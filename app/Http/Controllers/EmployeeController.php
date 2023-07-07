@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Models\Employee;
+use App\Models\StaffSalary;
 use App\Models\department;
 use App\Models\User;
 use App\Models\module_permission;
@@ -21,18 +22,24 @@ class EmployeeController extends Controller
         $departments = department::all();
         return view('form.allemployeecard',compact('users','departments'));
     }
+
+   
+    
     // all employee list
     public function listAllEmployee()
     {
         $users = DB::table('employees')
             ->join('departments', 'employees.dept', '=', 'departments.id')
-            ->join('designation', 'employees.desg', '=', 'designation.id')
-            ->select('employees.*',  'designation.designation as designation','departments.department as department')
+            ->select('employees.*', 'departments.department')
             ->get();
-        $departments = department::all();
-        return view('form.employeelist',compact('users','departments'));
-    }
 
+          
+        return view('form.employeelist', compact('users'));
+      
+                              
+                               
+    }
+    
     // save data employee
     public function saveRecord(Request $request)
     {
@@ -158,33 +165,15 @@ echo $affecte_row;
             return redirect()->back();
         }
     }
-    // delete record
-    // public function deleteRecord($employee_id)
-    // {
-    //     DB::beginTransaction();
-    //     try{
 
-    //         Employee::where('id',$employee_id)->delete();
-
-
-    //         DB::commit();
-    //         Toastr::success('Delete record successfully :)','Success');
-    //         return redirect()->route('all/employee/card');
-
-    //     }catch(\Exception $e){
-    //         DB::rollback();
-    //         Toastr::error('Delete record fail :)','Error');
-    //         return redirect()->back();
-    //     }
-    // }
-
+  //  delete record
     public function deleteRecord(Request $request)
     {
         DB::beginTransaction();
-        try {
-            Employee::where('id',$request->id)->delete();
+        try{
 
-          //  Employee::destroy($request->id);
+            Employee::destroy($request->id);
+
 
             DB::commit();
             Toastr::success('Delete record successfully :)','Success');
@@ -303,13 +292,19 @@ echo $affecte_row;
         $users = DB::table('employees')
                 ->join('departments', 'employees.dept', '=', 'departments.id')
                 ->join('designation', 'employees.desg', '=', 'designation.id')
-                ->select('employees.*', 'departments.department as dept', 'designation.designation as desg')
+                ->select('employees.*','employees.name as emp_name', 'departments.department as dept', 'designation.designation as desg')
                 ->where('employees.id','=', $id)
                 ->first();
-
-        return view('form.employeeprofile',compact('users'));
+        $salary = DB::table('staff_salaries')
+                ->where('rec_id', '=', $id)
+                ->get();
+              
+        
+        //return var_dump($user);
+        return view('form.employeeprofile',compact('users', 'salary'));
     }
-    /** page departments */
+    
+   
     public function index()
     {
         $departments = DB::table('departments')->get();
@@ -432,5 +427,4 @@ echo $affecte_row;
               ]);
         }
     }
-
 }

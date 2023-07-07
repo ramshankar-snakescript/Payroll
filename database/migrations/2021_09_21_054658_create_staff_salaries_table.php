@@ -30,7 +30,7 @@ class CreateStaffSalariesTable extends Migration
            
             $table->string('work_in_holidays_days')->nullable();
             $table->string('work_in_holidays_hours')->nullable();
-
+            $table->string('extra_hours')->nullable();
             $table->string('allowance')->nullable();
             $table->string('medical_allowance')->nullable();
             $table->string('tds')->nullable();
@@ -42,6 +42,7 @@ class CreateStaffSalariesTable extends Migration
 
             $table->string('labour_welfare')->nullable();
             $table->string('gsalary')->nullable();
+            $table->boolean('is_send')->default('0');
             $table->timestamps();
         });
     }

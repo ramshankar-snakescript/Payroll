@@ -1,2 +1,6 @@
-<h2>Hi, {{ $users->naam }}</h2>
-<p>Hope you are doing well. Please Find Below attached Salary Slip</p>
+<p>Hi, {{ $users->naam }}<br>Hope you are doing well.</p>
+<?php  $date = $users->dos; $newDate = date('F', strtotime($date));?>
+<p> Please find below attached {{ $newDate }} Salary Slip</p>
+
+
+<p>Thank You<br> Risha Ranaut<br> HR Manager</p>

@@ -33,8 +33,18 @@
                 <div class="row filter-row">
                     <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                         <div class="form-group form-focus">
-                            <input type="text" name="name" class="form-control floating">
-                            <label class="focus-label">Employee Name</label>
+                           
+                            <select
+                                            class="form-control floating select2s-hidden-accessible @error('name') is-invalid @enderror"
+                                            style="width: 100%;" tabindex="-1" aria-hidden="true" id="name1"
+                                            name="name">
+                                            <option value="">-- Choose Employee --</option>
+                                            @foreach ($userList as $user)
+                                                <option value="{{ $user->id }}" data-employee_id="{{ $user->id }}">
+                                                    {{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                            
                         </div>
                     </div>
 
@@ -75,8 +85,21 @@
                             <label class="focus-label">To</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"></div>
-                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"></div>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                           
+                                <input name="month" class="form-control floating" type="text">
+                            
+                            <label class="focus-label">Month</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+                    <div class="form-group form-focus">
+                    <input name="month" class="form-control floating" type="text">
+                            
+                            <label class="focus-label">Year</label>
+                    </div>
+                    </div>
                     <div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
                         <button type="submit" href="#" class="btn btn-success btn-block"> Search </button>
                     </div>
@@ -92,6 +115,7 @@
                                     <th>Employee</th>
                                    
                                     <th>Employee ID</th>
+                                  <th>  Payslip for </th>
                                     <th>Email</th>
                                     <th>Date Of Salary</th>
                             
@@ -102,8 +126,8 @@
                                     <th hidden></th>
                                 <th hidden ></th>
                                 <th hidden ></th>
-                                <!-- <th hidden ></th>
-                                <th hidden ></th> --->
+                                <th hidden ></th>
+                                 <th hidden ></th> 
                                 <th hidden ></th>
                                 <th hidden ></th>
                                 <!-- <th hidden ></th>
@@ -166,18 +190,29 @@
                                 <td hidden class="wfh">{{ $items->wfh }}</td>
                                 <td hidden class="work_in_holidays_hours">{{ $items->work_in_holidays_hours }}</td>
                                 <td hidden class="work_in_holidays_days">{{ $items->work_in_holidays_days }}</td>
-
+                                <td hidden class="extra_hours	">{{ $items->extra_hours	 }}</td>
                                 <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
+                                <td hidden class="gsalary">{{$items->gsalary}}</td>
+                               <?php
+                                $date = $items->dos;
+                                $monthName = date('F', strtotime($date)); // Get the full month name
+                                $year = date('Y', strtotime($date)); // Get the year;?>
+                                <td> {{ $monthName.'-'.$year}}</td>
                                 <td><a href="mailto:{{ $items->email }}">{{ $items->email }}</a></td>
                                 <td>{{ $items->dos}}</td>
                                 <!-- <td><a class="btn btn-sm btn-info"
                                         href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td> -->
-                                <td><a class="btn btn-sm btn-warning"
-                                        href="{{ url('/send_pdf/' . $items->rec_id) }}">Send</a></td>
-                                <td hidden class="salary">{{ $items->salary }}</td>
+                                        <td> <?php if ($items->is_send==1): ?>
+        <a class="btn btn-sm btn-warning send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Resend</a>
+    <?php else: ?>
+        <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Send</a>
+    <?php endif; ?>
+</td>
+<td hidden class="salary">{{ $items->salary }}</td>
+
 
                                 <td><a class="btn btn-sm btn-primary"
-                                        href="{{ url('form/salary/view/' . $items->rec_id) }}">View</a></td>
+                                        href="{{ url('form/salary/view/' . $items->id) }}">View</a></td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -253,8 +288,15 @@
                             <div class="col-sm-6">
                             <div class="form-group">
                                         <label class="col-form-label">Date Of Salary Slip </label>
-                                        <input class="form-control" type="date" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}" >
-                                    </div>
+                                        <span
+                                                class="text-danger">*</span>
+                                                <input class="form-control @error('dos') is-invalid @enderror" type="date" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}" >
+                                                @error('dos')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                            </div>
                                 </div>
                     </div>
                             <div class="row">
@@ -297,8 +339,13 @@
                                     <div class="form-group">
                                         <label>Total Working Day <span
                                                 class="text-danger">*</span></label>
-                                        <input class="form-control" type="" name="working_day" id="working_day"
+                                        <input class="form-control @error('working_days') is-invalid @enderror" type="" name="working_day" id="working_day"
                                             value="{{ old('working_day') }}">
+                                            @error('working_day')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                     <!-- <div class="form-group">
                                         <label>Allowance(15% Of Basic Salary)</label>
@@ -381,7 +428,22 @@
                                             </span>
                                         @enderror
                                     </div>
+
+
+                                    <div class="form-group">
+                                        <label>Extra Working(mints).</label>
+                                        <input class="form-control @error('prof_tax') is-invalid @enderror"
+                                            type="number" name="extra_hours" id="extra_hours"
+                                            value="{{ old('extra_hours') }}" placeholder="Enter Work In Holidays.">
+                                        @error('extra_hours')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
                                 </div>
+                                
+                               
                                 <div class="col-sm-6">
                                     <h4 class="text-primary">Deductions</h4>
                                     <div class="form-group">
@@ -725,6 +787,7 @@
             $('#e_work_in_holidays_hours').val(_this.find('.work_in_holidays_hours').text());
             $('#e_work_in_holidays_days').val(_this.find('.work_in_holidays_days').text());
             $('#e_labour_welfare').val(_this.find('.labour_welfare').text());
+            $('#e_gsalary').val(_this.find('.gsalary').text());
         });
     </script>
 
@@ -780,7 +843,7 @@
     <!-- epf acording to days of working -->
 
 <script>
-        $('#e_leave').on('change', function() {
+        $('#e_leave').on('input', function() {
             var work_in_holidays_days = $("#e_work_in_holidays_days").val();
             var work_in_holidays_hours = $("#e_work_in_holidays_hours").val();
             var half_day= $("#e_half_day").val();
@@ -947,8 +1010,10 @@
 <!-- epf acording to days of working -->
 
 <script>
-        $('#leave').on('change', function() {
+        $('#leave').on('input', function() {
             var work_in_holidays_days = $("#work_in_holidays_days").val();
+            var extra_working = $("#extra_hours").val();
+           
             var work_in_holidays_hours = $("#work_in_holidays_hours").val();
             var half_day= $("#half_day").val();
             var short_leave = $("#short_leave").val();
@@ -958,14 +1023,16 @@
             var leave= $("#leave").val();
             var salary = $("#salary").val();
             var day =  $("#working_day").val();
+            
             var per_day_salary=(salary / day);
            var per_hour_salary=((per_day_salary/8));
+           var extra_hours_sal=per_hour_salary*(extra_working/60);
            // var day_home=(day-wfh);
-            console.log(day);
+           console.log(extra_hours_sal);
             var work_in_holidays_days = (work_in_holidays_days * per_day_salary);
             var work_in_holidays_hours = ((work_in_holidays_hours/8) * per_day_salary);
             var wfhs = ((wfh * per_day_salary ) / 2);
-          
+        
            if(short_leave >= 2){
                 var short_leave = short_leave - 2;
                 var short_salary = ((short_leave/8) * per_day_salary);
@@ -1003,10 +1070,10 @@
             var day=(days-wfh);
          var ts=(per_day_salary * day);
          console.log(ts);
-            var tsalary = (ts + work_in_holidays_days + work_in_holidays_hours + wfhs);
+            var tsalary = (ts + work_in_holidays_days + work_in_holidays_hours + wfhs + extra_hours_sal);
             console.log(tsalary);
             console.log( half_day);
-            var gsalary = Math.round(tsalary - short_salary - half_day);
+            var gsalary = Math.round((tsalary - short_salary - half_day));
             console.log(gsalary);
             document.getElementById("gsalary").value = gsalary;
             if (gsalary >= parseInt(15000)) {
@@ -1033,6 +1100,22 @@
             
         });
     </script>
+    <script>
 
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('send-button')) {
+        var button = event.target;
+        if (button.textContent === 'Send') {
+            button.textContent = 'Resend';
+        } else {
+            button.textContent = 'Send';
+        }
+        event.preventDefault();
+    }
+});
+
+
+
+    </script>
 @endsection
 @endsection
