@@ -170,7 +170,7 @@
                                     <div class="form-group">
                                         <label>Department <span class="text-danger">*</span></label>
                                         <select class="select form-control" id="dept" style="width: 100%;"
-                                            tabindex="-1" aria-hidden="true" id="gender" name="dept" >
+                                            tabindex="-1" aria-hidden="true" id="dept" name="dept" >
                                             <option SELECTED DISABLED>Select Department</option>
                                             @foreach ($departments as $dept)
                                                 <option value="{{ $dept->id }}">{{ $dept->department }}</option>

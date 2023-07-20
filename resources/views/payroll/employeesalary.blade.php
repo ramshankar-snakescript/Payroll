@@ -916,7 +916,9 @@
                         console.log(gsalary);
                     } else {
                         console.log(gsalary);
-                        $("#esi, #e_esi").val(Math.round((gsalary * parseInt(4) / 100)));
+                        var esi1=((gsalary * parseInt(0.75) / 100) +0.99)
+                        var esi2=((gsalary * parseInt(3.25) / 100) +0.99)
+                        $("#esi, #e_esi").val(Math.round((esi1 +esi2)));
                     }
 
 
@@ -992,7 +994,12 @@
                     if (ctc > parseInt(21000)) {
                         $("#esi, #e_esi").val(0);
                     } else {
-                        $("#esi, #e_esi").val((ctc * parseInt(4) / 100));
+                        console.log(gsalary);
+                        var esi1=parseInt((gsalary * (0.75 / 100))+0.99 );
+                        console.log (esi1);
+                        var esi2=parseInt((gsalary * (3.25 / 100))+0.99);
+                        console.log(esi2);
+                        $("#esi, #e_esi").val((parseInt(esi1 + esi2)));
                     }
 
 
@@ -1089,7 +1096,11 @@
                         console.log(gsalary);
                     } else {
                         console.log(gsalary);
-                        $("#esi, #e_esi").val(Math.round((gsalary * parseInt(4) / 100)));
+                        var esi1=parseInt((gsalary * (0.75 / 100))+0.99 );
+                        console.log (esi1);
+                        var esi2=parseInt((gsalary * (3.25 / 100))+0.99);
+                        console.log(esi2);
+                        $("#esi, #e_esi").val((parseInt(esi1 + esi2)));
                     }
 
 

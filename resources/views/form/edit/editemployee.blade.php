@@ -49,7 +49,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Monthly Salary</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" id="name" readonly name="ctc" value="{{ $employees[0]->ctc }}">
+                                        <input type="text" class="form-control" id="name"  name="ctc" value="{{ $employees[0]->ctc }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -66,10 +66,10 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Designation</label>
                                     <div class="col-md-10">
-                                        <select class="select form-control" id="designation" name="designation">
+                                        <select class="select form-control" id="designation" name="desg">
                                             {{-- <option value="{{ $employees[0]->gender }}" {{ ( $employees[0]->gender == $employees[0]->gender) ? 'selected' : '' }}>{{ $employees[0]->gender }} </option> --}}
 
-                                            <option value="{{$employees[0]->designation}}">{{$employees[0]->designation}}</option>
+                                            <option value="{{$employees[0]->desg}}">{{$employees[0]->desg}}</option>
 
                                         </select>
                                     </div>

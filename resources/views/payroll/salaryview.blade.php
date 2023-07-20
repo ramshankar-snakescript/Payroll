@@ -129,9 +129,6 @@ else{
     $short_sal=$shortleave;
 }
 
-
-
-
 $halfday =$users->half_day;
 $half_sal=$halfday*$perhours;
 $lev=$users->leave+$wfh;
@@ -164,11 +161,15 @@ $overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_inte
   
 
      //total salary
+     if($lev >= 1){
      $total_earning=($users->basic+$users->hra+$users->conveyance+$overtime_salary);
-     
+     }
+     else{
+        $total_earning=($users->basic+$users->hra+$users->conveyance+$overtime_salary+$perday);
+     }
      $total_deductions= ($users->pf+$users->esi+$users->tds+$l_d);
 
-     echo$overtime_salary;
+    // 
     ?>
     
     <div class="row">
@@ -381,12 +382,12 @@ $overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_inte
             </tr>
             <tr>
                     <th style="text-align: center;">Total Earnings</th>
-                <?php
+                
 
-       $total_earnings=$total_earning;
-       echo' <td style="text-align: center;">'.round( $total_earnings,2).'</td>';
+       
+     <td style="text-align: center;">{{ number_format($total_earning) }}</td>'
     
-?>
+
                     <?php
                     if( $total_deductions ){
                         echo'
@@ -405,18 +406,12 @@ $overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_inte
             </tr>
             <tr>
                     <th colspan="3" style="background: #dee4fe;font-weight: 600;font-size:17px;text-align:right;">Net Salary</th>
-                    <?php
-                    if($l_d <=1){
-                   $net= $total_earning - $total_deductions;
-                   echo$total_earning;
-                   echo' <td colspan="1" style="text-align:center;">'. number_format($net ).'</td>';
-                    }
-                    else{
-                        $net= $total_earnings - $total_deductions;
-                      echo'  <td colspan="1" style="text-align:center;"> '. number_format($net ).'</td>';
-                    }
+              
+                 <?php $net= $total_earning - $total_deductions;?>
+                     <td colspan="1" style="text-align:center;">{{ number_format($net) }} </td>
+                    
                    
-                    ?>
+                   
                    
 
                 </tr> 

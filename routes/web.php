@@ -160,7 +160,7 @@ Route::controller(EmployeeController::class)->group(function () {
 
 // ----------------------------- profile employee ------------------------------//
 Route::controller(EmployeeController::class)->group(function () {
-    Route::get('employee/profile/{rec_id}', 'profileEmployee')->middleware('auth');
+    Route::get('employee/profile/{id}', 'profileEmployee')->middleware('auth');
     // Route::get('employee/profile/{rec_id}', 'profileSalary')->middleware('auth');
     Route::post('form.employeeprofile ', 'deleteSalary')->middleware('auth');
 });

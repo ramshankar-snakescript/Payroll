@@ -5,7 +5,7 @@
 @endsection --}}
 @section('content')
 
-
+                            
 
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -47,7 +47,8 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="profile-info-left">
-                                                <h3 class="user-name m-t-0 mb-0">{{ $users->name }}</h3>
+                                               
+                                                <h3 class="user-name m-t-0 mb-0">{{$users->name }}</h3>
                                                 @if(!empty($users->dept))
                                                 <h6 class="text-muted"> {{ $users->dept }}</h6>
                                                 @endif
@@ -133,7 +134,8 @@
                         </div>
                         
                     </div><br>
-
+                    <div class="card mb-0">
+                <div class="card-body">
                    <!-- Page Content -->
                     <div class="row">
                 <div class="col-md-12">
@@ -263,6 +265,7 @@
                     </div>
                 </div>
             </div>
+    </div>
 <!-- /Page Content -->
         </div>
         </div>

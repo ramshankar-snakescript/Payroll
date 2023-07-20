@@ -277,7 +277,7 @@ $userList = DB::table('employees')->get();
         //     ->attachData($pdf->output(),  $name);
         // });
          Mail::send('text.mail', compact('users'), function ($m) use($users, $pdf, $path, $name){
-            $m->From("jasmeen@snakescript.com", env('Snakescript Solutions LLP'));
+            $m->From("risha@snakescript.com", env('Snakescript Solutions LLP'));
             $m->to($users->email)->subject('SalarySlip')
             ->attachData($pdf->output(),  $name);
         });

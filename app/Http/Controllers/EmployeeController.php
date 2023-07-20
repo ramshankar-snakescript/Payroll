@@ -135,6 +135,7 @@ class EmployeeController extends Controller
                 'name'=>$request->name,
 
              'employee_id'      => $request->empid,
+             'ctc'         => $request->ctc,
              'desg'        => $request->desg,
              'dept'        => $request->dept,
              'doj'         => $request->doj,
@@ -289,18 +290,20 @@ echo $affecte_row;
     // employee profile
     public function profileEmployee($id)
     {
+
         $users = DB::table('employees')
                 ->join('departments', 'employees.dept', '=', 'departments.id')
                 ->join('designation', 'employees.desg', '=', 'designation.id')
                 ->select('employees.*','employees.name as emp_name', 'departments.department as dept', 'designation.designation as desg')
                 ->where('employees.id','=', $id)
                 ->first();
+               
         $salary = DB::table('staff_salaries')
                 ->where('rec_id', '=', $id)
                 ->get();
-              
-        
-        //return var_dump($user);
+      
+       
+        //return var_dump($users);
         return view('form.employeeprofile',compact('users', 'salary'));
     }
     
