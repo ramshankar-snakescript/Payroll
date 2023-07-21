@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use DB;
 use Mail;
@@ -253,6 +252,8 @@ $userList = DB::table('employees')->get();
 
 
      public function send_pdf($id){
+         // Dispatch the job to the queue
+   
         $users = DB::table('employees')
                         ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
                         ->join('designation', 'employees.desg', '=', 'designation.id')
@@ -277,7 +278,7 @@ $userList = DB::table('employees')->get();
         //     ->attachData($pdf->output(),  $name);
         // });
          Mail::send('text.mail', compact('users'), function ($m) use($users, $pdf, $path, $name){
-            $m->From("risha@snakescript.com", env('Snakescript Solutions LLP'));
+            $m->From("jasmeen@snakescript.com", env('Snakescript Solutions LLP'));
             $m->to($users->email)->subject('SalarySlip')
             ->attachData($pdf->output(),  $name);
         });
@@ -294,6 +295,9 @@ $userList = DB::table('employees')->get();
 
         return redirect()->route('form/salary/page');
      }
+
+
+    
 
      public function get_salary($id){
         $data = DB::table("employees")

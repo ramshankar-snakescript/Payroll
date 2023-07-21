@@ -177,6 +177,7 @@ Route::controller(PayrollController::class)->group(function () {
     Route::get('form/salary/view/{id}', 'salaryView')->middleware('auth');
     Route::get('form/payroll/items', 'payrollItems')->middleware('auth')->name('form/payroll/items');
     Route::get('get_salary/{id}', 'get_salary')->middleware('auth')->name('get_salary');
+
 });
 
 
