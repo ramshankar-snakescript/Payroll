@@ -24,7 +24,7 @@ class User extends Authenticatable
         'join_date',
         'phone_number',
         'status',
-        'role_name',
+        'role',
         'email',
         'role_name',
         'avatar',

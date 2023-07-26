@@ -1,4 +1,43 @@
-<div class="sidebar" id="sidebar">
+
+<?php
+	if(Auth::user()->role==0){
+	?>
+    <div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li class="menu-title">
+                    <span>Main</span>
+                </li>
+                <li>
+                    <a class="active" href="{{ route('home') }}" class="noti-dot">
+                        <i class="la la-dashboard"></i>
+                        <span> Dashboard</span>
+                    </a>
+                    {{-- <ul style="display: none;">
+                        <li><a  href="{{ route('home') }}">Admin Dashboard</a></li>
+                        <li><a href="{{ route('em/dashboard') }}">Employee Dashboard</a></li>
+                    </ul> --}}
+                </li>
+
+                
+
+                <li >
+                    <a href="{{ route('all/employee/card') }}">
+                        <i class="la la-user"></i> <span> My info</span>
+                    </a>
+                </li>
+
+                
+
+            </ul>
+        </div>
+    </div>
+</div>
+<?php
+		}else{
+       ?>
+        <div class="sidebar" id="sidebar">
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
@@ -50,4 +89,5 @@
             </ul>
         </div>
     </div>
-</div>
+</div><?php
+       }?>

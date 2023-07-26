@@ -27,7 +27,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+   
     /**
      * Where to redirect users after login.
      *
@@ -64,17 +64,23 @@ class LoginController extends Controller
         $email    = $request->email;
         $password = $request->password;
 
+       
         $dt         = Carbon::now();
         $todayDate  = $dt->toDayDateTimeString();
         if (Auth::attempt(['email'=>$email,'password'=>$password])) {
 
             Toastr::success('Logged in Successfully :)','Success');
+            
             return redirect()->intended('home');
+            
         }
         else{
             Toastr::error('fail, WRONG USERNAME OR PASSWORD :)','Error');
             return redirect('login');
         }
+
+
+    
 
     }
 

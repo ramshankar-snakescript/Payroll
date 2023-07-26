@@ -11,6 +11,10 @@ use App\Models\department;
 use App\Models\User;
 use App\Models\module_permission;
 use App\Models\designation;
+use Hash;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class EmployeeController extends Controller
 {
@@ -51,6 +55,7 @@ class EmployeeController extends Controller
              'desg'        => 'required',
              'dept'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
+             'password' => 'required|string',
              'contact'     => 'required|regex:/[0-9]{10}/',
              'doj'         => 'required',
              'birthDate'   => 'required',
@@ -60,7 +65,8 @@ class EmployeeController extends Controller
          try{
 
              $employees = Employee::where('email', '=',$request->email)->first();
-             if ($employees === null)
+             $users = User::where('email', '=',$request->email)->first();
+             if ($employees === null ||$users== null )
              {
                 if($request->employee_pic){
                 $name = $request->file('employee_pic')->store('public/uploads');
@@ -79,7 +85,8 @@ class EmployeeController extends Controller
                 $employee->uan      = $request->uan;
                 $employee->esi     = $request->esi;
                 $employee->pran     = $request->pran;
-                $employee->email        = $request->email;
+                $employee->email        = $request->email;  
+                $employee->password        = $request->password;
                 $employee->birth_date   = $request->birthDate;
                 $employee->gender       = $request->gender;
                 $employee->image        =$o_name;
@@ -88,8 +95,24 @@ class EmployeeController extends Controller
                 $employee->ifsc = $request->ifsc;
                 $employee->save();
 
-
-
+               
+        
+                $dt       = Carbon::now();
+                $todayDate = $dt->toDayDateTimeString();
+        
+                User::create([
+                    'name'      => $request->name,
+        
+                    'email'     => $request->email,
+        
+                    'password'  => Hash::make($request->password),
+                ]);
+                Mail::send('text.added', compact('users'), function ($m) use($users,){
+                    $m->From("jasmeen@snakescript.com", env('Snakescript Solutions LLP'));
+                    $m->to($users->email)->subject('welcome');
+                    
+                });
+        
                  DB::commit();
                  Toastr::success('Add new employee successfully :)','Success');
                  return redirect()->route('all/employee/card');

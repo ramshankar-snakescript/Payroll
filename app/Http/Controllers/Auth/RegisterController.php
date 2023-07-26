@@ -31,13 +31,14 @@ class RegisterController extends Controller
 
         $dt       = Carbon::now();
         $todayDate = $dt->toDayDateTimeString();
-
+$role=1;
         User::create([
             'name'      => $request->name,
 
             'email'     => $request->email,
 
             'password'  => Hash::make($request->password),
+            'role'  => $role,
         ]);
         Toastr::success('Create new account successfully :)','Success');
         return redirect('login');

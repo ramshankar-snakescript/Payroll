@@ -1095,12 +1095,21 @@
                         $("#esi, #e_esi").val(0);
                         console.log(gsalary);
                     } else {
-                        console.log(gsalary);
-                        var esi1=parseInt((gsalary * (0.75 / 100))+0.99 );
-                        console.log (esi1);
-                        var esi2=parseInt((gsalary * (3.25 / 100))+0.99);
-                        console.log(esi2);
-                        $("#esi, #e_esi").val((parseInt(esi1 + esi2)));
+                        // console.log(gsalary);
+                        // var esi1=parseInt((gsalary * (0.75 / 100)) );
+                        // console.log (esi1);
+                        // var esi2=parseInt((gsalary * (3.25 / 100)));
+                        // console.log(esi2);
+                        // $("#esi, #e_esi").val((parseInt(esi1 + esi2)));
+
+                        var esi1 = (gsalary * 0.0075);
+       
+        console.log(esi1);
+
+        var esi2 = (gsalary * 0.0325);
+        console.log(esi2);
+        var totalEsi = parseInt(esi1 + esi2);
+        $("#esi, #e_esi").val(totalEsi);
                     }
 
 

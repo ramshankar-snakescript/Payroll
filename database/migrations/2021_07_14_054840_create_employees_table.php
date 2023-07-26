@@ -26,6 +26,7 @@ class CreateEmployeesTable extends Migration
             $table->string('esi')->nullable();
             $table->string('pran')->nullable();
             $table->string('email')->nullable();
+            $table->string('password')->nullable();
             $table->string('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('image')->nullable();

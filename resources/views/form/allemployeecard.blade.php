@@ -227,7 +227,19 @@
                                         </span>
                                     </div>
                                 </div>
-
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Password <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="password" id="password" name="password"
+                                            placeholder="Password" value="{{ old('Password') }}">
+                                            <span class="text-danger" id="flash-message"></span>
+                                        <span class="text-danger">
+                                            @error('email')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="col-form-label">Date Of Joining </label>
