@@ -43,6 +43,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// //404 
+// Route::get('/404', function () {
+//     return view('errors.404');
+// });
+
 Route::group(['middleware'=>'auth'],function()
 {
     // Route::get('/home',[Controller::class, 'index']);
@@ -130,6 +135,7 @@ Route::controller(EmployeeController::class)->group(function () {
     Route::get('all/employee/card', 'cardAllEmployee')->middleware('auth')->name('all/employee/card');
     Route::get('all/employee/list', 'listAllEmployee')->middleware('auth')->name('all/employee/list');
     Route::post('all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');
+    //Route::match(array('GET','POST'),'all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');;
     Route::get('all/employee/view/edit/{employee_id}', 'viewRecord')->middleware('auth');
     Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
 
@@ -199,3 +205,6 @@ Route::post('/designation/delete', [DesignationController::class, 'delete'])->na
 
 Route::get('send_pdf/{id}', [PayrollController::class, 'send_pdf']);
 Route::get('check_email/{email}', [EmployeeController::class, 'check_email']);
+
+
+
