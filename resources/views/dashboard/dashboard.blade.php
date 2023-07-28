@@ -124,7 +124,7 @@
                 <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                     <div class="card dash-widget">
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
-                        <a href="{{ route('all/employee/card') }}" style="color:black;"> 
+                        <a href="{{ route('/myinfo') }}" style="color:black;"> 
                         <div class="dash-widget-info">
                                 <h3>{{$emp}}</h3> <span>My info</span>
                             </div>

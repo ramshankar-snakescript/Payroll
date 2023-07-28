@@ -23,7 +23,7 @@
                 
 
                 <li >
-                    <a href="{{ route('all/employee/card') }}">
+                    <a href="{{ route('/myinfo') }}">
                         <i class="la la-user"></i> <span> My info</span>
                     </a>
                 </li>

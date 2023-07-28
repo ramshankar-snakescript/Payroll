@@ -22,6 +22,7 @@ use App\Http\Controllers\TrainersController;
 use App\Http\Controllers\TrainingTypeController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\EmployeeShowDataController;
 
 use App\Mail\TestEmail;
 // use DB;
@@ -43,7 +44,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::group(['middleware'=>'auth'],function()
+Route::group(['middleware'=>'auth', 'checkUserRole:1'],function()
 {
     // Route::get('/home',[Controller::class, 'index']);
     // Route::get('home',function()
@@ -53,11 +54,19 @@ Route::group(['middleware'=>'auth'],function()
 });
 
 Auth::routes();
+//------------------------employee show data-------------------------------//
+Route::controller(EmployeeShowDataController::class)->group(function () {
+    Route::get('/myinfo', 'profileEmployee')->name('/myinfo');
+
+});
+
+
+
 
 // ----------------------------- main dashboard ------------------------------//
 Route::controller(HomeController::class)->group(function () {
+    Route::get('/home', 'index')->middleware(['auth', 'checkUserRole:1'])->name('home');
     Route::get('/home', 'index')->name('home');
-
 });
 
 // -----------------------------settings----------------------------------------//
@@ -127,9 +136,10 @@ Route::controller(UserManagementController::class)->group(function () {
 
 // ----------------------------- form employee ------------------------------//
 Route::controller(EmployeeController::class)->group(function () {
-    Route::get('all/employee/card', 'cardAllEmployee')->middleware('auth')->name('all/employee/card');
+    Route::get('all/employee/card', 'cardAllEmployee')->middleware(['auth', 'checkUserRole:1'])->name('all/employee/card');
     Route::get('all/employee/list', 'listAllEmployee')->middleware('auth')->name('all/employee/list');
     Route::post('all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');
+    //Route::match(array('GET','POST'),'all/employee/save', 'saveRecord')->middleware('auth')->name('all/employee/save');;
     Route::get('all/employee/view/edit/{employee_id}', 'viewRecord')->middleware('auth');
     Route::post('all/employee/update', 'updateRecord')->middleware('auth')->name('all/employee/update');
 

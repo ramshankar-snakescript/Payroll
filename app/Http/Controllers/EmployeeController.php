@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\module_permission;
 use App\Models\designation;
 use Hash;
+use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -62,11 +63,11 @@ class EmployeeController extends Controller
              'gender'      => 'required',
          ]);         
          DB::beginTransaction();
-         try{
+       try{
 
              $employees = Employee::where('email', '=',$request->email)->first();
              $users = User::where('email', '=',$request->email)->first();
-             if ($employees === null ||$users== null )
+             if ($employees === null || $users == null )
              {
                 if($request->employee_pic){
                 $name = $request->file('employee_pic')->store('public/uploads');
@@ -107,9 +108,10 @@ class EmployeeController extends Controller
         
                     'password'  => Hash::make($request->password),
                 ]);
-                Mail::send('text.added', compact('users'), function ($m) use($users,){
+
+                Mail::send('text.added', compact('employee'), function ($m) use($employee,){
                     $m->From("jasmeen@snakescript.com", env('Snakescript Solutions LLP'));
-                    $m->to($users->email)->subject('welcome');
+                    $m->to($employee->email)->subject('welcome');
                     
                 });
         
@@ -118,7 +120,7 @@ class EmployeeController extends Controller
                  return redirect()->route('all/employee/card');
              } else {
                  DB::rollback();
-                 Toastr::error('Add new employee exits :)','Error');
+                 Toastr::error('Add new employee exitsdd :)','Error');
                  return redirect()->back();
              }
          }catch(\Exception $e){
