@@ -1770,6 +1770,9 @@ table.dataTable thead > tr > td.sorting {
 .page-header .breadcrumb a {
 	color: #333;
 }
+.breadcrumb-item a {
+    color: black;
+}
 .card {
 	border: 1px solid #ededed;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -7778,6 +7781,21 @@ ul.comment-list li ul.children {
 }
 .mb-30 {
 	margin-bottom: 30px !important;
+}
+
+
+.user-profile-card .profile-basic {
+    margin: 0!important;
+    padding: 0!important;
+}
+.user-profile-card .profile-img-wrap{
+	position:inherit!important;
+}
+.profile-card-column{
+	border-right: 1px solid #e3e3e3;
+}
+.user-profile-card .profile-info-left{
+border:none;
 }
 
 /*-----------------

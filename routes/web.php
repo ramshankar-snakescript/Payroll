@@ -57,6 +57,10 @@ Auth::routes();
 //------------------------employee show data-------------------------------//
 Route::controller(EmployeeShowDataController::class)->group(function () {
     Route::get('/myinfo', 'profileEmployee')->name('/myinfo');
+    Route::post('/myinfo/update', 'updateRecord')->name('myinfo/update');
+    Route::post('/myinfo/emergencycontact', 'Emergencycontact')->name('myinfo/emergencycontact');
+    Route::post('/myinfo/qualifications', 'Qualifications')->name('myinfo/qualifications');
+    Route::post('/myinfo/address', 'Address')->name('myinfo/address');
 
 });
 

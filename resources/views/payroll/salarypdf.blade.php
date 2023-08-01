@@ -91,17 +91,7 @@
 <body>
     {!! Toastr::message() !!}
     <?php
-    $start = Carbon\Carbon::now()->startOfMonth();
-    $end = Carbon\Carbon::now()->endOfMonth();
-    // echo Carbon\Carbon::parse($month)->startOfMonth();
-    $dates = [];
-    while ($start->lte($end)) {
-        $carbon = Carbon\Carbon::parse($start);
-        if ($carbon->isWeekend() != true) {
-            $dates[] = $start->copy()->format('Y-m-d');
-        }
-        $start->addDay();
-    }
+    
     $d =$users->working_day;
     $netsalary = $users->salary;
 
@@ -112,6 +102,8 @@
 
     $perday =  $users->salary / $d;
     $perhours= $perday/8;
+    $extra_hours=$users->extra_hours;
+    $extra= $perhours* ($extra_hours/60);
     $paid_leave_sal = $perday * 1;
 
     $days_worked = $users->working_day - (float) $users->leave;
@@ -128,32 +120,29 @@
         $work_from_office = $days_worked;
     }
 //leave
-$shortleave =($users->short_leave)/2;
-$short_sal=($shortleave*$perhours);
+$shortleave =$users->short_leave;
+if($shortleave >= 2){
+    $shortleave = $shortleave - 2;
+    $short_sal = ($shortleave*$perhours);
+}
+else{
+    $short_sal=$shortleave;
+}
+
 $halfday =$users->half_day;
 $half_sal=$halfday*$perhours;
+$lev=$users->leave+$wfh;
 
-    if ($users->leave > 1) {
-                    $leaves = (float) $users->leave - 1;
+    if ($lev > 1) {
+                    $leaves = (float) $lev - 1;
                     $l_d = $perday * $leaves+$short_sal+$half_sal;
                    
                      $work_from_office = $work_from_office - $leaves;
                     
                 } else {
                     $leaves = (int) 0;
-                    $l_d = $perday * $leaves+$short_sal+$half_sal;
-                    echo'$l_d';
+                    $l_d = $perday *$leaves+$short_sal+$half_sal;
                 }
-
-                $a = (int) $users->tds;
-                $c = (int) $users->esi;
-                $e = (int) $users->labour_welfare;
-                $pf = (int) $users->pf;
-                $Total_Deductions = $a + $c + $pf + $e + $l_d;
-                $deductions = $a + $c + $pf + $e;
-
-
-    
      //bonus
      $bonus=$users->bonus;
 
@@ -161,21 +150,29 @@ $half_sal=$halfday*$perhours;
 
 $overtime= $work_in_holidays * $perday;
 $overtime_hours=$users->work_in_holidays_hours*$perhours;
-$overtime_salary=round($users->bonus+$overtime+$overtime_hours+$users->telephone_internet+$wfh_salary);
+$overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_internet+$wfh_salary+$extra);
 // if($users->leave==0){
 //     $overtime_salary=$overtime_salary+$paid_leave_sal;
 // }
 
    
-    $gross_sal = $users->gsalary + $users->bonus + $users->telephone_internet;
+    $gross_sal = $users->bonus + $users->telephone_internet-$users->tds;
 
-   
+  
 
      //total salary
-     $total_earning=round($users->basic+$users->hra+$users->conveyance+$overtime_salary);
-     $total_deductions= round($users->pf+$users->esi+$users->tds+$l_d);
+     if($lev >= 1){
+     $total_earning=($users->basic+$users->hra+$users->conveyance+$overtime_salary);
+     }
+     else{
+        $total_earning=($users->basic+$users->hra+$users->conveyance+$overtime_salary+$perday);
+     }
+     $total_deductions= ($users->pf+$users->esi+$users->tds+$l_d);
+
+    // 
     ?>
     
+   
     <div class="logo_header">
         {{-- <img src="image/full-logo.jpg"> --}}
         <h2>Snakescript Solutions LLP</h2>
@@ -351,10 +348,11 @@ $overtime_salary=round($users->bonus+$overtime+$overtime_hours+$users->telephone
                     <td style="text-align: center;">Overtime</td>
                     <?php
                     if($users->leave==0){
-                   echo '<td style="text-align: center;">'. round($overtime_salary+ $paid_leave_sal). '</td>';
+                       
+                   echo '<td style="text-align: center;">'.round( $overtime_salary+ $paid_leave_sal,2). '</td>';
                     }
                    elseif($overtime_salary){
-                    echo'<td style="text-align: center;">'. number_format($overtime_salary).'</td>';
+                    echo'<td style="text-align: center;">'. round($overtime_salary,2).'</td>';
                    }
                     else{
                     echo'<td style="text-align: center;">NA</td>';
@@ -364,7 +362,7 @@ $overtime_salary=round($users->bonus+$overtime+$overtime_hours+$users->telephone
                     if($users->tds){
                         echo'
                     <td style="text-align: center;">TDS</td>
-                    <td style="text-align: center;">'.number_format($users->tds).'</td>';
+                    <td style="text-align: center;">'.($users->tds).'</td>';
                     }
                     else{
                         echo'<td style="text-align: center;">TDS</td>
@@ -380,23 +378,17 @@ $overtime_salary=round($users->bonus+$overtime+$overtime_hours+$users->telephone
             </tr>
             <tr>
                     <th style="text-align: center;">Total Earnings</th>
-                    <?php
-if($l_d <=1){
-    $total_earnings=$total_earning+$overtime_salary+ $paid_leave_sal;
-    echo' <td style="text-align: center;">'.number_format($total_earnings),'</td>';
-    }
-    else{
-       $total_earnings=$total_earning+$overtime_salary;
-       echo' <td style="text-align: center;">'.number_format($total_earnings).'</td>';
-    }
+                
 
+       
+     <td style="text-align: center;">{{ number_format($total_earning) }}</td>'
+    
 
-?>
                     <?php
-                    if($total_deductions){
+                    if( $total_deductions ){
                         echo'
                         <th style="text-align: center;">Total Deductions</th>
-                    <td style="text-align: center;">'.number_format($total_deductions).'</td>';
+                    <td style="text-align: center;">'.round( $total_deductions, 2 ).'</td>';
                     }
                     else{
                         echo' <th style="text-align: center;">Total Deductions</th>
@@ -410,75 +402,16 @@ if($l_d <=1){
             </tr>
             <tr>
                     <th colspan="3" style="background: #dee4fe;font-weight: 600;font-size:17px;text-align:right;">Net Salary</th>
-                    <td colspan="1" style="text-align:center;"> {{ number_format($total_earnings - $total_deductions) }}</td>
+              
+                 <?php $net= $total_earning - $total_deductions;?>
+                     <td colspan="1" style="text-align:center;">{{ number_format($net) }} </td>
+                    
+                   
+                   
+                   
 
                 </tr> 
-            <!-- </tr>
-                <td style="text-align: right;">Total paid leaves</td>
-                   <td colspan="1"style="text-align: right;"><?php echo $paid_leave_sal; ?></td>
-
-
-                   <td style="text-align:right;">Unpaid leave </td>
-                    <td style="text-align: right;">{{$l_d}} </td> -->
-                    <!-- <td> Short leaves</td>
-                    <td style="text-align: center;">1</td>
-
-                    <td> Total( Short leaves + Half day )</td>
-                    <td style="text-align: right;"> <?php echo $shortleave.'+'.$halfday;?> </td> -->
-                <!-- </tr>
-                <tr>
-                   
-                    <td style="text-align:right;">EPF</td>
-                    <td style="text-align: right;">{{ number_format($users->pf) }}</td>
-                    <td style="text-align:right;">ESI</td>
-                    <td style="text-align: right;">{{ number_format($users->esi) }}</td>
-
-
-                </tr> -->
-                <!---top--->
-                <!-- <?php
-
-
-                ?>
-                <tr>
-                    <td colspan="4" style="background: #dee4fe;font-weight: 600;font-size:17px;">
-                        Deductions </td>
-                </tr>
-                <tr>
-                    <td><span style="text-align:left;float:left">EPF:</span><span
-                            style="float:right;text-align:right;"> (Employer contribution(12%) :
-                            {{ number_format($users->pf / 2) }} <br> Employee contribution(12%)) :
-                            {{ number_format($users->pf / 2) }}</span></td>
-                    <td style="text-align: right;">{{ number_format($users->pf) }}</td>
-
-                    <td> <span style="text-align:left;float:left"> E.S.I:</span> <span
-                            style="float:right;text-align:right">Employer Contribution(3.75%)<br> Employee
-                            Contribution(0.25%) </span></td>
-                    <td style="text-align: right;">{{ number_format($users->esi) }}</td>
-                </tr>
-                <tr>
-                    <td style="text-align:right;">Home Loan</td>
-                    <td style="text-align: right;">{{ number_format($users->labour_welfare) }}</td>
-
-                    <td style="text-align:right;">Unpaid leave </td>
-                    <td style="text-align: right;">{{ $leaves}} </td>
-                </tr>
-                <tr>
-                    <td style="text-align:right;">Half day</td>
-                    <td style="text-align: right;">{{ $halfday}}</td>
-
-                    <td style="text-align:right;">Short_leave</td>
-                    <td style="text-align: right;">{{$shortleave }}</td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align:right;">Total Deductions</td>
-                    <td style="text-align: right;">{{ number_format($Total_Deductions) }}</td>
-                </tr> -->
-                <!-- <tr style="background: #dee4fe;">
-                    <td colspan="3" style="text-align:right;font-size:17px;font-weight: 600;">Paid Salary</td>
-                    <td style="text-align: right;font-size:17px;font-weight: 600;">{{ number_format($gross_sal - $deductions) }}
-                    </td>
-                </tr> -->
+           
             </table>
 
         </div>

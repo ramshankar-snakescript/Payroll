@@ -136,7 +136,7 @@ $lev=$users->leave+$wfh;
     if ($lev > 1) {
                     $leaves = (float) $lev - 1;
                     $l_d = $perday * $leaves+$short_sal+$half_sal;
-                    
+                   
                      $work_from_office = $work_from_office - $leaves;
                     
                 } else {
