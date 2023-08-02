@@ -53,6 +53,7 @@ Route::group(['middleware'=>'auth', 'checkUserRole:1'],function()
     // });
 });
 
+
 Auth::routes();
 //------------------------employee show data-------------------------------//
 Route::controller(EmployeeShowDataController::class)->group(function () {
@@ -60,7 +61,7 @@ Route::controller(EmployeeShowDataController::class)->group(function () {
     Route::post('/myinfo/update', 'updateRecord')->name('myinfo/update');
     Route::post('/myinfo/emergencycontact', 'Emergencycontact')->name('myinfo/emergencycontact');
     Route::post('/myinfo/qualifications', 'Qualifications')->name('myinfo/qualifications');
-    Route::post('/myinfo/address', 'Address')->name('myinfo/address');
+    Route::post('/myinfo/address', 'Contact')->name('myinfo/address');
 
 });
 

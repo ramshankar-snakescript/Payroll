@@ -126,7 +126,7 @@
                         <div class="card-body"> <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                         <a href="{{ route('/myinfo') }}" style="color:black;"> 
                         <div class="dash-widget-info">
-                                <h3>{{$emp}}</h3> <span>My info</span>
+                                <h4> <span>My info</span></h4>
                             </div>
                         </a>
                         </div>

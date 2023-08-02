@@ -10,7 +10,7 @@ use App\Models\department;
 use App\Models\User;
 use App\Models\Contact;
 use App\Models\Address;
-use App\Models\Qualifaction;
+use App\Models\Qualification;
 use App\Models\module_permission;
 use App\Models\designation;
 use Hash;
@@ -110,11 +110,9 @@ echo $affecte_row;
         $contact->email=$email ;
         // Save the contact record in the database
         $contact->save();
-        if($contact != 0){
-
-            DB::commit();
-            Toastr::success('updated record successfully :)','Success');
-            }
+        DB::commit(); // Commit the transaction after successful save
+        Toastr::success('updated record successfully :)', 'Success');
+        
 
           
         return redirect()->route('home');
@@ -127,24 +125,31 @@ echo $affecte_row;
     }
     // Add Qualifications
     public function Qualifications(Request $request)
-    
-        { DB::beginTransaction();
+    { 
+        DB::beginTransaction();
             try{
         $email = Auth::user()->email;
         $qualifications = new Qualification();
         $qualifications->email=$email ;
+        $qualifications->company = $request->company;
+        $qualifications->designation = $request->designation;
+        $qualifications->from=$request->from ;
+        $qualifications->to = $request->to;
+        $qualifications->image = $request->image;
         $qualifications->degree = $request->degree;
         $qualifications->year = $request->year;
         $qualifications->score=$request->score ;
         $qualifications->mdegree = $request->mdegree;
         $qualifications->myear = $request->myear;
         $qualifications->mscore=$request->mscore ;
+        
         // Save the contact record in the database
         $qualifications->save();
        
+        DB::commit(); // Commit the transaction after successful save
+Toastr::success('updated record successfully :)', 'Success');
 
-          
-        return redirect()->route('home');
+return redirect()->route('home');
     }catch(\Exception $e){
         DB::rollback();
         Toastr::error('updated record fail :)','Error');
@@ -154,12 +159,13 @@ echo $affecte_row;
     }
     // Add Contact 
     public function Contact(Request $request)
-    
-        { DB::beginTransaction();
-            try{
+    { 
+        DB::beginTransaction();
+        try {    
         $email = Auth::user()->email;
+
         $contacts = new Address();
-        $contacts->email=$email ;
+        $contacts->email=$email;
         $contacts->street = $request->street;
         $contacts->city = $request->city;
         $contacts->code=$request->code ;
@@ -168,17 +174,16 @@ echo $affecte_row;
         $contacts->tcity = $request->tcity;
         $contacts->tcode=$request->tcode ;
         $contacts->tstate = $request->tstate;
+      
         // Save the contact record in the database
         $contacts->save();
-       
-
-          
-        return redirect()->route('home');
-    }catch(\Exception $e){
-        DB::rollback();
-        Toastr::error('updated record fail :)','Error');
-        return redirect()->back();
-    }
+       DB::commit(); // Commit the transaction after successful save
+        Toastr::success('updated record successfully :)', 'Success');
+           return redirect()->route('home');
+        } catch (\Exception $e) {
+            Toastr::error('Updated record failed :(', 'Error');
+            return redirect()->back();
+        }
        
     }
 }

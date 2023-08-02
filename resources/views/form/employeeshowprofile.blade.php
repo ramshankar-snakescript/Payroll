@@ -7,19 +7,7 @@
 
     <div class="page-wrapper">
         <!-- Page Content -->
-        <div class="content container-fluid">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h3 class="page-title">Profile</h3>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Profile</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+       <br>
             {{-- message --}}
             {!! Toastr::message() !!}
             <!-- /Page Header -->
@@ -51,11 +39,13 @@
                                                 <ul class="breadcrumb">
                                               <li class="breadcrumb-item"> <a activeID="mainload" href="{{ route('/myinfo') }}">Personal Details</a></li>
                                             </ul><ul class="breadcrumb">
-                                              <li class="breadcrumb-item"> <a activeID="tab2" href="{{ route('/myinfo') }}">Emergency Contacts</a></li>
-                                            </ul><ul class="breadcrumb">
                                               <li class="breadcrumb-item"> <a activeID="tab3" href="{{ route('/myinfo') }}">Qualifications Details</a></li>
-                                            </ul><ul class="breadcrumb">
+                                            </ul>
+                                            <ul class="breadcrumb">
                                               <li class="breadcrumb-item"> <a activeID="tab4" href="{{ route('/myinfo') }}">Contact Details </a></li>
+                                            </ul>
+                                            <ul class="breadcrumb">
+                                              <li class="breadcrumb-item"> <a activeID="tab2" href="{{ route('/myinfo') }}">Emergency Contacts</a></li>
                                             </ul>
                                         </div>
                                         </div>
@@ -242,10 +232,52 @@
 
 <!-- add Qualifications Details -->
 
-                                <form style="display:none;" id="tab3" action="{{ route('myinfo/qualifications') }}" method="POST">
-                                <h3>Qualifications Details </h3>
+                               <form style="display:none;" id="tab3" action="{{ route('myinfo/qualifications') }}" method="POST">
+                               <h3> Qualifications Details </h3>
+                             <hr></hr> 
+                               <h4> Work Experience </h4>
                              <hr></hr> 
                              @csrf
+                             <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Company</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control " id="company" name="company" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Designation</label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control " id="designation" name="designation" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">From</label>
+                                    <div class="col-md-10">
+                                        <input type="date" class="form-control " id="from" name="from" value="">
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">To</label>
+                                    <div class="col-md-10">
+                                        <input type="date" class="form-control " id="to" name="to" value="">
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-2">Upload  Experience Letter</label>
+        
+                                    <div class="col-md-10" id="input_file">
+                                        <input type="file" class="form-control" name="image" placeholder="Profile Picture" >
+                                        <span class="text-danger">
+                                            @error('image')
+                                        {{$message}}
+                                    @enderror
+                                    </span>
+                                </div>
+                                </div>
+
+                                <hr></hr> 
+                             <h4>Education Details </h4>
+                             <hr></hr> 
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Bachelor's Degree</label>
                                     <div class="col-md-10">
@@ -255,7 +287,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Passing Year</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control " id="year" name="year" value="">
+                                        <input type="date" class="form-control " id="year" name="year" value="">
                                     </div>
                                 </div> 
                                 <div class="form-group row">
@@ -273,7 +305,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Passing Year</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control " id="myear" name="myear" value="">
+                                        <input type="date" class="form-control " id="myear" name="myear" value="">
                                     </div>
                                 </div> 
                                 <div class="form-group row">

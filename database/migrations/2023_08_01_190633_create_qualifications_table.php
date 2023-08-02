@@ -16,6 +16,11 @@ return new class extends Migration
         Schema::create('qualifications', function (Blueprint $table) {
             $table->id();
             $table->string('email')->nullable();
+            $table->string('company')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('from')->nullable();
+            $table->string('to')->nullable();
+            $table->string('image')->nullable();
             $table->string('degree')->nullable();
             $table->string('year')->nullable();
             $table->string('score')->nullable();

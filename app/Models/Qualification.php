@@ -10,13 +10,16 @@ class Qualification extends Model
     use HasFactory;
     protected $fillable = [
         'email',
+        'company',
+        'designation',
+        'from',
+        'to',
+        'image',
         'degree',
-        'gender',
         'year',
         'score',
         'mdegree',
         'myear',
         'mscore',
-        'timing_sheets',
     ];
 }
