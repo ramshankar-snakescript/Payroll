@@ -22,9 +22,9 @@
 
                                             {{-- <img alt="" src="{{ URL('storage/uploads/' .$users->image) }}" alt="{{ $users->name }}"> --}}
                                             @if(!empty($users->image))
-                                <img src="{{URL('storage/uploads/'.$users->image) }}" alt="{{ $users->name }}">
+                                            <img src="{{(config('app.url').'storage/app/public/uploads/' . $users->image) }}">
                                 @else
-                                <img src="{{URL('storage/user.jpeg') }}" >
+                                <img src="{{ config('app.url') }}storage/app/public/user.jpeg">
                                 @endif
                                         </a>
                                     </div>

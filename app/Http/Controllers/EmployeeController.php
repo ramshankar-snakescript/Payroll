@@ -57,6 +57,7 @@ class EmployeeController extends Controller
              'dept'        => 'required',
              'email'       => 'required|string|email|unique:employees,email',
              'password' => 'required|string',
+             'epfaccount' =>'required',
              'contact'     => 'required|regex:/[0-9]{10}/',
              'doj'         => 'required',
              'birthDate'   => 'required',
@@ -88,12 +89,14 @@ class EmployeeController extends Controller
                 $employee->pran     = $request->pran;
                 $employee->email        = $request->email;  
                 $employee->password        = $request->password;
+                $employee->epfaccount        = $request->epfaccount;
                 $employee->birth_date   = $request->birthDate;
                 $employee->gender       = $request->gender;
                 $employee->image        =$o_name;
                 $employee->contact        = $request->contact;
                 $employee->account_no = $request->acc_no;
                 $employee->ifsc = $request->ifsc;
+               
                 $employee->save();
 
                
@@ -169,6 +172,7 @@ class EmployeeController extends Controller
              'esi'         => $request->esi,
              'pran'        => $request->pran,
              'email'       => $request->email,
+             'epfaccount'       => $request->epfaccount,
              'birth_date'   => $request->birth_date,
              'gender'      => $request->gender,
              'image'     => $o_name,
@@ -195,15 +199,20 @@ echo $affecte_row;
   //  delete record
     public function deleteRecord(Request $request)
     {
-        DB::beginTransaction();
+       DB::beginTransaction();
         try{
-
+            $employees = Employee::where('id', $request->id)
+        ->select('email')
+        ->get();        
+        foreach ($employees as $employee) {
+            $email = $employee->email;
+        }
             Employee::destroy($request->id);
-
-
+            User::where('email', $email)->delete();
             DB::commit();
             Toastr::success('Delete record successfully :)','Success');
             return redirect()->route('all/employee/card');
+
 
         }catch(\Exception $e){
             DB::rollback();

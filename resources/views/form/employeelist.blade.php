@@ -89,12 +89,16 @@
                                         <h2 class="table-avatar">
                                             <a href="{{ url('employee/profile/'.$items->id) }}" class="avatar">
                                                 @if(!empty($items->image))
-                                                <img alt="" src="{{ URL('storage/uploads/'. $items->image) }}">
-                                                @else
-                                                <img src="{{URL('storage/user.jpeg')  }}" ></a>
+                                                <img src="{{(config('app.url').'storage/app/public/uploads/' . $items->image) }}">
                                                 @endif
-                                             {{ $items->employee_id }}
+                                                @if(empty($items->image))
+                                                <img src="{{ config('app.url') }}storage/app/public/user.jpeg">
+                                                @endif
+                                            </a>
                                             </h2>
+                                                
+                                             {{ $items->employee_id }}
+                                           
                                     </td>
                                     <td hidden class="id">{{ $items->id }}</td>
                                     <td>{{ $items->name }}</td>

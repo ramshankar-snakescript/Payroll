@@ -27,6 +27,7 @@ class CreateEmployeesTable extends Migration
             $table->string('pran')->nullable();
             $table->string('email')->nullable();
             $table->string('password')->nullable();
+            $table->boolean('epf_account')->default(false); 
             $table->string('birth_date')->nullable();
             $table->string('gender')->nullable();
             $table->string('image')->nullable();

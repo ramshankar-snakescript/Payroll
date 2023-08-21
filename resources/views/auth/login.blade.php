@@ -16,7 +16,7 @@
                         <h3 class="account-title">Login</h3>
                         <p class="account-subtitle">Access to our dashboard</p>
                         <!-- Account Form -->
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('user') }}">
                             @csrf
                             <div class="form-group">
                                 <label>Email Address</label>
@@ -55,9 +55,9 @@
                             <div class="form-group text-center">
                                 <button class="btn btn-primary account-btn" type="submit">Login</button>
                             </div>
-                            <div class="account-footer">
+                            <!-- <div class="account-footer">
                                 <p>Don't have an account yet? <a href="{{ route('register') }}">Register</a></p>
-                            </div>
+                            </div> -->
                         </form>
                         <!-- /Account Form -->
                     </div>

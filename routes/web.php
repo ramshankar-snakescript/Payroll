@@ -62,6 +62,9 @@ Route::controller(EmployeeShowDataController::class)->group(function () {
     Route::post('/myinfo/emergencycontact', 'Emergencycontact')->name('myinfo/emergencycontact');
     Route::post('/myinfo/qualifications', 'Qualifications')->name('myinfo/qualifications');
     Route::post('/myinfo/address', 'Contact')->name('myinfo/address');
+    Route::post('/checkin', 'Checkin')->name('checkin');
+    Route::post('/checkout', 'Checkout')->name('checkout');
+    Route::get('/home', 'Attendance')->name('Attendance');
 
 });
 
@@ -72,11 +75,13 @@ Route::controller(EmployeeShowDataController::class)->group(function () {
 Route::controller(HomeController::class)->group(function () {
     Route::get('/home', 'index')->middleware(['auth', 'checkUserRole:1'])->name('home');
     Route::get('/home', 'index')->name('home');
+  
 });
 
 // -----------------------------settings----------------------------------------//
 Route::controller(SettingController::class)->group(function () {
     Route::get('company/settings/page', 'companySettings')->middleware('auth')->name('company/settings/page');
+    Route::post('company/settings/page/save', 'companySave')->middleware('auth')->name('company/settings/page/save');
 
 });
 
@@ -85,6 +90,8 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
+    Route::get('/user', 'userlogin')->name('user');
+    Route::post('/user', 'authenticate');
 });
 
 
@@ -110,10 +117,10 @@ Route::controller(ResetPasswordController::class)->group(function () {
 
 
 //----------------------------- user profile ------------------------------//
-Route::controller(UserManagementController::class)->group(function () {
-    Route::get('profile_user', 'profile')->middleware('auth')->name('profile_user');
-    Route::post('profile/information/save', 'profileInformation')->name('profile/information/save');
-});
+// Route::controller(UserManagementController::class)->group(function () {
+//     Route::get('profile_user', 'profile')->middleware('auth')->name('profile_user');
+//     Route::post('profile/information/save', 'profileInformation')->name('profile/information/save');
+// });
 
 // ----------------------------- user userManagement -----------------------//
 // Route::controller(UserManagementController::class)->group(function () {
@@ -213,4 +220,6 @@ Route::post('/designation/delete', [DesignationController::class, 'delete'])->na
 
 
 Route::get('send_pdf/{id}', [PayrollController::class, 'send_pdf']);
+Route::get('dowload_pdf/{id}', [PayrollController::class, 'download_pdf']);
+
 Route::get('check_email/{email}', [EmployeeController::class, 'check_email']);

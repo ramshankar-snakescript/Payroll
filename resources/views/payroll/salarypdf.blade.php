@@ -67,6 +67,7 @@
             border: 1px solid #333;
             text-align: left;
             padding: 8px;
+            text-transform: capitalize;
         }
 
         .employee_detail table {

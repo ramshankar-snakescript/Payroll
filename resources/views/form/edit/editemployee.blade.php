@@ -69,7 +69,7 @@
                                         <select class="select form-control" id="designation" name="desg">
                                             {{-- <option value="{{ $employees[0]->gender }}" {{ ( $employees[0]->gender == $employees[0]->gender) ? 'selected' : '' }}>{{ $employees[0]->gender }} </option> --}}
 
-                                            <option value="{{$employees[0]->desg}}">{{$employees[0]->desg}}</option>
+                                            <option value="{{$employees[0]->desg}}">{{$employees[0]->designation}}</option>
 
                                         </select>
                                     </div>
@@ -86,6 +86,21 @@
                                         <input type="email" class="form-control" id="email" name="email" value="{{ $employees[0]->email }}">
                                     </div>
                                 </div>
+
+
+                                <div class="form-group row">
+                                <label class="col-form-label col-md-2">EPF Account </label>
+                                    <div class="col-md-10">
+                                    <input type="radio" name="epfaccount" value="1" {{ $employees[0]->epfaccount == 1 ? 'checked' : '' }}> Yes<br>
+                                    <input type="radio" name="epfaccount" value="0" {{ $employees[0]->epfaccount == 0 ? 'checked' : '' }}> No
+                                    </div>
+                                </div>
+
+
+
+
+
+                                
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Date Of Joining</label>
                                     <div class="col-md-10">
@@ -133,9 +148,9 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-md-2">Image</label>
                                     <div class="col-md-10" id="img">
-                                        <img style="height:200px;" src="{{url('storage/uploads/')."/".$employees[0]->image}}">
-                                        <div class="staff-msg"><a id="ch_img"  class="btn btn-custom" data-id={{$employees[0]->id}}>Change Image</a></div>
-                                        <input type="hidden" name="prev_img" id="prev_img" value={{$employees[0]->image}}>
+                                        <img style="height:200px;" src="{{(config('app.url').'/storage/app/public/uploads/'.$employees[0]->image)}}">
+                                        <div class="staff-msg"><a id="ch_img"  class="btn btn-custom" data-id="{{$employees[0]->id}}">Change Image</a></div>
+                                        <input type="hidden" name="prev_img" id="prev_img" value="{{$employees[0]->image}}">
                                     </div>
                                     <div class="col-md-10" id="input_file">
                                         <input type="file" class="form-control" name="employee_pic" placeholder="Profile Picture" >

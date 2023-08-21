@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\RolesPermissions;
 use Brian2694\Toastr\Facades\Toastr;
 use DB;
+use App\Models\Setting;
 class SettingController extends Controller
 {
     // company/settings/page
@@ -13,7 +14,41 @@ class SettingController extends Controller
     {
         return view('settings.companysettings');
     }
-    
+   // company/settings/page/save
+   public function companySave(Request $request)
+   {
+       DB::beginTransaction();
+       try {
+           $company = new Setting;
+                  
+           $company->companyname    = $request->companyname;
+           $company->contactperson  = $request->contactperson;
+           $company->address        = $request->address;
+           $company->country        = $request->country;
+           $company->city           = $request->city;
+           $company->state          = $request->state;
+           $company->postalcode     = $request->postalcode;
+           $company->email          = $request->email;
+           $company->phonenumber    = $request->phonenumber;
+           $company->mobilenumber   = $request->mobilenumber;
+           $company->fax            = $request->fax;  
+           $company->websiteurl     = $request->websiteurl;
+           $company->save();
+           DB::commit();
+           Toastr::success('Add new company successfully :)','Success');
+           return redirect()->route('company/settings/page');
+       } catch (\Exception $e) {
+           DB::rollback();
+           Toastr::error('Add new company fail :)','Error');
+           return redirect()->back();
+       }
+   }
+   
+
+
+
+
+
     // Roles & Permissions 
     public function rolesPermissions()
     {

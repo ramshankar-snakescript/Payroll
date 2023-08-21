@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use DB;
 use Carbon\Carbon;
 use PDF;
+use App\Models\Checkout;
+use Auth;
 use App\Models\User;
 class HomeController extends Controller
 {
@@ -50,4 +52,24 @@ class HomeController extends Controller
         // download pdf file
         return $pdf->download('pdfview.pdf');
     }
+    public function Checkout(Request $request)
+{ 
+    
+    $email = Auth::user()->email;
+    DB::beginTransaction();
+        try{
+            $checkout = new Checkout();
+            $checkout->email=$email;
+            $checkout->checkout = $request->checkout;
+            $checkout->save();
+        
+            DB::commit(); // Commit the transaction after successful save
+            Toastr::success('updated record successfully :)', 'Success');
+               return redirect()->route('home');
+            } catch (\Exception $e) {
+                Toastr::error('Updated record failed :(', 'Error');
+                return redirect()->back();
+            }
+}
+
 }

@@ -67,6 +67,7 @@
             border: 1px solid #333;
             text-align: left;
             padding: 8px;
+            text-transform: capitalize;
         }
 
         .employee_detail table {
@@ -191,34 +192,10 @@ $overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_inte
     <div class="employee_detail">
         <!-- <p>Name of Employee <span style="font-weight: 600;"> {{ ' : ' . $users->naam }}</span></p> -->
         <p>Payslip for <span style="font-weight: 600;"> {{ ' : ' . $monthName.'-'.$year }}</span></p>
-        <!-- <p>Total working days <span style="font-weight: 600;"> {{ ' : ' . $users->working_day }}</span></p> -->
+       
         <div class="main_table">
             <table cellpadding="0" cellspacing="0">
-                <!-- <tr>
-                    <th colspan="4" style="font-size:17px;">Scale of Payment:</th>
-                </tr>
-                <tr>
-                    <td style="font-weight: 700; text-align: center;">Description</td>
-                    <td style="font-weight: 700; text-align: center;">Days</td>
-                    <td style="font-weight: 700; text-align: center;">Description</td>
-                    <td style="font-weight: 700; text-align: center;">Amount($)</td>
-                </tr>
-                <tr>
-                    <td>Standard Working Days in a Month</td>
-                    <td style="text-align: center;"> {{ number_format($users->working_day) }} </td>
-                    <td>Basic Pay for Month</td>
-                    <td style="text-align: right;">{{ number_format($users->basic) }}</td>
-                </tr>
-                <tr>
-                    <td>Work From Office</td>
-                    <td style="text-align: center;">{{ number_format($users->working_day) - (float) $users->leave - (int) $users->wfh}}   </td>
-                    <td>Work From Home</td>
-                    <td style="text-align: right;">{{ $users->wfh }}</td>
-
-                </tr>
-
-
-                <tr> -->
+               
                     <td colspan="4" style="background: #dee4fe;font-weight: 600;font-size:17px;">Employee Details</td>
                 </tr>
                 <tr>
@@ -385,7 +362,7 @@ $overtime_salary=($users->bonus+$overtime+$overtime_hours+$users->telephone_inte
                 
 
        
-     <td style="text-align: center;">{{ number_format($total_earning) }}</td>'
+     <td style="text-align: center;">{{ number_format($total_earning) }}</td>
     
 
                     <?php

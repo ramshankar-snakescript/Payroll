@@ -3128,6 +3128,7 @@ table.dataTable thead > tr > td.sorting {
 .form-focus .form-control {
 	height: 50px;
 	padding: 21px 12px 6px;
+	text-transform: capitalize;
 }
 .form-focus .form-control::-webkit-input-placeholder {
 	color: transparent;
@@ -7797,7 +7798,18 @@ ul.comment-list li ul.children {
 .user-profile-card .profile-info-left{
 border:none;
 }
-
+.checkout-modal .modal-body h5{
+	text-wrap:balance;
+}
+.checkout-modal .submit-section{
+display:flex;
+}
+.checkout-modal .modal-body a.dropdown {
+    color: #222;
+}
+.checkout-modal .submit-section button{
+	min-width: 173px;
+}
 /*-----------------
 	64. Responsive
 -----------------------*/

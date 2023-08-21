@@ -25,6 +25,7 @@ class PayrollController extends Controller
                     ->select('employees.*','employees.name as emp_name','employees.id as emp_id', 'staff_salaries.*', 'designation.designation as designation')
                     ->get();
         $userList = DB::table('employees')->get();
+     
         return view('payroll.employeesalary', compact('users', 'userList'));
     }
 
@@ -132,6 +133,7 @@ class PayrollController extends Controller
                 'wfh'                => $request->wfh,
                 'work_in_holidays_days' => $request->work_in_holidays_days,
                 'work_in_holidays_hours' => $request->work_in_holidays_hours,
+                'extra_hours'=>$request->extra_hours,
                 'tds'                => $request->tds,
                 'esi'                => $request->esi,
                 'pf'                 => $request->pf,
@@ -297,6 +299,31 @@ $userList = DB::table('employees')->get();
      }
 
 
+     public function download_pdf($id) {
+        // Fetch the salary information and user details
+        $users = DB::table('employees')
+            ->join('staff_salaries', 'employees.id', '=', 'staff_salaries.rec_id')
+            ->join('designation', 'employees.desg', '=', 'designation.id')
+            ->join('departments', 'employees.dept', '=', 'departments.id')
+            ->select('employees.*','employees.name as naam', 'staff_salaries.*','designation.designation as designation','departments.department as department')
+            ->where('staff_salaries.id', $id)
+            ->first();
+    
+        // Load the PDF view
+        $pdf = PDF::loadView('payroll.salarypdf', compact('users'));
+        $date = $users->dos;
+        $newDate = date('F', strtotime($date));
+        $fileName = $users->naam . '_' . $newDate . '_Salary_Slip.pdf';
+    
+        // Save the PDF to storage and generate a download response
+        $path = storage_path('app/public/' . $fileName);
+        $pdf->save($path);
+    
+        Toastr::success('Download Successful :)', 'Success');
+
+        return response()->download($path, $fileName)->deleteFileAfterSend(true);
+    }
+    
     
 
      public function get_salary($id){

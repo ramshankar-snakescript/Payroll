@@ -5,7 +5,7 @@
 @endsection --}}
 @section('content')
 
-                            
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <div class="page-wrapper">
         <!-- Page Content -->
@@ -36,9 +36,9 @@
 
                                             {{-- <img alt="" src="{{ URL('storage/uploads/' .$users->image) }}" alt="{{ $users->name }}"> --}}
                                             @if(!empty($users->image))
-                                <img src="{{URL('storage/uploads/'.$users->image) }}" alt="{{ $users->name }}">
+                                            <img src="{{(config('app.url').'storage/app/public/uploads/' . $users->image) }}">
                                 @else
-                                <img src="{{URL('storage/user.jpeg') }}" >
+                                <img src="{{ config('app.url') }}storage/app/public/user.jpeg">
                                 @endif
                                         </a>
                                     </div>
@@ -189,9 +189,9 @@
     <h2 class="table-avatar">
         <a href="{{ url('employee/profile/' . $items->rec_id) }}" class="avatar">
             @if ($users->image)
-                <img alt="" src="{{ URL::to('storage/uploads/' . $items->image) }}">
+            <img src="{{(config('app.url').'storage/app/public/uploads/' . $users->image) }}">
             @else
-                <img alt="" src="{{ URL::to('storage/user.jpeg') }}">
+            <img src="{{ config('app.url') }}storage/app/public/user.jpeg">
             @endif
         </a>
         <a
@@ -237,13 +237,18 @@
                                 <td>{{ $items->dos}}</td>
                                 <!-- <td><a class="btn btn-sm btn-info"
                                         href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td> -->
-                                <td> <?php if ($items->is_send): ?>
-        <a class="btn btn-sm btn-warning send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Resend</a>
-    <?php else: ?>
-        <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Send</a>
-    <?php endif; ?>
-</td>
-<td hidden class="salary">{{ $items->salary }}</td>
+                                        <td> <?php if ($items->is_send): $items->is_send;?>
+                                    <a class="btn btn-sm btn-warning send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}"> <i class="fas fa-envelope"></i></a>
+
+                                <?php else:  ?>
+                                     <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}"> <i class="fas fa-envelope"></i></a>
+
+                                <?php endif; ?>
+                                <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/dowload_pdf/' . $items->id) }}">  <i class="fas fa-download"></i></a>
+
+                                </td>
+
+                                <td hidden class="salary">{{ $items->salary }}</td>
                                 <td><a class="btn btn-sm btn-primary"
                                         href="{{ url('form/salary/view/' . $items->id) }}">View</a></td>
                                 <td class="text-right">

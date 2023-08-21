@@ -4,6 +4,7 @@
     {{-- message --}}
     {!! Toastr::message() !!}
     <!-- Sidebar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
     <!-- Page Wrapper -->
@@ -132,8 +133,8 @@
                                 <th hidden ></th>
                                 <!-- <th hidden ></th>
                                 <th hidden ></th>
-                               <th hidden ></th>
-                                <th hidden ></th> -->
+                               <th hidden ></th>-->
+                                <th hidden ></th> 
                                 <th hidden ></th>
                                 <th hidden ></th>
                                 <th hidden ></th>
@@ -152,16 +153,16 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $items)
+                               
                                     <tr>
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a href="{{ url('employee/profile/' . $items->rec_id) }}" class="avatar">
                                                     @if ($items->image)
-                                                        <img alt=""
-                                                            src="{{ URL::to('storage/uploads/' . $items->image) }}">
+                                                    <img src="{{(config('app.url').'storage/app/public/uploads/' . $items->image) }}">
                                                 </a>
                                             @else
-                                                <img alt="" src="{{ URL::to('storage/user.jpeg') }}"></a>
+                                            <img src="{{ config('app.url') }}storage/app/public/user.jpeg"></a>
                                 @endif
                                 <a
                                     href="{{ url('employee/profile/' . $items->rec_id) }}">{{ $items->emp_name }}<span>{{ $items->designation }}</span></a>
@@ -173,11 +174,8 @@
                                 <td hidden class="name">{{ $items->emp_name }}</td>
                                 <td hidden class="dos">{{ $items->dos}}</td>
                                 <td hidden class="basic">{{ $items->basic }}</td>
-                                <!-- <td hidden class="da">{{ $items->da }}</td> --->
                                 <td hidden class="hra">{{ $items->hra }}</td>
                                 <td hidden class="conveyance">{{ $items->conveyance }}</td>
-                                <!-- <td hidden class="allowance">{{ $items->allowance }}</td>
-                                <td hidden class="medical_allowance">{{ $items->medical_allowance }}</td> -->
                                 <td hidden class="tds">{{ $items->tds }}</td>
                                 <td hidden class="esi">{{ $items->esi }}</td>
                                 <td hidden class="pf">{{ $items->pf }}</td>
@@ -190,9 +188,18 @@
                                 <td hidden class="wfh">{{ $items->wfh }}</td>
                                 <td hidden class="work_in_holidays_hours">{{ $items->work_in_holidays_hours }}</td>
                                 <td hidden class="work_in_holidays_days">{{ $items->work_in_holidays_days }}</td>
-                                <td hidden class="extra_hours	">{{ $items->extra_hours	 }}</td>
+                                <td hidden class="extra_hours	">{{ $items->extra_hours}}</td>
                                 <td hidden class="labour_welfare">{{ $items->labour_welfare }}</td>
                                 <td hidden class="gsalary">{{$items->gsalary}}</td>
+                            
+                              
+                                           
+                                            <td hidden class="account">{{$items->epfaccount}}</td>
+                                            
+                                           
+                               
+                                <!-- <td hidden class="epfaccount" id="epfaccountValue">{{ $items->epfaccount}}</td>
+                               -->
                                <?php
                                 $date = $items->dos;
                                 $monthName = date('F', strtotime($date)); // Get the full month name
@@ -202,13 +209,18 @@
                                 <td>{{ $items->dos}}</td>
                                 <!-- <td><a class="btn btn-sm btn-info"
                                         href="{{ url('employee/profile/' . $items->rec_id) }}">View Details</a></td> -->
-                                        <td> <?php if ($items->is_send==1): ?>
-        <a class="btn btn-sm btn-warning send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Resend</a>
-    <?php else: ?>
-        <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}">Send</a>
-    <?php endif; ?>
-</td>
-<td hidden class="salary">{{ $items->salary }}</td>
+                                 <td> <?php if ($items->is_send): $items->is_send;?>
+                                    <a class="btn btn-sm btn-warning send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}"> <i class="fas fa-envelope"></i></a>
+
+                                <?php else:  ?>
+                                     <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/send_pdf/' . $items->id) }}"> <i class="fas fa-envelope"></i></a>
+
+                                <?php endif; ?>
+                                <a class="btn btn-sm btn-success send-button" data-id="{{ $items->id }}" href="{{ url('/dowload_pdf/' . $items->id) }}">  <i class="fas fa-download"></i></a>
+
+                                </td>
+
+                            <td hidden class="salary">{{ $items->salary }}</td>
 
 
                                 <td><a class="btn btn-sm btn-primary"
@@ -260,7 +272,7 @@
                                             name="name">
                                             <option value="">-- Choose Employee --</option>
                                             @foreach ($userList as $user)
-                                                <option value="{{ $user->id }}" data-employee_id="{{ $user->id }}">
+                                                <option value="{{ $user->id }}" data-employee_id="{{ $user->id }}" data-epfaccount_id="{{ $user->epfaccount }}">
                                                     {{ $user->name }}</option>
                                             @endforeach
                                         </select>
@@ -277,6 +289,7 @@
                                     <input class="form-control @error('salary') is-invalid @enderror" readonly
                                         type="number" name="salary" id="salary" value="{{ old('salary') }}"
                                         placeholder="Enter net salary">
+
                                     @error('salary')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -290,7 +303,7 @@
                                         <label class="col-form-label">Date Of Salary Slip </label>
                                         <span
                                                 class="text-danger">*</span>
-                                                <input class="form-control @error('dos') is-invalid @enderror" type="date" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}" >
+                                                <input class="form-control @error('dos') is-invalid @enderror" type="month" name="dos" id="dos" placeholder="Date Of Salary Slip" value="{{ old('dos') }}" >
                                                 @error('dos')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -529,6 +542,10 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
+
+
+                                        <input class="form-control" type="hidden" name="account" id="account"  value="">
+                                       
                                         <input class="form-control" type="hidden" name="gsalary" id="gsalary"  value="">
                                     </div>
                                 </div>
@@ -582,8 +599,9 @@
                             <div class="row">
                             <div class="col-sm-6">
                             <div class="form-group">
-                                        <label class="col-form-label">Date Of Salary Slip </label>
-                                        <input class="form-control" type="date" name="dos" id="e_dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}">
+                                        <label class="col-form-label">Month Of Salary Slip </label>  <span
+                                                class="text-danger">*</span>
+                                        <input class="form-control" type="month" name="dos" id="e_dos" placeholder="Date Of Salary Slip" value="{{ old('doj') }}" require>
                                     </div>
                                 </div>
                     </div>
@@ -639,7 +657,16 @@
                                         <input class="form-control" type="text" name="work_in_holidays_hours"
                                             id="e_work_in_holidays_hours" value="">
                                     </div>
+                                
+
+                                <div class="form-group">
+                                <label>Extra Working(mints).</label>
+                                        <input class="form-control" type="text" name="extra_hours"
+                                            id="e_extra_hours" value="">
+                                    </div>
                                 </div>
+
+
                                 <div class="col-sm-6">
                                     <h4 class="text-primary">Deductions</h4>
                                     <div class="form-group">
@@ -654,7 +681,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>PF</label>
-                                        <input class="form-control" type="text" name="pf" id="e_pf"
+                                        <input class="form-control" type="text" name="pf" id="e_pf" readonly
                                             value="">
                                     </div>
                                     <div class="form-group">
@@ -680,6 +707,9 @@
                                         <label>Home Loan</label>
                                         <input class="form-control" type="text" name="labour_welfare"
                                             id="e_labour_welfare" value="">
+                                            <input class="form-control" type="hidden" name="account" id="e_account"  value="">
+
+
                                             <input class="form-control" type="hidden" name="gsalary" id="e_gsalary"  value="">
                                     </div>
                                 </div>
@@ -741,7 +771,9 @@
 
     <script>
         $(document).ready(function() {
+           
             $('.select2s-hidden-accessible').select2({
+               
                 closeOnSelect: false
             });
             $("#tel_int").val('0');
@@ -756,16 +788,21 @@
         // select auto id and email
         $('#name').on('change', function() {
             $('#employee_id').val($(this).find(':selected').data('employee_id'));
+            var selectedID = $(this).find(':selected').data('employee_id');
+           var selectedIDepf = $(this).find(':selected').data('epfaccount_id');
+           $('#account').val($(this).find(':selected').data('epfaccount_id'));
         });
     </script>
     {{-- update js --}}
     <script>
         $(document).on('click', '.userSalary', function() {
+            
             var _this = $(this).parents('tr');
             $('#e_id').val(_this.find('.id').text());
             $('#e_name').val(_this.find('.name').text());
             
             $('#e_salary').val(_this.find('.salary').text());
+           
             $('#e_basic').val(_this.find('.basic').text());
            $('#e_da').val(_this.find('.da').text());
             $('#e_hra').val(_this.find('.hra').text());
@@ -776,7 +813,10 @@
             // $('#e_working_day').val(_this.find('.working_day').text());
             $('#e_tds').val(_this.find('.tds').text());
             $('#e_esi').val(_this.find('.esi').text());
+
+            
             $('#e_pf').val(_this.find('.pf').text());
+           
             $('#e_short_leave').val(_this.find('.short_leave').text());
             $('#e_half_day').val(_this.find('.half_day').text());
             $('#e_leave').val(_this.find('.leave').text());
@@ -785,14 +825,20 @@
             $('#e_bonus').val(_this.find('.bonus').text());
             $('#e_wfh').val(_this.find('.wfh').text());
             $('#e_work_in_holidays_hours').val(_this.find('.work_in_holidays_hours').text());
+            $('#e_extra_hours').val(_this.find('.extra_hours').text());
+
             $('#e_work_in_holidays_days').val(_this.find('.work_in_holidays_days').text());
+
             $('#e_labour_welfare').val(_this.find('.labour_welfare').text());
+            $('#e_account').val(_this.find('.account').text());
             $('#e_gsalary').val(_this.find('.gsalary').text());
         });
     </script>
 
     <script>
-        $(document).on('change', '#salary, #e_salary', function() {
+        $(document).on('change', '#salary, #e_salary','#account', function() {
+            alert("test");
+          alert($('#account').val());
 
             var ctc = parseInt($(this).val());
 
@@ -814,8 +860,10 @@
             // var med_conveyance_per = parseInt(5);
             // var med_conveyance = (basic_sal * med_conveyance_per / 100);
 
-
-
+            if($('#account').val() == 0){
+            $("#pf, #e_pf").val(0);
+           }
+           else{
             if (ctc >= parseInt(15000)) {
                 $("#pf, #e_pf").val('3600');
             } else {
@@ -828,7 +876,7 @@
                 $("#esi, #e_esi").val((ctc * parseInt(4) / 100));
             }
 
-
+        }
 
             $('#basic, #e_basic').val(basic_sal);
             $('#hra, #e_hra').val(hra);
@@ -836,6 +884,7 @@
             $('#medical_allowance, #e_medical_allowance').val(med_conveyance);
             $('#da, #e_da').val(da);
             $('#allowance, #e_allowance').val(lta);
+            
 
         });
     </script>
@@ -903,14 +952,18 @@
             var gsalary = Math.round(tsalary - short_salary - half_day);
             console.log(gsalary);
             document.getElementById("e_gsalary").value = gsalary;
+            if($('#account').val() == 0){
+            $("#pf, #e_pf").val(0);
+           }
+           else{
             if (gsalary >= parseInt(15000)) {
                 console.log(gsalary);
                         $("#pf, #e_pf").val('3600');
-
+                      
                     } else {
                         $("#pf, #e_pf").val(Math.round((gsalary * parseInt(24) / 100).toFixed(2)));
                     }
-                   
+                }
                     if (gsalary >parseInt(21000)) {
                         $("#esi, #e_esi").val(0);
                         console.log(gsalary);
@@ -955,6 +1008,7 @@
     <script>
         $('#name').on('change', function() {
             var id = $(this).val();
+          
 
             $.ajax({
                 type: "get",
@@ -985,23 +1039,23 @@
 
 
 
-                    if (ctc >= parseInt(15000)) {
-                        $("#pf, #e_pf").val('3600');
-                    } else {
-                        $("#pf, #e_pf").val((ctc * parseInt(24) / 100));
-                    }
+            if($('#account').val() == 0){
+            $("#pf, #e_pf").val(0);
+           }
+           else{
+            if (ctc >= parseInt(15000)) {
+                $("#pf, #e_pf").val('3600');
+            } else {
+                $("#pf, #e_pf").val((ctc * parseInt(24) / 100));
+            }
 
-                    if (ctc > parseInt(21000)) {
-                        $("#esi, #e_esi").val(0);
-                    } else {
-                        console.log(gsalary);
-                        var esi1=parseInt((gsalary * (0.75 / 100))+0.99 );
-                        console.log (esi1);
-                        var esi2=parseInt((gsalary * (3.25 / 100))+0.99);
-                        console.log(esi2);
-                        $("#esi, #e_esi").val((parseInt(esi1 + esi2)));
-                    }
+            if (ctc > parseInt(21000)) {
+                $("#esi, #e_esi").val(0);
+            } else {
+                $("#esi, #e_esi").val((ctc * parseInt(4) / 100));
+            }
 
+        }
 
 
                     $('#basic, #e_basic').val(basic_sal);
@@ -1083,6 +1137,11 @@
             var gsalary = Math.round((tsalary - short_salary - half_day));
             console.log(gsalary);
             document.getElementById("gsalary").value = gsalary;
+
+            if($('#account').val() == 0){
+            $("#pf, #e_pf").val(0);
+           }
+           else{
             if (gsalary >= parseInt(15000)) {
                 console.log(gsalary);
                         $("#pf, #e_pf").val('3600');
@@ -1091,7 +1150,10 @@
                         $("#pf, #e_pf").val(Math.round((gsalary * parseInt(24) / 100).toFixed(2)));
                     }
                    
-                    if (gsalary >parseInt(21000)) {
+
+        }
+
+                 if (gsalary >parseInt(21000)) {
                         $("#esi, #e_esi").val(0);
                         console.log(gsalary);
                     } else {

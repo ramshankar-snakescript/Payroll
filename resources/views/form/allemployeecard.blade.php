@@ -77,9 +77,10 @@
                             <div class="profile-img">
                                 <a href="{{ url('employee/profile/' . $lists->id) }}" class="avatar">
                                     @if ($lists->image)
-                                        <img src="{{ URL('storage/uploads/' . $lists->image) }}">
+                                        <img src="{{(config('app.url').'storage/app/public/uploads/' . $lists->image) }}">
                                     @else
-                                        <img src="{{ URL('storage/user.jpeg') }}">
+                                    <img src="{{ config('app.url') }}storage/app/public/user.jpeg">
+
                                     @endif
                                 </a>
                             </div>
@@ -147,7 +148,7 @@
                                             placeholder="Employee's id" value="{{ old('empid') }}">
                                     </div>
                                     <span class="text-danger">
-                                        @error('name')
+                                        @error('emid')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -179,7 +180,7 @@
                                         </select>
                                     </div>
                                     <span class="text-danger">
-                                        @error('desg')
+                                        @error('dept')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -188,12 +189,12 @@
                                     <div class="form-group">
                                         <label>Designation <span class="text-danger">*</span></label>
                                         <select class="select form-control" style="width: 100%;" tabindex="-1"
-                                            aria-hidden="true" id="designation" name="desg"value="{{ old('desg') }}">
+                                            aria-hidden="true" id="designation" name="desg" value="{{ old('desg') }}">
                                             <option>Select Designations</option>
                                         </select>
                                     </div>
                                     <span class="text-danger">
-                                        @error('dept')
+                                        @error('desg')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -234,7 +235,20 @@
                                             placeholder="Password" value="{{ old('Password') }}">
                                             <span class="text-danger" id="flash-message"></span>
                                         <span class="text-danger">
-                                            @error('email')
+                                            @error('password')
+                                                {{ $message }}
+                                            @enderror
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">EPF Account <span class="text-danger">*</span></label><br>
+                                        <input type="radio" name="epfaccount" value="1"> Yes<br>
+<input type="radio" name="epfaccount" value="0"> No
+                                            <span class="text-danger" id="flash-message"></span>
+                                        <span class="text-danger">
+                                            @error('epfaccount')
                                                 {{ $message }}
                                             @enderror
                                         </span>

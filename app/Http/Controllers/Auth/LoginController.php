@@ -54,6 +54,12 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
+
+    public function userlogin()
+    {
+        return view('auth.userlogin');
+    }
+
     public function authenticate(Request $request)
     {
         $request->validate([
@@ -91,7 +97,12 @@ class LoginController extends Controller
 
         Auth::logout();
         Toastr::success('Logout successfully :)','Success');
+        if($user->role==1){
         return redirect('login');
     }
-
+    
+else{
+    return redirect('user');
+}
+}
 }

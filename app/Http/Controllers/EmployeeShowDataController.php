@@ -10,6 +10,8 @@ use App\Models\department;
 use App\Models\User;
 use App\Models\Contact;
 use App\Models\Address;
+use App\Models\Checkin;
+use App\Models\Checkout;
 use App\Models\Qualification;
 use App\Models\module_permission;
 use App\Models\designation;
@@ -23,6 +25,15 @@ use Illuminate\Validation\Rules\Password;
 
 class EmployeeShowDataController extends Controller
 {
+    public function  Attendance(Request $request)
+    {
+
+        $users = DB::table('checkins')->get();
+        $departments = Checkout::all();
+        return view('dashboard.dashboard',compact('users','departments'));
+    }
+
+
     public function profileEmployee()
     {
         $email = Auth::user()->email;
@@ -186,4 +197,113 @@ return redirect()->route('home');
         }
        
     }
+
+//check in value
+
+public function Checkin(Request $request)
+{ 
+   DB::beginTransaction();
+            $email = Auth::user()->email;
+            $currentDate = Carbon::now()->toDateString();
+              $existingData = Checkin::where('email', $email)
+                ->whereDate('created_at', $currentDate)
+                ->first();
+                    try{
+                        if ($existingData && $existingData->created_at->toDateString() == $currentDate) {
+                            Toastr::error('Your are already checkin');
+                            return redirect()->back();
+                        } else {
+                         
+            $checkin = new Checkin();
+            $checkin->email=$email;
+            $checkin->checkin = $request->checkin;
+            $checkin->save();
+                        }
+            DB::commit(); // Commit the transaction after successful save
+            Toastr::success('updated record successfully :)', 'Success');
+               return redirect()->route('home');
+            } 
+        catch (\Exception $e) {
+                Toastr::error('Updated record failed :(', 'Error');
+                return redirect()->back();
+            }
+        }
+
+public function Checkout(Request $request)
+{ 
+   
+    $email = Auth::user()->email;
+$currentDate = Carbon::now()->toDateString();
+  $existingData = Checkout::where('email', $email)
+    ->whereDate('created_at', $currentDate)
+    ->first();
+
+    DB::beginTransaction();
+        try{
+            if ($existingData && $existingData->created_at->toDateString() == $currentDate) {
+                Toastr::error('Your are already checkout');
+                return redirect()->back();
+            } else {
+             
+            if ($request->total >=240 && $request->total <=300) {
+                $checkout = new Checkout();
+                $checkout->email = $email;
+                $checkout->halfday = 1;
+                $checkout->checkout = $request->checkout;
+                
+                $checkout->save();
+            } elseif ($request->total >=420 && $request->total<540) {
+                $checkout = new Checkout();
+                $checkout->email = $email;
+                $checkout->shortleave = 1;
+                $checkout->checkout = $request->checkout;
+                
+                $checkout->save();
+            } elseif ($request->total >=60 && $request->total <=240) {
+               
+                $checkout = new Checkout();
+                $checkout->email = $email;
+                $checkout->overtime = $request->total;
+                $checkout->checkout = $request->checkout;
+               
+                $checkout->save();
+            } 
+            elseif ($request->total >=300 && $request->total <=420) {
+                $checkouts= $request->total - 300;
+               
+                $checkouttime=($checkouts / 60);
+                $checkout = new Checkout();
+                $checkout->email = $email;
+                $checkout->halfday = 1;
+                $checkout->overtime = $checkouttime; // Overtime is calculated from 5-7 hours
+                $checkout->checkout = $request->checkout;
+                $checkout->save();
+            }
+             elseif ($request->total>= 540) {
+               
+                $checkouts= $request->total - 540;
+               
+                $checkouttime=($checkouts / 60);
+                
+                $checkout = new Checkout();
+                $checkout->email = $email;
+              
+               $checkout->overtime=$checkouttime;
+               
+                $checkout->checkout = $request->checkout;
+              
+                $checkout->save();
+            }
+        
+DB::commit(); // Commit the transaction after successful save
+Toastr::success('updated record successfully :)', 'Success');
+   return redirect()->route('home');
+        }
+        }
+    
+catch (\Exception $e) {
+                Toastr::error('Updated record failed :(', 'Error');
+                return redirect()->back();
+            }
+}
 }

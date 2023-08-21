@@ -3,5 +3,5 @@
 <p> Please find below attached Email Address:-{{ $employee->email }}<br>
     Password :-{{$employee->password }}</p>
 <p>login your profile</p>
-<a href =http://127.0.0.1:8000>login</a>
+<a href =https://dev.snakescript.com/public/user>login</a>
 <p>Thank You<br> Risha Ranaut<br> HR Manager</p>
